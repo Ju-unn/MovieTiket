@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,7 +34,6 @@ fun MovieListScreen(
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
             items(movies) { movie ->
                 MovieListItem(movie = movie, onReserveClick = onReserveClick)
-                HorizontalDivider()
             }
         }
     }
@@ -45,7 +43,7 @@ fun MovieListScreen(
 @Composable
 private fun MovieListTopBar() {
     TopAppBar(
-        title = { Text(text = stringResource(R.string.movie_list_title)) },
+        title = { Text(text = stringResource(R.string.app_top_bar_title)) },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,

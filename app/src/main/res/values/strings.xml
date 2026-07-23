@@ -1,22 +1,23 @@
 <resources>
     <string name="app_name">MovieTiket</string>
 
+    <!-- Figma 디자인 기준 : 상단바 타이틀은 화면과 무관하게 "Movie" 고정 -->
+    <string name="app_top_bar_title">Movie</string>
+
     <!-- 영화 목록 화면 -->
-    <string name="movie_list_title">영화 목록</string>
     <string name="reserve_now">지금 예매</string>
     <string name="screening_date_format">상영일: %1$s</string>
     <string name="running_time_format">러닝타임: %1$s</string>
     <string name="movie_poster_description">영화 포스터</string>
 
     <!-- 영화 예매 화면 -->
-    <string name="reservation_title">영화 예매</string>
     <string name="reservation_confirm">예매 완료</string>
     <string name="head_count_decrease">-</string>
     <string name="head_count_increase">+</string>
     <string name="navigate_back_description">뒤로 가기</string>
 
     <!-- 영화 예매 완료 화면 -->
-    <string name="reservation_complete_title">예매 완료</string>
+    <string name="cancellation_notice">영화 상영 시작 시간 15분 전까지\n취소가 가능합니다.</string>
     <string name="head_count_result_format">일반 %1$s명</string>
     <string name="payment_amount_format">%1$s (현장 결제)</string>
 </resources>

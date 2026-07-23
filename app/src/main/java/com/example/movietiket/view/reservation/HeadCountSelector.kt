@@ -3,20 +3,28 @@ package com.example.movietiket.view.reservation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movietiket.R
 import com.example.movietiket.ui.theme.MovieTiketTheme
+
+private val COUNTER_BUTTON_WIDTH = 65.dp
+private val COUNTER_BUTTON_HEIGHT = 45.dp
+private val COUNTER_BUTTON_CORNER = 6.dp
 
 /**
  * 예매 인원 선택 컴포넌트 (- / 인원 수 / +)
@@ -29,9 +37,9 @@ fun HeadCountSelector(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         CounterButton(
             text = stringResource(R.string.head_count_decrease),
@@ -39,9 +47,8 @@ fun HeadCountSelector(
         )
         Text(
             text = headCount,
-            fontSize = 22.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.width(40.dp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
         )
         CounterButton(
             text = stringResource(R.string.head_count_increase),
@@ -52,12 +59,16 @@ fun HeadCountSelector(
 
 @Composable
 private fun CounterButton(text: String, onClick: () -> Unit) {
-    OutlinedButton(
+    Button(
         onClick = onClick,
-        modifier = Modifier.size(48.dp),
+        modifier = Modifier
+            .width(COUNTER_BUTTON_WIDTH)
+            .height(COUNTER_BUTTON_HEIGHT),
+        shape = RoundedCornerShape(COUNTER_BUTTON_CORNER),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
         contentPadding = PaddingValues(0.dp),
     ) {
-        Text(text = text, fontSize = 20.sp)
+        Text(text = text, fontSize = 25.sp, fontWeight = FontWeight.Bold)
     }
 }
 

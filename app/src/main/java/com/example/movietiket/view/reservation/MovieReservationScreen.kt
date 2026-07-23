@@ -1,17 +1,22 @@
 package com.example.movietiket.view.reservation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,8 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,6 +39,11 @@ import com.example.movietiket.R
 import com.example.movietiket.model.MovieRepository
 import com.example.movietiket.model.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
+
+private val POSTER_HEIGHT = 341.dp
+private val CONTENT_HORIZONTAL_PADDING = 20.dp
+private val CONFIRM_BUTTON_HEIGHT = 47.dp
+private val CONFIRM_BUTTON_CORNER = 6.dp
 
 /**
  * 영화 예매 화면 (포스터 / 영화 정보 / 인원 선택 / 예매 완료 버튼)
@@ -49,26 +59,26 @@ fun MovieReservationScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ReservationTopBar(onBackClick = onBackClick) },
+        bottomBar = {
+            ReservationBottomBar(
+                headCount = reservation.displayHeadCount(),
+                onIncrease = onIncreaseHeadCount,
+                onDecrease = onDecreaseHeadCount,
+                onConfirmClick = onConfirmClick,
+            )
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .verticalScroll(rememberScrollState()),
         ) {
             ReservationPoster()
-            Spacer(modifier = Modifier.height(16.dp))
-            ReservationMovieInformation(reservation = reservation)
-            Spacer(modifier = Modifier.height(24.dp))
-            HeadCountSelector(
-                headCount = reservation.displayHeadCount(),
-                onIncrease = onIncreaseHeadCount,
-                onDecrease = onDecreaseHeadCount,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+            ReservationMovieInformation(
+                reservation = reservation,
+                modifier = Modifier.padding(horizontal = CONTENT_HORIZONTAL_PADDING),
             )
-            Spacer(modifier = Modifier.height(24.dp))
-            ReservationConfirmButton(onClick = onConfirmClick)
         }
     }
 }
@@ -77,7 +87,7 @@ fun MovieReservationScreen(
 @Composable
 private fun ReservationTopBar(onBackClick: () -> Unit) {
     TopAppBar(
-        title = { Text(text = stringResource(R.string.reservation_title)) },
+        title = { Text(text = stringResource(R.string.app_top_bar_title)) },
         navigationIcon = { BackNavigationIcon(onBackClick = onBackClick) },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -104,34 +114,56 @@ private fun ReservationPoster() {
         contentDescription = stringResource(R.string.movie_poster_description),
         modifier = Modifier
             .fillMaxWidth()
-            .height(320.dp),
-        contentScale = ContentScale.Fit,
+            .height(POSTER_HEIGHT),
+        contentScale = ContentScale.Crop,
     )
 }
 
 @Composable
-private fun ReservationMovieInformation(reservation: Reservation) {
-    Column {
+private fun ReservationMovieInformation(reservation: Reservation, modifier: Modifier = Modifier) {
+    Column(modifier = modifier.padding(top = 16.dp)) {
         Text(
             text = reservation.displayMovieTitle(),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = stringResource(R.string.screening_date_format, reservation.displayScreeningDate()),
-            fontSize = 15.sp,
+            fontSize = 16.sp,
         )
         Text(
             text = stringResource(R.string.running_time_format, reservation.displayRunningTime()),
-            fontSize = 15.sp,
+            fontSize = 16.sp,
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = reservation.displaySynopsis(),
-            fontSize = 14.sp,
-            lineHeight = 20.sp,
+            fontSize = 16.sp,
         )
+    }
+}
+
+@Composable
+private fun ReservationBottomBar(
+    headCount: String,
+    onIncrease: () -> Unit,
+    onDecrease: () -> Unit,
+    onConfirmClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(start = CONTENT_HORIZONTAL_PADDING, end = CONTENT_HORIZONTAL_PADDING, top = 9.dp, bottom = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        HeadCountSelector(
+            headCount = headCount,
+            onIncrease = onIncrease,
+            onDecrease = onDecrease,
+        )
+        ReservationConfirmButton(onClick = onConfirmClick)
     }
 }
 
@@ -141,9 +173,16 @@ private fun ReservationConfirmButton(onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(52.dp),
+            .height(CONFIRM_BUTTON_HEIGHT),
+        shape = RoundedCornerShape(CONFIRM_BUTTON_CORNER),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+        contentPadding = PaddingValues(0.dp),
     ) {
-        Text(text = stringResource(R.string.reservation_confirm), fontSize = 16.sp)
+        Text(
+            text = stringResource(R.string.reservation_confirm),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+        )
     }
 }
 
