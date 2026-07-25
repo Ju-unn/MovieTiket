@@ -93,7 +93,7 @@ private fun MovieSummary(movie: Movie) {
             fontSize = 12.sp,
         )
         Text(
-            text = stringResource(R.string.running_time_format, movie.displayRunningTime()),
+            text = stringResource(R.string.running_time_format, movie.runningTimeMinutes()),
             fontSize = 12.sp,
         )
     }

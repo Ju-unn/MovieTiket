@@ -25,10 +25,10 @@ class MoneyTest {
     }
 
     @Test
-    @DisplayName("천 단위 구분 기호와 원 단위로 표시한다")
+    @DisplayName("금액을 원 단위 숫자로 조회할 수 있다")
     fun displayValue() {
         val money = Money(26_000)
 
-        assertThat(money.toDisplayValue()).isEqualTo("26,000원")
+        assertThat(money.toWon()).isEqualTo(26_000)
     }
 }

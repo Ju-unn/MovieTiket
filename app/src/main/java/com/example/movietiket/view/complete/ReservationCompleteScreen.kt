@@ -127,7 +127,7 @@ private fun ReservationSummary(reservation: Reservation) {
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
-            text = stringResource(R.string.payment_amount_format, reservation.displayTotalAmount()),
+            text = stringResource(R.string.payment_amount_format, reservation.totalAmountWon()),
             fontSize = 20.sp,
         )
     }

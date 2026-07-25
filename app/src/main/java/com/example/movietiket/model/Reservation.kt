@@ -20,11 +20,11 @@ class Reservation(
 
     fun displayScreeningDate(): String = movie.displayScreeningDate()
 
-    fun displayRunningTime(): String = movie.displayRunningTime()
+    fun runningTimeMinutes(): Int = movie.runningTimeMinutes()
 
     fun displayHeadCount(): String = headCount.toDisplayValue()
 
-    fun displayTotalAmount(): String = totalAmount().toDisplayValue()
+    fun totalAmountWon(): Int = totalAmount().toWon()
 
     companion object {
         // 티켓 1장의 가격은 13,000원으로 고정한다

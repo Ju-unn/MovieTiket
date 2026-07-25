@@ -31,6 +31,6 @@ class MoviesTest {
 
         assertThat(movie.displayTitle()).isEqualTo("해리 포터와 마법사의 돌")
         assertThat(movie.displayScreeningDate()).isEqualTo("2024.3.1")
-        assertThat(movie.displayRunningTime()).isEqualTo("152분")
+        assertThat(movie.runningTimeMinutes()).isEqualTo(152)
     }
 }

@@ -48,7 +48,7 @@ class ReservationTest {
             .increaseHeadCount()
 
         assertThat(reservation.totalAmount()).isEqualTo(Money(26_000))
-        assertThat(reservation.displayTotalAmount()).isEqualTo("26,000원")
+        assertThat(reservation.totalAmountWon()).isEqualTo(26_000)
     }
 
     @Test
@@ -58,6 +58,6 @@ class ReservationTest {
 
         assertThat(reservation.displayMovieTitle()).isEqualTo("해리 포터와 마법사의 돌")
         assertThat(reservation.displayScreeningDate()).isEqualTo("2024.3.1")
-        assertThat(reservation.displayRunningTime()).isEqualTo("152분")
+        assertThat(reservation.runningTimeMinutes()).isEqualTo(152)
     }
 }

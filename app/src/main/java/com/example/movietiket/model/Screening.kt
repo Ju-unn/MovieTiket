@@ -9,5 +9,5 @@ class Screening(
 ) {
     fun displayDate(): String = date.toDisplayValue()
 
-    fun displayRunningTime(): String = runningTime.toDisplayValue()
+    fun runningTimeMinutes(): Int = runningTime.toMinutes()
 }

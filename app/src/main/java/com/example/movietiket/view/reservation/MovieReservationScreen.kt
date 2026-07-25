@@ -133,7 +133,7 @@ private fun ReservationMovieInformation(reservation: Reservation, modifier: Modi
             fontSize = 16.sp,
         )
         Text(
-            text = stringResource(R.string.running_time_format, reservation.displayRunningTime()),
+            text = stringResource(R.string.running_time_format, reservation.runningTimeMinutes()),
             fontSize = 16.sp,
         )
         Spacer(modifier = Modifier.height(16.dp))

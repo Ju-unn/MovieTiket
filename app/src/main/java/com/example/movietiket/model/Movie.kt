@@ -14,5 +14,5 @@ class Movie(
 
     fun displayScreeningDate(): String = screening.displayDate()
 
-    fun displayRunningTime(): String = screening.displayRunningTime()
+    fun runningTimeMinutes(): Int = screening.runningTimeMinutes()
 }

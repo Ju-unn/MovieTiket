@@ -9,5 +9,5 @@ value class RunningTime(private val minutes: Int) {
         require(minutes > 0) { "러닝타임은 1분 이상이어야 한다" }
     }
 
-    fun toDisplayValue(): String = "${minutes}분"
+    fun toMinutes(): Int = minutes
 }
