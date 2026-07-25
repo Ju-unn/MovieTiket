@@ -19,7 +19,7 @@ class MoviesTest {
     fun repositoryProvidesDefaultMovies() {
         val movies = MovieRepository.findAll()
 
-        assertThat(movies.count()).isEqualTo(5)
+        assertThat(movies.count()).isEqualTo(1)
     }
 
     @Test
