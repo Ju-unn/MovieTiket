@@ -1,4 +1,4 @@
-package com.example.movietiket.controller
+package com.example.movietiket.navigation
 
 import com.example.movietiket.model.Movie
 import com.example.movietiket.model.Reservation

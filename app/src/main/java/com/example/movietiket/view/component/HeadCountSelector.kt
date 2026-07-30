@@ -1,4 +1,4 @@
-package com.example.movietiket.view.reservation
+package com.example.movietiket.view.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues

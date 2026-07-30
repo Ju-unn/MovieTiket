@@ -1,4 +1,4 @@
-package com.example.movietiket.controller
+package com.example.movietiket.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,8 +7,8 @@ import com.example.movietiket.model.Movie
 import com.example.movietiket.model.Reservation
 
 /**
- * 화면 전환을 담당하는 컨트롤러
- * View는 이 컨트롤러에 전환을 요청하고, 현재 화면은 screen()으로만 조회한다
+ * 화면 전환을 담당하는 Router
+ * View는 이 Router에 전환을 요청하고, 현재 화면은 screen()으로만 조회한다
  */
 class MovieNavigationController {
 

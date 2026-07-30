@@ -18,6 +18,7 @@ import com.example.movietiket.R
 import com.example.movietiket.model.Movie
 import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.ui.theme.MovieTiketTheme
+import com.example.movietiket.view.component.MovieListItem
 
 /**
  * 영화 목록 화면

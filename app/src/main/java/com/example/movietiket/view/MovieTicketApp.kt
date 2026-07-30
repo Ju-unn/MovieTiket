@@ -2,20 +2,25 @@ package com.example.movietiket.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.example.movietiket.controller.MovieListController
-import com.example.movietiket.controller.MovieNavigationController
-import com.example.movietiket.controller.ReservationController
-import com.example.movietiket.controller.Screen
+import androidx.compose.runtime.setValue
+import com.example.movietiket.navigation.MovieNavigationController
+import com.example.movietiket.navigation.Screen
 import com.example.movietiket.model.Movie
 import com.example.movietiket.model.Reservation
+import com.example.movietiket.presenter.MovieListContract
+import com.example.movietiket.presenter.MovieListPresenter
+import com.example.movietiket.presenter.ReservationContract
+import com.example.movietiket.presenter.ReservationPresenter
 import com.example.movietiket.view.complete.ReservationCompleteScreen
 import com.example.movietiket.view.movielist.MovieListScreen
 import com.example.movietiket.view.reservation.MovieReservationScreen
 
 /**
  * 앱의 루트 Composable
- * 현재 화면 상태(Screen)에 따라 각 화면(View)과 컨트롤러를 연결한다
+ * 현재 화면 상태(Screen)에 따라 각 화면(View)과 Presenter를 연결한다
  */
 @Composable
 fun MovieTicketApp() {
@@ -28,14 +33,38 @@ fun MovieTicketApp() {
     }
 }
 
+private class MovieListViewState : MovieListContract.View {
+    var movies by mutableStateOf(emptyList<Movie>())
+        private set
+
+    override fun showMovies(movies: List<Movie>) {
+        this.movies = movies
+    }
+}
+
 @Composable
 private fun MovieListRoute(navigationController: MovieNavigationController) {
-    val movieListController = remember { MovieListController() }
+    val view = remember { MovieListViewState() }
+    val presenter = remember {
+        MovieListPresenter(
+            view = view,
+            onMovieReserveRequested = navigationController::moveToReservation,
+        ).apply { loadMovies() }
+    }
 
     MovieListScreen(
-        movies = movieListController.movies(),
-        onReserveClick = { movie -> navigationController.moveToReservation(movie) },
+        movies = view.movies,
+        onReserveClick = presenter::onReserveClick,
     )
+}
+
+private class ReservationViewState : ReservationContract.View {
+    var reservation: Reservation? by mutableStateOf(null)
+        private set
+
+    override fun showReservation(reservation: Reservation) {
+        this.reservation = reservation
+    }
 }
 
 @Composable
@@ -43,18 +72,24 @@ private fun MovieReservationRoute(
     movie: Movie,
     navigationController: MovieNavigationController,
 ) {
-    val reservationController = remember { ReservationController(movie) }
+    val view = remember { ReservationViewState() }
+    val presenter = remember {
+        ReservationPresenter(
+            movie = movie,
+            view = view,
+            onReservationConfirmed = navigationController::moveToReservationComplete,
+        )
+    }
+    val reservation = view.reservation ?: return
 
     // 시스템 뒤로 가기 시 영화 목록으로 돌아간다
     BackHandler { navigationController.moveToMovieList() }
 
     MovieReservationScreen(
-        reservation = reservationController.reservation(),
-        onIncreaseHeadCount = reservationController::increaseHeadCount,
-        onDecreaseHeadCount = reservationController::decreaseHeadCount,
-        onConfirmClick = {
-            navigationController.moveToReservationComplete(reservationController.reservation())
-        },
+        reservation = reservation,
+        onIncreaseHeadCount = presenter::increaseHeadCount,
+        onDecreaseHeadCount = presenter::decreaseHeadCount,
+        onConfirmClick = presenter::confirmReservation,
         onBackClick = navigationController::moveToMovieList,
     )
 }

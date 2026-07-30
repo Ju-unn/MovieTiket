@@ -1,4 +1,4 @@
-package com.example.movietiket.view.reservation
+package com.example.movietiket.view.component
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule

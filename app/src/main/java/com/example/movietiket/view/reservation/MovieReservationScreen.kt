@@ -39,6 +39,7 @@ import com.example.movietiket.R
 import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.model.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
+import com.example.movietiket.view.component.HeadCountSelector
 
 private val POSTER_HEIGHT = 341.dp
 private val CONTENT_HORIZONTAL_PADDING = 20.dp

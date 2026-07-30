@@ -1,4 +1,4 @@
-package com.example.movietiket.view.movielist
+package com.example.movietiket.view.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
