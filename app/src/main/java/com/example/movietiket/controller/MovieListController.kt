@@ -1,7 +1,7 @@
 package com.example.movietiket.controller
 
 import com.example.movietiket.model.Movie
-import com.example.movietiket.model.MovieRepository
+import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.model.Movies
 
 /**

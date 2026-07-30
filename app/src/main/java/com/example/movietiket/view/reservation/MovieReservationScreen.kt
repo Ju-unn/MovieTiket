@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movietiket.R
-import com.example.movietiket.model.MovieRepository
+import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.model.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 

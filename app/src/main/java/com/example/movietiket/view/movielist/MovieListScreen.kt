@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.movietiket.R
 import com.example.movietiket.model.Movie
-import com.example.movietiket.model.MovieRepository
+import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.ui.theme.MovieTiketTheme
 
 /**
