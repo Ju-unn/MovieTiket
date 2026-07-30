@@ -8,7 +8,5 @@ class Movies(private val movies: List<Movie>) {
         require(movies.isNotEmpty()) { "영화 목록은 비어 있을 수 없다" }
     }
 
-    fun count(): Int = movies.size
-
     fun toList(): List<Movie> = movies.toList()
 }

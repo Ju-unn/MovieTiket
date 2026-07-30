@@ -57,7 +57,7 @@ private fun MovieListScreenPreview() {
     MovieTiketTheme {
         MovieListScreen(
             movies = MovieRepository.findAll().toList(),
-            onReserveClick = { movie -> },
+            onReserveClick = {},
         )
     }
 }

@@ -122,7 +122,7 @@ private fun MovieListItemPreview() {
     MovieTiketTheme {
         MovieListItem(
             movie = MovieRepository.findAll().toList().first(),
-            onReserveClick = { movie -> },
+            onReserveClick = {},
         )
     }
 }
