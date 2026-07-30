@@ -15,9 +15,9 @@ import com.example.movietiket.model.Synopsis
  */
 object MovieRepository {
 
-    fun findAll(): Movies = Movies(HARRY_POTTER_SERIES)
+    fun findAll(): Movies = HARRY_POTTER_SERIES
 
-    private val HARRY_POTTER_SERIES: List<Movie> = listOf(
+    private val HARRY_POTTER_SERIES: Movies = Movies(listOf(
         movieOf(
             title = "해리 포터와 마법사의 돌",
             synopsis = "《해리 포터와 마법사의 돌》은 J.K. 롤링의 동명 소설을 원작으로 한 영화이다. " +
@@ -49,7 +49,7 @@ object MovieRepository {
             date = "2024.3.29",
             minutes = 138,
         ),
-    )
+    ))
 
     private fun movieOf(title: String, synopsis: String, date: String, minutes: Int): Movie {
         return Movie(
