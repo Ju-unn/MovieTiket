@@ -14,6 +14,7 @@ import com.example.movietiket.presenter.MovieListContract
 import com.example.movietiket.presenter.MovieListPresenter
 import com.example.movietiket.presenter.ReservationContract
 import com.example.movietiket.presenter.ReservationPresenter
+import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.view.complete.ReservationCompleteScreen
 import com.example.movietiket.view.movielist.MovieListScreen
 import com.example.movietiket.view.reservation.MovieReservationScreen
@@ -48,8 +49,9 @@ private fun MovieListRoute(navigationController: MovieNavigationController) {
     val presenter = remember {
         MovieListPresenter(
             view = view,
+            movies = MovieRepository.findAll(),
             onMovieReserveRequested = navigationController::moveToReservation,
-        ).apply { loadMovies() }
+        )
     }
 
     MovieListScreen(
