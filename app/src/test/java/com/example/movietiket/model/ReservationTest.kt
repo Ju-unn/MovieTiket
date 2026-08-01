@@ -48,16 +48,46 @@ class ReservationTest {
             .increaseHeadCount()
 
         assertThat(reservation.totalAmount()).isEqualTo(Money(26_000))
+    }
+
+    @Test
+    @DisplayName("총 결제 금액을 원 단위 숫자로 조회할 수 있다")
+    fun totalAmountWon() {
+        val reservation = Reservation.of(movie())
+            .increaseHeadCount()
+
         assertThat(reservation.totalAmountWon()).isEqualTo(26_000)
     }
 
     @Test
-    @DisplayName("예매에서 영화 정보를 표시용 값으로 조회할 수 있다")
-    fun displayMovieInformation() {
+    @DisplayName("예매에서 영화 제목을 표시용 값으로 조회할 수 있다")
+    fun displayMovieTitle() {
         val reservation = Reservation.of(movie())
 
         assertThat(reservation.displayMovieTitle()).isEqualTo("해리 포터와 마법사의 돌")
+    }
+
+    @Test
+    @DisplayName("예매에서 영화 소개를 표시용 값으로 조회할 수 있다")
+    fun displaySynopsis() {
+        val reservation = Reservation.of(movie())
+
+        assertThat(reservation.displaySynopsis()).isEqualTo("소개")
+    }
+
+    @Test
+    @DisplayName("예매에서 상영일을 표시용 값으로 조회할 수 있다")
+    fun displayScreeningDate() {
+        val reservation = Reservation.of(movie())
+
         assertThat(reservation.displayScreeningDate()).isEqualTo("2024.3.1")
+    }
+
+    @Test
+    @DisplayName("예매에서 러닝타임을 분 단위로 조회할 수 있다")
+    fun runningTimeMinutes() {
+        val reservation = Reservation.of(movie())
+
         assertThat(reservation.runningTimeMinutes()).isEqualTo(152)
     }
 }

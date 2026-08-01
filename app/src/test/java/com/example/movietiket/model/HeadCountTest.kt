@@ -53,4 +53,12 @@ class HeadCountTest {
 
         assertThat(totalPrice).isEqualTo(Money(26_000))
     }
+
+    @Test
+    @DisplayName("인원 수를 표시용 문자열로 변환한다")
+    fun displayValue() {
+        val headCount = HeadCount(3)
+
+        assertThat(headCount.toDisplayValue()).isEqualTo("3")
+    }
 }
