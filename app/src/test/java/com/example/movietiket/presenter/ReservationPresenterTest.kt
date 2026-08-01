@@ -48,6 +48,19 @@ class ReservationPresenterTest {
     }
 
     @Test
+    @DisplayName("인원 감소 시 View에 감소한 인원을 통지한다")
+    fun decreaseHeadCount() {
+        val view = FakeView()
+        val presenter = ReservationPresenter(movie = movie(), view = view, onReservationConfirmed = {})
+
+        presenter.increaseHeadCount()
+        presenter.increaseHeadCount()
+        presenter.decreaseHeadCount()
+
+        assertThat(view.shownReservation.displayHeadCount()).isEqualTo("2")
+    }
+
+    @Test
     @DisplayName("예매 확정 시 현재 예매 내용으로 콜백을 호출한다")
     fun confirmReservation() {
         var confirmed: Reservation? = null
