@@ -14,6 +14,8 @@ import com.example.movietiket.presenter.MovieListContract
 import com.example.movietiket.presenter.MovieListPresenter
 import com.example.movietiket.presenter.ReservationContract
 import com.example.movietiket.presenter.ReservationPresenter
+import com.example.movietiket.presenter.SeatSelectionContract
+import com.example.movietiket.presenter.SeatSelectionPresenter
 import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.view.complete.ReservationCompleteScreen
 import com.example.movietiket.view.movielist.MovieListScreen
@@ -93,24 +95,53 @@ private fun MovieReservationRoute(
         reservation = reservation,
         onIncreaseHeadCount = presenter::increaseHeadCount,
         onDecreaseHeadCount = presenter::decreaseHeadCount,
+        onSelectTime = presenter::selectTime,
         onConfirmClick = presenter::confirmReservation,
         onBackClick = navigationController::moveToMovieList,
     )
 }
 
+private class SeatSelectionViewState : SeatSelectionContract.View {
+    var reservation: Reservation? by mutableStateOf(null)
+        private set
+
+    var seatLimitExceededEventCount by mutableStateOf(0)
+        private set
+
+    override fun showReservation(reservation: Reservation) {
+        this.reservation = reservation
+    }
+
+    override fun showSeatLimitExceeded() {
+        seatLimitExceededEventCount++
+    }
+}
+
 @Composable
 private fun SeatSelectionRoute(
-    reservation: Reservation,
+    initialReservation: Reservation,
     navigationController: MovieNavigationController,
 ) {
+    val view = remember { SeatSelectionViewState() }
+    val presenter = remember {
+        SeatSelectionPresenter(
+            initialReservation = initialReservation,
+            view = view,
+            onSelectionConfirmed = navigationController::moveToReservationComplete,
+        )
+    }
+    val reservation = view.reservation ?: return
+
     // 좌석 선택 화면에서 뒤로 가기 시 영화 목록으로 돌아간다
     BackHandler { navigationController.moveToMovieList() }
 
     SeatSelectionScreen(
-        movieTitle = reservation.displayMovieTitle(),
-        pricePerSeat = reservation.ticketPriceWon(),
+        reservation = reservation,
+        seatLimitExceededEvent = view.seatLimitExceededEventCount,
+        onSelectSeat = presenter::selectSeat,
+        onDeselectSeat = presenter::deselectSeat,
+        onConfirmClick = presenter::confirmSelection,
         onBackClick = navigationController::moveToMovieList,
-        onConfirmClick = { navigationController.moveToReservationComplete(reservation) },
     )
 }
 

@@ -27,6 +27,10 @@ class Reservation(
 
     fun isSeatSelectionComplete(): Boolean = selectedSeats.size == headCount.toInt()
 
+    fun isSeatSelected(seat: String): Boolean = seat in selectedSeats
+
+    fun selectedSeatsAmountWon(): Int = (TICKET_PRICE * selectedSeats.size).toWon()
+
     fun totalAmount(): Money = headCount.totalPriceWith(TICKET_PRICE)
 
     fun displayMovieTitle(): String = movie.displayTitle()
