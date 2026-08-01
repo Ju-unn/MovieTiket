@@ -14,6 +14,7 @@ interface ReservationContract {
     interface Presenter {
         fun increaseHeadCount()
         fun decreaseHeadCount()
+        fun selectTime(time: String)
         fun confirmReservation()
     }
 }

@@ -31,6 +31,10 @@ class ReservationPresenter(
         reservation = reservation.decreaseHeadCount()
     }
 
+    override fun selectTime(time: String) {
+        reservation = reservation.selectTime(time)
+    }
+
     override fun confirmReservation() {
         onReservationConfirmed(reservation)
     }
