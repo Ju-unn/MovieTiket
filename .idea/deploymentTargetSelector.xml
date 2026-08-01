@@ -8,6 +8,9 @@
       <SelectionState runConfigName="뒤로_가기_버튼을_클릭하면_뒤로_가기_콜백이_호출된다()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="app">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
