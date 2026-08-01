@@ -24,6 +24,10 @@ class MovieNavigationController {
         currentScreen = Screen.MovieReservation(movie)
     }
 
+    fun moveToSeatSelection(reservation: Reservation) {
+        currentScreen = Screen.SeatSelection(reservation)
+    }
+
     fun moveToReservationComplete(reservation: Reservation) {
         currentScreen = Screen.ReservationComplete(reservation)
     }

@@ -23,6 +23,8 @@ value class HeadCount(private val value: Int) {
 
     fun toDisplayValue(): String = value.toString()
 
+    fun toInt(): Int = value
+
     companion object {
         private const val MINIMUM_COUNT = 1
         val MINIMUM = HeadCount(MINIMUM_COUNT)

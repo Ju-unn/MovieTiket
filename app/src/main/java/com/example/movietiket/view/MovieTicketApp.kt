@@ -18,6 +18,7 @@ import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.view.complete.ReservationCompleteScreen
 import com.example.movietiket.view.movielist.MovieListScreen
 import com.example.movietiket.view.reservation.MovieReservationScreen
+import com.example.movietiket.view.seat.SeatSelectionScreen
 
 /**
  * 앱의 루트 Composable
@@ -30,6 +31,7 @@ fun MovieTicketApp() {
     when (val screen = navigationController.screen()) {
         is Screen.MovieList -> MovieListRoute(navigationController)
         is Screen.MovieReservation -> MovieReservationRoute(screen.movie, navigationController)
+        is Screen.SeatSelection -> SeatSelectionRoute(screen.reservation, navigationController)
         is Screen.ReservationComplete -> ReservationCompleteRoute(screen.reservation, navigationController)
     }
 }
@@ -79,7 +81,7 @@ private fun MovieReservationRoute(
         ReservationPresenter(
             movie = movie,
             view = view,
-            onReservationConfirmed = navigationController::moveToReservationComplete,
+            onReservationConfirmed = navigationController::moveToSeatSelection,
         )
     }
     val reservation = view.reservation ?: return
@@ -93,6 +95,22 @@ private fun MovieReservationRoute(
         onDecreaseHeadCount = presenter::decreaseHeadCount,
         onConfirmClick = presenter::confirmReservation,
         onBackClick = navigationController::moveToMovieList,
+    )
+}
+
+@Composable
+private fun SeatSelectionRoute(
+    reservation: Reservation,
+    navigationController: MovieNavigationController,
+) {
+    // 좌석 선택 화면에서 뒤로 가기 시 영화 목록으로 돌아간다
+    BackHandler { navigationController.moveToMovieList() }
+
+    SeatSelectionScreen(
+        movieTitle = reservation.displayMovieTitle(),
+        pricePerSeat = reservation.ticketPriceWon(),
+        onBackClick = navigationController::moveToMovieList,
+        onConfirmClick = { navigationController.moveToReservationComplete(reservation) },
     )
 }
 
