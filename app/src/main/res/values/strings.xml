@@ -12,12 +12,25 @@
 
     <!-- 영화 예매 화면 -->
     <string name="reservation_confirm">예매 완료</string>
+    <string name="select_seat">좌석 선택</string>
     <string name="head_count_decrease">-</string>
     <string name="head_count_increase">+</string>
     <string name="navigate_back_description">뒤로 가기</string>
+    <string name="screening_time_description">상영 시간 선택</string>
 
     <!-- 영화 예매 완료 화면 -->
     <string name="cancellation_notice">영화 상영 시작 시간 15분 전까지\n취소가 가능합니다.</string>
     <string name="head_count_result_format">일반 %1$s명</string>
     <string name="payment_amount_format">%1$,d원 (현장 결제)</string>
+
+    <!-- 좌석 선택 화면 -->
+    <string name="screen_banner">SCREEN</string>
+    <string name="seat_price_format">%1$,d원</string>
+    <string name="confirm">확인</string>
+    <string name="seat_description_format">%1$s석</string>
+
+    <!-- 예매 확정 안내 다이얼로그 -->
+    <string name="reservation_confirm_dialog_title">예매 확인</string>
+    <string name="reservation_confirm_dialog_message">정말 예매하시겠습니까?</string>
+    <string name="cancel">취소</string>
 </resources>

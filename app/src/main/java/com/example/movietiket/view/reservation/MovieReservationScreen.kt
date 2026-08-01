@@ -2,30 +2,36 @@ package com.example.movietiket.view.reservation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -39,12 +45,18 @@ import com.example.movietiket.R
 import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.model.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
+import com.example.movietiket.view.component.BackNavigationTopBar
 import com.example.movietiket.view.component.HeadCountSelector
 
 private val POSTER_HEIGHT = 341.dp
 private val CONTENT_HORIZONTAL_PADDING = 20.dp
 private val CONFIRM_BUTTON_HEIGHT = 47.dp
 private val CONFIRM_BUTTON_CORNER = 6.dp
+
+// Figma 상영시간표 목업 (09:00 ~ 23:00, 2시간 간격)
+private val SCREENING_TIMES = listOf(
+    "09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00",
+)
 
 /**
  * 영화 예매 화면 (포스터 / 영화 정보 / 인원 선택 / 예매 완료 버튼)
@@ -59,9 +71,10 @@ fun MovieReservationScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { ReservationTopBar(onBackClick = onBackClick) },
+        topBar = { BackNavigationTopBar(onBackClick = onBackClick) },
         bottomBar = {
             ReservationBottomBar(
+                screeningDate = reservation.displayScreeningDate(),
                 headCount = reservation.displayHeadCount(),
                 onIncrease = onIncreaseHeadCount,
                 onDecrease = onDecreaseHeadCount,
@@ -81,30 +94,6 @@ fun MovieReservationScreen(
                 modifier = Modifier.padding(horizontal = CONTENT_HORIZONTAL_PADDING),
             )
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ReservationTopBar(onBackClick: () -> Unit) {
-    TopAppBar(
-        title = { Text(text = stringResource(R.string.app_top_bar_title)) },
-        navigationIcon = { BackNavigationIcon(onBackClick = onBackClick) },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-        ),
-    )
-}
-
-@Composable
-private fun BackNavigationIcon(onBackClick: () -> Unit) {
-    IconButton(onClick = onBackClick) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = stringResource(R.string.navigate_back_description),
-        )
     }
 }
 
@@ -147,6 +136,7 @@ private fun ReservationMovieInformation(reservation: Reservation, modifier: Modi
 
 @Composable
 private fun ReservationBottomBar(
+    screeningDate: String,
     headCount: String,
     onIncrease: () -> Unit,
     onDecrease: () -> Unit,
@@ -156,20 +146,68 @@ private fun ReservationBottomBar(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
+            .navigationBarsPadding()
             .padding(start = CONTENT_HORIZONTAL_PADDING, end = CONTENT_HORIZONTAL_PADDING, top = 9.dp, bottom = 20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        ScreeningDateTimeSelector(screeningDate = screeningDate)
         HeadCountSelector(
             headCount = headCount,
             onIncrease = onIncrease,
             onDecrease = onDecrease,
         )
-        ReservationConfirmButton(onClick = onConfirmClick)
+        SeatSelectionButton(onClick = onConfirmClick)
     }
 }
 
 @Composable
-private fun ReservationConfirmButton(onClick: () -> Unit) {
+private fun ScreeningDateTimeSelector(screeningDate: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        DropdownChip(label = screeningDate)
+        ScreeningTimeSelector()
+    }
+}
+
+@Composable
+private fun ScreeningTimeSelector() {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedTime by remember { mutableStateOf(SCREENING_TIMES.first()) }
+
+    Column {
+        DropdownChip(
+            label = selectedTime,
+            modifier = Modifier.clickable { expanded = true },
+        )
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            SCREENING_TIMES.forEach { time ->
+                DropdownMenuItem(
+                    text = { Text(text = time) },
+                    onClick = {
+                        selectedTime = time
+                        expanded = false
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun DropdownChip(label: String, modifier: Modifier = Modifier) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        Text(text = label, fontSize = 16.sp)
+        Icon(
+            imageVector = Icons.Default.ArrowDropDown,
+            contentDescription = stringResource(R.string.screening_time_description),
+        )
+    }
+}
+
+@Composable
+private fun SeatSelectionButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier
@@ -180,7 +218,7 @@ private fun ReservationConfirmButton(onClick: () -> Unit) {
         contentPadding = PaddingValues(0.dp),
     ) {
         Text(
-            text = stringResource(R.string.reservation_confirm),
+            text = stringResource(R.string.select_seat),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
