@@ -27,6 +27,7 @@ class MovieReservationScreenTest {
                     reservation = harryPotterReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
+                    onSelectTime = {},
                     onConfirmClick = {},
                     onBackClick = {},
                 )
@@ -51,6 +52,7 @@ class MovieReservationScreenTest {
                     reservation = harryPotterReservation(),
                     onIncreaseHeadCount = { increased = true },
                     onDecreaseHeadCount = { decreased = true },
+                    onSelectTime = {},
                     onConfirmClick = {},
                     onBackClick = {},
                 )
@@ -65,7 +67,7 @@ class MovieReservationScreenTest {
     }
 
     @Test
-    fun `예매_완료_버튼을_클릭하면_확정_콜백이_호출된다`() {
+    fun `좌석_선택_버튼을_클릭하면_확정_콜백이_호출된다`() {
         var confirmed = false
 
         composeTestRule.setContent {
@@ -74,13 +76,14 @@ class MovieReservationScreenTest {
                     reservation = harryPotterReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
+                    onSelectTime = {},
                     onConfirmClick = { confirmed = true },
                     onBackClick = {},
                 )
             }
         }
 
-        composeTestRule.onNodeWithText("예매 완료").performClick()
+        composeTestRule.onNodeWithText("좌석 선택").performClick()
 
         assertTrue(confirmed)
     }
@@ -95,6 +98,7 @@ class MovieReservationScreenTest {
                     reservation = harryPotterReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
+                    onSelectTime = {},
                     onConfirmClick = {},
                     onBackClick = { backClicked = true },
                 )

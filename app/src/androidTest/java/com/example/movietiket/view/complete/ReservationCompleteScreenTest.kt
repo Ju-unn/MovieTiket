@@ -21,15 +21,17 @@ class ReservationCompleteScreenTest {
 
     @Test
     fun `예매_내역과_결제_금액을_표시한다`() {
+        val reservation = harryPotterReservation().selectTime("17:00").selectSeat("A1")
+
         composeTestRule.setContent {
             MovieTiketTheme {
-                ReservationCompleteScreen(reservation = harryPotterReservation(), onBackClick = {})
+                ReservationCompleteScreen(reservation = reservation, onBackClick = {})
             }
         }
 
         composeTestRule.onNodeWithText("해리 포터와 마법사의 돌").assertIsDisplayed()
-        composeTestRule.onNodeWithText("2024.3.1").assertIsDisplayed()
-        composeTestRule.onNodeWithText("일반 1명").assertIsDisplayed()
+        composeTestRule.onNodeWithText("2024.3.1 17:00").assertIsDisplayed()
+        composeTestRule.onNodeWithText("일반 1명 | A1").assertIsDisplayed()
         composeTestRule.onNodeWithText("13,000원 (현장 결제)").assertIsDisplayed()
     }
 
