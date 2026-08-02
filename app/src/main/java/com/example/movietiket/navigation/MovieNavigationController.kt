@@ -1,34 +1,30 @@
 package com.example.movietiket.navigation
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.MutableState
 import com.example.movietiket.model.Movie
 import com.example.movietiket.model.Reservation
 
 /**
  * 화면 전환을 담당하는 Router
- * View는 이 Router에 전환을 요청하고, 현재 화면은 screen()으로만 조회한다
+ * 화면 상태는 외부(rememberSaveable)에서 주입받아 회전 등 구성 변경에도 유지되도록 한다
  */
-class MovieNavigationController {
+class MovieNavigationController(private val screenState: MutableState<Screen>) {
 
-    private var currentScreen: Screen by mutableStateOf(Screen.MovieList)
-
-    fun screen(): Screen = currentScreen
+    fun screen(): Screen = screenState.value
 
     fun moveToMovieList() {
-        currentScreen = Screen.MovieList
+        screenState.value = Screen.MovieList
     }
 
     fun moveToReservation(movie: Movie) {
-        currentScreen = Screen.MovieReservation(movie)
+        screenState.value = Screen.MovieReservation(movie)
     }
 
     fun moveToSeatSelection(reservation: Reservation) {
-        currentScreen = Screen.SeatSelection(reservation)
+        screenState.value = Screen.SeatSelection(reservation)
     }
 
     fun moveToReservationComplete(reservation: Reservation) {
-        currentScreen = Screen.ReservationComplete(reservation)
+        screenState.value = Screen.ReservationComplete(reservation)
     }
 }

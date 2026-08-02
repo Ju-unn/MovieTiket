@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 
 class MoviesTest {
 
@@ -18,8 +19,9 @@ class MoviesTest {
     @DisplayName("생성 시 전달한 영화 목록을 그대로 조회할 수 있다")
     fun toList() {
         val movie = Movie(
+            id = 1,
             description = MovieDescription(MovieTitle("해리 포터와 마법사의 돌"), Synopsis("소개")),
-            screening = Screening(ScreeningDate("2024.3.1"), RunningTime(152)),
+            screening = Screening(ScreeningPeriod(LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 28)), RunningTime(152)),
         )
 
         val movies = Movies(listOf(movie))

@@ -12,6 +12,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.time.LocalTime
 
 @RunWith(AndroidJUnit4::class)
 class ReservationCompleteScreenTest {
@@ -21,7 +22,8 @@ class ReservationCompleteScreenTest {
 
     @Test
     fun `예매_내역과_결제_금액을_표시한다`() {
-        val reservation = harryPotterReservation().selectTime("17:00").selectSeat("A1")
+        // A1은 B등급 좌석(10,000원)이다
+        val reservation = harryPotterReservation().selectTime(LocalTime.of(18, 0)).selectSeat("A1")
 
         composeTestRule.setContent {
             MovieTiketTheme {
@@ -30,9 +32,9 @@ class ReservationCompleteScreenTest {
         }
 
         composeTestRule.onNodeWithText("해리 포터와 마법사의 돌").assertIsDisplayed()
-        composeTestRule.onNodeWithText("2024.3.1 17:00").assertIsDisplayed()
+        composeTestRule.onNodeWithText("2024-03-01 18:00").assertIsDisplayed()
         composeTestRule.onNodeWithText("일반 1명 | A1").assertIsDisplayed()
-        composeTestRule.onNodeWithText("13,000원 (현장 결제)").assertIsDisplayed()
+        composeTestRule.onNodeWithText("10,000원 (현장 결제)").assertIsDisplayed()
     }
 
     @Test

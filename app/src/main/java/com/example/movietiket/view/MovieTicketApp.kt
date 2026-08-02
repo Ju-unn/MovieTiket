@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.example.movietiket.navigation.MovieNavigationController
 import com.example.movietiket.navigation.Screen
@@ -25,10 +26,12 @@ import com.example.movietiket.view.seat.SeatSelectionScreen
 /**
  * 앱의 루트 Composable
  * 현재 화면 상태(Screen)에 따라 각 화면(View)과 Presenter를 연결한다
+ * 화면 상태는 rememberSaveable로 저장해 회전 등 구성 변경에도 유지한다
  */
 @Composable
 fun MovieTicketApp() {
-    val navigationController = remember { MovieNavigationController() }
+    val screenState = rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.MovieList) }
+    val navigationController = remember { MovieNavigationController(screenState) }
 
     when (val screen = navigationController.screen()) {
         is Screen.MovieList -> MovieListRoute(navigationController)
@@ -64,57 +67,39 @@ private fun MovieListRoute(navigationController: MovieNavigationController) {
     )
 }
 
-private class ReservationViewState : ReservationContract.View {
-    var reservation: Reservation? by mutableStateOf(null)
-        private set
-
-    override fun showReservation(reservation: Reservation) {
-        this.reservation = reservation
-    }
-}
-
 @Composable
 private fun MovieReservationRoute(
     movie: Movie,
     navigationController: MovieNavigationController,
 ) {
-    val view = remember { ReservationViewState() }
-    val presenter = remember {
+    var reservation by rememberSaveable(stateSaver = ReservationSaver) { mutableStateOf(Reservation.of(movie)) }
+    val view = remember {
+        object : ReservationContract.View {
+            override fun showReservation(newReservation: Reservation) {
+                reservation = newReservation
+            }
+        }
+    }
+    // 시스템 뒤로 가기 시 영화 목록으로 돌아간다
+    BackHandler { navigationController.moveToMovieList() }
+
+    val presenter = remember(view) {
         ReservationPresenter(
-            movie = movie,
+            initialReservation = reservation,
             view = view,
             onReservationConfirmed = navigationController::moveToSeatSelection,
         )
     }
-    val reservation = view.reservation ?: return
-
-    // 시스템 뒤로 가기 시 영화 목록으로 돌아간다
-    BackHandler { navigationController.moveToMovieList() }
 
     MovieReservationScreen(
         reservation = reservation,
         onIncreaseHeadCount = presenter::increaseHeadCount,
         onDecreaseHeadCount = presenter::decreaseHeadCount,
+        onSelectDate = presenter::selectDate,
         onSelectTime = presenter::selectTime,
         onConfirmClick = presenter::confirmReservation,
         onBackClick = navigationController::moveToMovieList,
     )
-}
-
-private class SeatSelectionViewState : SeatSelectionContract.View {
-    var reservation: Reservation? by mutableStateOf(null)
-        private set
-
-    var seatLimitExceededEventCount by mutableStateOf(0)
-        private set
-
-    override fun showReservation(reservation: Reservation) {
-        this.reservation = reservation
-    }
-
-    override fun showSeatLimitExceeded() {
-        seatLimitExceededEventCount++
-    }
 }
 
 @Composable
@@ -122,22 +107,34 @@ private fun SeatSelectionRoute(
     initialReservation: Reservation,
     navigationController: MovieNavigationController,
 ) {
-    val view = remember { SeatSelectionViewState() }
-    val presenter = remember {
-        SeatSelectionPresenter(
-            initialReservation = initialReservation,
-            view = view,
-            onSelectionConfirmed = navigationController::moveToReservationComplete,
-        )
+    var reservation by rememberSaveable(stateSaver = ReservationSaver) { mutableStateOf(initialReservation) }
+    var seatLimitExceededEventCount by remember { mutableStateOf(0) }
+    val view = remember {
+        object : SeatSelectionContract.View {
+            override fun showReservation(newReservation: Reservation) {
+                reservation = newReservation
+            }
+
+            override fun showSeatLimitExceeded() {
+                seatLimitExceededEventCount++
+            }
+        }
     }
-    val reservation = view.reservation ?: return
 
     // 좌석 선택 화면에서 뒤로 가기 시 영화 목록으로 돌아간다
     BackHandler { navigationController.moveToMovieList() }
 
+    val presenter = remember(view) {
+        SeatSelectionPresenter(
+            initialReservation = reservation,
+            view = view,
+            onSelectionConfirmed = navigationController::moveToReservationComplete,
+        )
+    }
+
     SeatSelectionScreen(
         reservation = reservation,
-        seatLimitExceededEvent = view.seatLimitExceededEventCount,
+        seatLimitExceededEvent = seatLimitExceededEventCount,
         onSelectSeat = presenter::selectSeat,
         onDeselectSeat = presenter::deselectSeat,
         onConfirmClick = presenter::confirmSelection,

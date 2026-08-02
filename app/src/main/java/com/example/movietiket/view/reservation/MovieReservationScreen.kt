@@ -27,7 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,32 +47,24 @@ import com.example.movietiket.model.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.view.component.BackNavigationTopBar
 import com.example.movietiket.view.component.HeadCountSelector
+import java.time.LocalDate
+import java.time.LocalTime
 
 private val POSTER_HEIGHT = 341.dp
 private val CONTENT_HORIZONTAL_PADDING = 20.dp
 private val CONFIRM_BUTTON_HEIGHT = 47.dp
 private val CONFIRM_BUTTON_CORNER = 6.dp
 
-// Figma 상영시간표 목업 (09:00 ~ 23:00, 2시간 간격)
-private val SCREENING_TIMES = listOf(
-    "09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00",
-)
-
-// ScreeningDate 표시값(yyyy.M.d)을 날짜 선택 칩의 yyyy-MM-dd 형식으로 변환한다
-private fun toHyphenatedDate(date: String): String {
-    val (year, month, day) = date.split(".")
-    return "$year-${month.padStart(2, '0')}-${day.padStart(2, '0')}"
-}
-
 /**
- * 영화 예매 화면 (포스터 / 영화 정보 / 인원 선택 / 예매 완료 버튼)
+ * 영화 예매 화면 (포스터 / 영화 정보 / 날짜·시간·인원 선택 / 예매 완료 버튼)
  */
 @Composable
 fun MovieReservationScreen(
     reservation: Reservation,
     onIncreaseHeadCount: () -> Unit,
     onDecreaseHeadCount: () -> Unit,
-    onSelectTime: (String) -> Unit,
+    onSelectDate: (LocalDate) -> Unit,
+    onSelectTime: (LocalTime) -> Unit,
     onConfirmClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -82,12 +73,15 @@ fun MovieReservationScreen(
         topBar = { BackNavigationTopBar(onBackClick = onBackClick) },
         bottomBar = {
             ReservationBottomBar(
-                screeningDate = reservation.displayScreeningDate(),
+                availableDates = reservation.availableDates(),
+                selectedDate = reservation.displaySelectedDate(),
+                onSelectDate = onSelectDate,
+                availableTimes = reservation.availableTimes(),
                 selectedTime = reservation.displaySelectedTime(),
+                onSelectTime = onSelectTime,
                 headCount = reservation.displayHeadCount(),
                 onIncrease = onIncreaseHeadCount,
                 onDecrease = onDecreaseHeadCount,
-                onSelectTime = onSelectTime,
                 onConfirmClick = onConfirmClick,
             )
         },
@@ -129,7 +123,7 @@ private fun ReservationMovieInformation(reservation: Reservation, modifier: Modi
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = stringResource(R.string.screening_date_format, reservation.displayScreeningDate()),
+            text = stringResource(R.string.screening_date_format, reservation.displayScreeningPeriod()),
             fontSize = 16.sp,
         )
         Text(
@@ -146,12 +140,15 @@ private fun ReservationMovieInformation(reservation: Reservation, modifier: Modi
 
 @Composable
 private fun ReservationBottomBar(
-    screeningDate: String,
+    availableDates: List<LocalDate>,
+    selectedDate: String,
+    onSelectDate: (LocalDate) -> Unit,
+    availableTimes: List<LocalTime>,
     selectedTime: String,
+    onSelectTime: (LocalTime) -> Unit,
     headCount: String,
     onIncrease: () -> Unit,
     onDecrease: () -> Unit,
-    onSelectTime: (String) -> Unit,
     onConfirmClick: () -> Unit,
 ) {
     Column(
@@ -162,11 +159,20 @@ private fun ReservationBottomBar(
             .padding(start = CONTENT_HORIZONTAL_PADDING, end = CONTENT_HORIZONTAL_PADDING, top = 9.dp, bottom = 20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        ScreeningDateTimeSelector(
-            screeningDate = screeningDate,
-            selectedTime = selectedTime,
-            onSelectTime = onSelectTime,
-        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            ScreeningDateSelector(
+                availableDates = availableDates,
+                selectedDate = selectedDate,
+                onSelectDate = onSelectDate,
+                modifier = Modifier.weight(1f),
+            )
+            ScreeningTimeSelector(
+                availableTimes = availableTimes,
+                selectedTime = selectedTime,
+                onSelectTime = onSelectTime,
+                modifier = Modifier.weight(1f),
+            )
+        }
         HeadCountSelector(
             headCount = headCount,
             onIncrease = onIncrease,
@@ -177,45 +183,55 @@ private fun ReservationBottomBar(
 }
 
 @Composable
-private fun ScreeningDateTimeSelector(
-    screeningDate: String,
-    selectedTime: String,
-    onSelectTime: (String) -> Unit,
-) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        DropdownChip(label = toHyphenatedDate(screeningDate), modifier = Modifier.weight(1f))
-        ScreeningTimeSelector(
-            selectedTime = selectedTime,
-            onSelectTime = onSelectTime,
-            modifier = Modifier.weight(1f),
-        )
-    }
-}
-
-@Composable
-private fun ScreeningTimeSelector(
-    selectedTime: String,
-    onSelectTime: (String) -> Unit,
+private fun ScreeningDateSelector(
+    availableDates: List<LocalDate>,
+    selectedDate: String,
+    onSelectDate: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    // 아직 시간이 선택되지 않았다면 기본값(첫 시간)으로 초기화한다
-    LaunchedEffect(Unit) {
-        if (selectedTime.isEmpty()) onSelectTime(SCREENING_TIMES.first())
-    }
-
     Column(modifier = modifier) {
         DropdownChip(
-            label = selectedTime.ifEmpty { SCREENING_TIMES.first() },
+            label = selectedDate,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { expanded = true },
         )
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            SCREENING_TIMES.forEach { time ->
+            availableDates.forEach { date ->
                 DropdownMenuItem(
-                    text = { Text(text = time) },
+                    text = { Text(text = date.toString()) },
+                    onClick = {
+                        onSelectDate(date)
+                        expanded = false
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScreeningTimeSelector(
+    availableTimes: List<LocalTime>,
+    selectedTime: String,
+    onSelectTime: (LocalTime) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier) {
+        DropdownChip(
+            label = selectedTime,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = true },
+        )
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            availableTimes.forEach { time ->
+                DropdownMenuItem(
+                    text = { Text(text = time.toString()) },
                     onClick = {
                         onSelectTime(time)
                         expanded = false
@@ -268,6 +284,7 @@ private fun MovieReservationScreenPreview() {
             reservation = Reservation.of(MovieRepository.findAll().toList().first()),
             onIncreaseHeadCount = {},
             onDecreaseHeadCount = {},
+            onSelectDate = {},
             onSelectTime = {},
             onConfirmClick = {},
             onBackClick = {},

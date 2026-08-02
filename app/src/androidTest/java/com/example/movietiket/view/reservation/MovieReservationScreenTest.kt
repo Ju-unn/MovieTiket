@@ -8,10 +8,13 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.movietiket.fixture.harryPotterReservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.time.LocalDate
+import java.time.LocalTime
 
 @RunWith(AndroidJUnit4::class)
 class MovieReservationScreenTest {
@@ -27,6 +30,7 @@ class MovieReservationScreenTest {
                     reservation = harryPotterReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
+                    onSelectDate = {},
                     onSelectTime = {},
                     onConfirmClick = {},
                     onBackClick = {},
@@ -35,7 +39,7 @@ class MovieReservationScreenTest {
         }
 
         composeTestRule.onNodeWithText("해리 포터와 마법사의 돌").assertIsDisplayed()
-        composeTestRule.onNodeWithText("상영일: 2024.3.1").assertIsDisplayed()
+        composeTestRule.onNodeWithText("상영일: 2024-03-01 ~ 2024-03-28").assertIsDisplayed()
         composeTestRule.onNodeWithText("러닝타임: 152분").assertIsDisplayed()
         composeTestRule.onNodeWithText("소개").assertIsDisplayed()
         composeTestRule.onNodeWithText("1").assertIsDisplayed()
@@ -52,6 +56,7 @@ class MovieReservationScreenTest {
                     reservation = harryPotterReservation(),
                     onIncreaseHeadCount = { increased = true },
                     onDecreaseHeadCount = { decreased = true },
+                    onSelectDate = {},
                     onSelectTime = {},
                     onConfirmClick = {},
                     onBackClick = {},
@@ -67,6 +72,54 @@ class MovieReservationScreenTest {
     }
 
     @Test
+    fun `날짜_드롭다운에서_다른_날짜를_선택하면_콜백이_호출된다`() {
+        var selectedDate: LocalDate? = null
+
+        composeTestRule.setContent {
+            MovieTiketTheme {
+                MovieReservationScreen(
+                    reservation = harryPotterReservation(),
+                    onIncreaseHeadCount = {},
+                    onDecreaseHeadCount = {},
+                    onSelectDate = { selectedDate = it },
+                    onSelectTime = {},
+                    onConfirmClick = {},
+                    onBackClick = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("2024-03-01").performClick() // 날짜 Chip(기본 선택값)
+        composeTestRule.onNodeWithText("2024-03-02").performClick() // 드롭다운 항목
+
+        assertEquals(LocalDate.of(2024, 3, 2), selectedDate)
+    }
+
+    @Test
+    fun `시간_드롭다운에서_다른_시간을_선택하면_콜백이_호출된다`() {
+        var selectedTime: LocalTime? = null
+
+        composeTestRule.setContent {
+            MovieTiketTheme {
+                MovieReservationScreen(
+                    reservation = harryPotterReservation(),
+                    onIncreaseHeadCount = {},
+                    onDecreaseHeadCount = {},
+                    onSelectDate = {},
+                    onSelectTime = { selectedTime = it },
+                    onConfirmClick = {},
+                    onBackClick = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("10:00").performClick() // 시간 Chip(기본 선택값, 평일)
+        composeTestRule.onNodeWithText("14:00").performClick() // 드롭다운 항목
+
+        assertEquals(LocalTime.of(14, 0), selectedTime)
+    }
+
+    @Test
     fun `좌석_선택_버튼을_클릭하면_확정_콜백이_호출된다`() {
         var confirmed = false
 
@@ -76,6 +129,7 @@ class MovieReservationScreenTest {
                     reservation = harryPotterReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
+                    onSelectDate = {},
                     onSelectTime = {},
                     onConfirmClick = { confirmed = true },
                     onBackClick = {},
@@ -98,6 +152,7 @@ class MovieReservationScreenTest {
                     reservation = harryPotterReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
+                    onSelectDate = {},
                     onSelectTime = {},
                     onConfirmClick = {},
                     onBackClick = { backClicked = true },

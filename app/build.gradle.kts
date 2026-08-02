@@ -30,6 +30,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        // minSdk 24에서 java.time(LocalDate/LocalTime)을 사용하기 위해 desugaring을 활성화한다
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -64,4 +66,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    coreLibraryDesugaring(libs.android.desugar.jdk.libs)
 }

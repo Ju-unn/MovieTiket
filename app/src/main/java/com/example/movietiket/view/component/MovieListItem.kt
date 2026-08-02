@@ -89,7 +89,7 @@ private fun MovieSummary(movie: Movie) {
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
-            text = stringResource(R.string.screening_date_format, movie.displayScreeningDate()),
+            text = stringResource(R.string.screening_date_format, movie.displayScreeningPeriod()),
             fontSize = 12.sp,
         )
         Text(

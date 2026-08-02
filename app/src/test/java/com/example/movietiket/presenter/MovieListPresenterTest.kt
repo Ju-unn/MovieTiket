@@ -6,17 +6,19 @@ import com.example.movietiket.model.Movies
 import com.example.movietiket.model.MovieTitle
 import com.example.movietiket.model.RunningTime
 import com.example.movietiket.model.Screening
-import com.example.movietiket.model.ScreeningDate
+import com.example.movietiket.model.ScreeningPeriod
 import com.example.movietiket.model.Synopsis
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 
 class MovieListPresenterTest {
 
     private fun movie(): Movie = Movie(
+        id = 1,
         description = MovieDescription(MovieTitle("해리 포터와 마법사의 돌"), Synopsis("소개")),
-        screening = Screening(ScreeningDate("2024.3.1"), RunningTime(152)),
+        screening = Screening(ScreeningPeriod(LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 28)), RunningTime(152)),
     )
 
     private class FakeView : MovieListContract.View {

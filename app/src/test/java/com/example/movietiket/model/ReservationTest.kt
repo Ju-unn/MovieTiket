@@ -5,15 +5,19 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
+import java.time.LocalTime
 
 class ReservationTest {
 
     @Test
-    @DisplayName("예매는 최소 인원 1명으로 시작한다")
-    fun startsWithMinimumHeadCount() {
+    @DisplayName("예매는 최소 인원 1명, 상영 기간의 첫 날짜와 첫 시간으로 시작한다")
+    fun startsWithDefaults() {
         val reservation = Reservation.of(testMovie())
 
         assertThat(reservation.displayHeadCount()).isEqualTo("1")
+        assertThat(reservation.displaySelectedDate()).isEqualTo("2024-03-01")
+        assertThat(reservation.displaySelectedTime()).isEqualTo("10:00")
     }
 
     @Test
@@ -37,21 +41,60 @@ class ReservationTest {
     }
 
     @Test
-    @DisplayName("총 결제 금액은 인원 수 x 13,000원이다")
-    fun totalAmount() {
+    @DisplayName("상영 기간 내의 날짜를 선택할 수 있다")
+    fun selectDate() {
         val reservation = Reservation.of(testMovie())
-            .increaseHeadCount()
 
-        assertThat(reservation.totalAmount()).isEqualTo(Money(26_000))
+        val selected = reservation.selectDate(LocalDate.of(2024, 3, 2))
+
+        assertThat(selected.displaySelectedDate()).isEqualTo("2024-03-02")
     }
 
     @Test
-    @DisplayName("총 결제 금액을 원 단위 숫자로 조회할 수 있다")
-    fun totalAmountWon() {
-        val reservation = Reservation.of(testMovie())
-            .increaseHeadCount()
+    @DisplayName("같은 유형(평일/주말)의 날짜로 바꾸면 기존에 선택한 시간을 유지한다")
+    fun selectDateKeepsValidTime() {
+        val reservation = Reservation.of(testMovie()).selectTime(LocalTime.of(20, 0)) // 평일 20시
 
-        assertThat(reservation.totalAmountWon()).isEqualTo(26_000)
+        val selected = reservation.selectDate(LocalDate.of(2024, 3, 5)) // 다른 평일(화요일)
+
+        assertThat(selected.displaySelectedTime()).isEqualTo("20:00")
+    }
+
+    @Test
+    @DisplayName("평일에서 주말로 날짜를 바꿔 기존 시간이 유효하지 않으면 그 날짜의 첫 시간으로 초기화된다")
+    fun selectDateResetsInvalidTime() {
+        val reservation = Reservation.of(testMovie()) // 평일 10:00
+
+        val selected = reservation.selectDate(LocalDate.of(2024, 3, 2)) // 주말(토요일), 09:00부터 시작
+
+        assertThat(selected.displaySelectedTime()).isEqualTo("09:00")
+    }
+
+    @Test
+    @DisplayName("상영 기간 밖의 날짜는 선택할 수 없다")
+    fun cannotSelectDateOutsidePeriod() {
+        val reservation = Reservation.of(testMovie())
+
+        assertThatIllegalArgumentException()
+            .isThrownBy { reservation.selectDate(LocalDate.of(2024, 4, 1)) }
+    }
+
+    @Test
+    @DisplayName("선택한 날짜에 상영하지 않는 시간은 선택할 수 없다")
+    fun cannotSelectUnavailableTime() {
+        val reservation = Reservation.of(testMovie()) // 평일은 10시부터 상영
+
+        assertThatIllegalArgumentException()
+            .isThrownBy { reservation.selectTime(LocalTime.of(9, 0)) }
+    }
+
+    @Test
+    @DisplayName("날짜를 선택하지 않은 상태에서 시간을 선택하면 예외가 발생한다")
+    fun cannotSelectTimeWithoutDate() {
+        val reservation = Reservation(testMovie(), HeadCount.MINIMUM)
+
+        assertThatIllegalArgumentException()
+            .isThrownBy { reservation.selectTime(LocalTime.of(10, 0)) }
     }
 
     @Test
@@ -71,11 +114,11 @@ class ReservationTest {
     }
 
     @Test
-    @DisplayName("예매에서 상영일을 표시용 값으로 조회할 수 있다")
-    fun displayScreeningDate() {
+    @DisplayName("예매에서 상영 기간을 표시용 값으로 조회할 수 있다")
+    fun displayScreeningPeriod() {
         val reservation = Reservation.of(testMovie())
 
-        assertThat(reservation.displayScreeningDate()).isEqualTo("2024.3.1")
+        assertThat(reservation.displayScreeningPeriod()).isEqualTo("2024-03-01 ~ 2024-03-28")
     }
 
     @Test
@@ -84,14 +127,6 @@ class ReservationTest {
         val reservation = Reservation.of(testMovie())
 
         assertThat(reservation.runningTimeMinutes()).isEqualTo(152)
-    }
-
-    @Test
-    @DisplayName("선택한 시간을 표시용 값으로 조회할 수 있다")
-    fun selectTime() {
-        val reservation = Reservation.of(testMovie()).selectTime("13:00")
-
-        assertThat(reservation.displaySelectedTime()).isEqualTo("13:00")
     }
 
     @Test
@@ -134,12 +169,16 @@ class ReservationTest {
     }
 
     @Test
-    @DisplayName("선택한 좌석 수만큼 금액을 계산한다")
+    @DisplayName("선택한 좌석의 등급별 가격 합계를 계산한다")
     fun selectedSeatsAmountWon() {
         val reservation = Reservation.of(testMovie())
-            .increaseHeadCount() // 2명
-            .selectSeat("A1")
+            .increaseHeadCount()
+            .increaseHeadCount() // 3명
+            .selectSeat("A1") // B등급 10,000원
+            .selectSeat("C1") // S등급 15,000원
+            .selectSeat("E1") // A등급 12,000원
 
-        assertThat(reservation.selectedSeatsAmountWon()).isEqualTo(13_000)
+        assertThat(reservation.selectedSeatsAmountWon()).isEqualTo(37_000)
+        assertThat(reservation.totalAmountWon()).isEqualTo(37_000)
     }
 }

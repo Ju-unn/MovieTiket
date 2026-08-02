@@ -1,19 +1,20 @@
 package com.example.movietiket.presenter
 
-import com.example.movietiket.model.Movie
 import com.example.movietiket.model.Reservation
+import java.time.LocalDate
+import java.time.LocalTime
 
 /**
  * 영화 예매 화면의 흐름을 제어하는 Presenter
- * 인원 증감 요청을 받아 도메인(Reservation)에 위임하고, 결과를 View에 통지한다
+ * 인원/날짜/시간 변경 요청을 받아 도메인(Reservation)에 위임하고, 결과를 View에 통지한다
  */
 class ReservationPresenter(
-    movie: Movie,
+    initialReservation: Reservation,
     private val view: ReservationContract.View,
     private val onReservationConfirmed: (Reservation) -> Unit,
 ) : ReservationContract.Presenter {
 
-    private var reservation: Reservation = Reservation.of(movie)
+    private var reservation: Reservation = initialReservation
         set(value) {
             field = value
             view.showReservation(value)
@@ -31,7 +32,11 @@ class ReservationPresenter(
         reservation = reservation.decreaseHeadCount()
     }
 
-    override fun selectTime(time: String) {
+    override fun selectDate(date: LocalDate) {
+        reservation = reservation.selectDate(date)
+    }
+
+    override fun selectTime(time: LocalTime) {
         reservation = reservation.selectTime(time)
     }
 
