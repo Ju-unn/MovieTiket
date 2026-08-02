@@ -1,9 +1,12 @@
 package com.example.movietiket.presenter
+
 import com.example.movietiket.fixture.testMovie
 import com.example.movietiket.model.Reservation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
+import java.time.LocalTime
 
 class ReservationPresenterTest {
 
@@ -14,12 +17,19 @@ class ReservationPresenterTest {
         }
     }
 
+    private fun presenter(view: ReservationContract.View, onReservationConfirmed: (Reservation) -> Unit = {}) =
+        ReservationPresenter(
+            initialReservation = Reservation.of(testMovie()),
+            view = view,
+            onReservationConfirmed = onReservationConfirmed,
+        )
+
     @Test
-    @DisplayName("생성 시 최소 인원 1명인 예매를 View에 통지한다")
-    fun initialShowsMinimumHeadCount() {
+    @DisplayName("생성 시 초기 예매 내용(최소 인원 1명)을 View에 통지한다")
+    fun initialShowsReservation() {
         val view = FakeView()
 
-        ReservationPresenter(movie = testMovie(), view = view, onReservationConfirmed = {})
+        presenter(view)
 
         assertThat(view.shownReservation.displayHeadCount()).isEqualTo("1")
     }
@@ -28,7 +38,7 @@ class ReservationPresenterTest {
     @DisplayName("인원 증가 시 View에 증가한 인원을 통지한다")
     fun increaseHeadCount() {
         val view = FakeView()
-        val presenter = ReservationPresenter(movie = testMovie(), view = view, onReservationConfirmed = {})
+        val presenter = presenter(view)
 
         presenter.increaseHeadCount()
 
@@ -39,7 +49,7 @@ class ReservationPresenterTest {
     @DisplayName("인원 감소 시 View에 감소한 인원을 통지한다")
     fun decreaseHeadCount() {
         val view = FakeView()
-        val presenter = ReservationPresenter(movie = testMovie(), view = view, onReservationConfirmed = {})
+        val presenter = presenter(view)
 
         presenter.increaseHeadCount()
         presenter.increaseHeadCount()
@@ -49,25 +59,32 @@ class ReservationPresenterTest {
     }
 
     @Test
+    @DisplayName("날짜 선택 시 View에 선택한 날짜를 통지한다")
+    fun selectDate() {
+        val view = FakeView()
+        val presenter = presenter(view)
+
+        presenter.selectDate(LocalDate.of(2024, 3, 2))
+
+        assertThat(view.shownReservation.displaySelectedDate()).isEqualTo("2024-03-02")
+    }
+
+    @Test
     @DisplayName("시간 선택 시 View에 선택한 시간을 통지한다")
     fun selectTime() {
         val view = FakeView()
-        val presenter = ReservationPresenter(movie = testMovie(), view = view, onReservationConfirmed = {})
+        val presenter = presenter(view)
 
-        presenter.selectTime("13:00")
+        presenter.selectTime(LocalTime.of(20, 0))
 
-        assertThat(view.shownReservation.displaySelectedTime()).isEqualTo("13:00")
+        assertThat(view.shownReservation.displaySelectedTime()).isEqualTo("20:00")
     }
 
     @Test
     @DisplayName("예매 확정 시 현재 예매 내용으로 콜백을 호출한다")
     fun confirmReservation() {
         var confirmed: Reservation? = null
-        val presenter = ReservationPresenter(
-            movie = testMovie(),
-            view = FakeView(),
-            onReservationConfirmed = { confirmed = it },
-        )
+        val presenter = presenter(FakeView()) { confirmed = it }
 
         presenter.increaseHeadCount()
         presenter.confirmReservation()
