@@ -15,6 +15,9 @@ sealed interface Screen {
     /** 영화 예매 화면 */
     data class MovieReservation(val movie: Movie) : Screen
 
+    /** 좌석 선택 화면 */
+    data class SeatSelection(val reservation: Reservation) : Screen
+
     /** 영화 예매 완료 화면 */
     data class ReservationComplete(val reservation: Reservation) : Screen
 }

@@ -85,13 +85,21 @@ private fun ReservationSummary(reservation: Reservation) {
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = reservation.displayScreeningDate(),
+            text = stringResource(
+                R.string.screening_datetime_format,
+                reservation.displayScreeningDate(),
+                reservation.displaySelectedTime(),
+            ),
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium,
         )
         Spacer(modifier = Modifier.height(80.dp))
         Text(
-            text = stringResource(R.string.head_count_result_format, reservation.displayHeadCount()),
+            text = stringResource(
+                R.string.head_count_and_seats_format,
+                stringResource(R.string.head_count_result_format, reservation.displayHeadCount()),
+                reservation.displaySelectedSeats(),
+            ),
             fontSize = 20.sp,
         )
         Spacer(modifier = Modifier.height(32.dp))

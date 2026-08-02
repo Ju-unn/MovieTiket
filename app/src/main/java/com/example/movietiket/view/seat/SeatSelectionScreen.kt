@@ -17,9 +17,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,24 +73,33 @@ private fun seatGradeColor(row: Char): Color = when (row) {
 }
 
 /**
- * 좌석 선택 화면 (좌석 미선택 시 확인 버튼 비활성화, 선택 시 활성화)
+ * 좌석 선택 화면 (인원수만큼 선택해야 확인 버튼이 활성화된다)
  */
 @Composable
 fun SeatSelectionScreen(
-    movieTitle: String,
-    pricePerSeat: Int,
+    reservation: Reservation,
+    seatLimitExceededEvent: Int,
+    onSelectSeat: (String) -> Unit,
+    onDeselectSeat: (String) -> Unit,
+    onConfirmClick: () -> Unit,
     onBackClick: () -> Unit,
-    onConfirmClick: (Set<String>) -> Unit,
 ) {
-    var selectedSeats by remember { mutableStateOf(emptySet<String>()) }
     var showConfirmDialog by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val seatLimitExceededMessage = stringResource(R.string.seat_limit_exceeded_message)
+
+    LaunchedEffect(seatLimitExceededEvent) {
+        if (seatLimitExceededEvent > 0) {
+            snackbarHostState.showSnackbar(seatLimitExceededMessage)
+        }
+    }
 
     if (showConfirmDialog) {
         ReservationConfirmDialog(
             onCancel = { showConfirmDialog = false },
             onConfirm = {
                 showConfirmDialog = false
-                onConfirmClick(selectedSeats)
+                onConfirmClick()
             },
         )
     }
@@ -95,11 +107,12 @@ fun SeatSelectionScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { BackNavigationTopBar(onBackClick = onBackClick) },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         bottomBar = {
             SeatSelectionBottomBar(
-                movieTitle = movieTitle,
-                totalPrice = pricePerSeat * selectedSeats.size,
-                enabled = selectedSeats.isNotEmpty(),
+                movieTitle = reservation.displayMovieTitle(),
+                totalPrice = reservation.selectedSeatsAmountWon(),
+                enabled = reservation.isSeatSelectionComplete(),
                 onConfirmClick = { showConfirmDialog = true },
             )
         },
@@ -114,13 +127,9 @@ fun SeatSelectionScreen(
             ScreenBanner()
             Spacer(modifier = Modifier.height(SEAT_GRID_TOP_SPACING))
             SeatGrid(
-                selectedSeats = selectedSeats,
+                isSeatSelected = reservation::isSeatSelected,
                 onSeatClick = { seat ->
-                    selectedSeats = if (seat in selectedSeats) {
-                        selectedSeats - seat
-                    } else {
-                        selectedSeats + seat
-                    }
+                    if (reservation.isSeatSelected(seat)) onDeselectSeat(seat) else onSelectSeat(seat)
                 },
             )
         }
@@ -146,7 +155,7 @@ private fun ScreenBanner() {
 }
 
 @Composable
-private fun SeatGrid(selectedSeats: Set<String>, onSeatClick: (String) -> Unit) {
+private fun SeatGrid(isSeatSelected: (String) -> Boolean, onSeatClick: (String) -> Unit) {
     Column {
         SEAT_ROWS.forEach { row ->
             Row {
@@ -155,7 +164,7 @@ private fun SeatGrid(selectedSeats: Set<String>, onSeatClick: (String) -> Unit) 
                     SeatCell(
                         seat = seat,
                         gradeColor = seatGradeColor(row),
-                        selected = seat in selectedSeats,
+                        selected = isSeatSelected(seat),
                         onClick = { onSeatClick(seat) },
                     )
                 }
@@ -275,10 +284,31 @@ private fun SeatSelectionScreenInactivePreview() {
     val reservation = Reservation.of(MovieRepository.findAll().toList().first())
     MovieTiketTheme {
         SeatSelectionScreen(
-            movieTitle = reservation.displayMovieTitle(),
-            pricePerSeat = 13_000,
-            onBackClick = {},
+            reservation = reservation,
+            seatLimitExceededEvent = 0,
+            onSelectSeat = {},
+            onDeselectSeat = {},
             onConfirmClick = {},
+            onBackClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "활성화 (좌석 선택 완료)")
+@Composable
+private fun SeatSelectionScreenActivePreview() {
+    val reservation = Reservation.of(MovieRepository.findAll().toList().first())
+        .increaseHeadCount()
+        .selectSeat("A1")
+        .selectSeat("A2")
+    MovieTiketTheme {
+        SeatSelectionScreen(
+            reservation = reservation,
+            seatLimitExceededEvent = 0,
+            onSelectSeat = {},
+            onDeselectSeat = {},
+            onConfirmClick = {},
+            onBackClick = {},
         )
     }
 }
