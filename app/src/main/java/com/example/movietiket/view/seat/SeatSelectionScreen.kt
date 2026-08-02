@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.movietiket.R
 import com.example.movietiket.repository.MovieRepository
 import com.example.movietiket.model.Reservation
@@ -231,7 +232,11 @@ private fun SeatSelectionBottomBar(
 
 @Composable
 private fun ReservationConfirmDialog(onCancel: () -> Unit, onConfirm: () -> Unit) {
-    Dialog(onDismissRequest = onCancel) {
+    // 배경 터치로는 다이얼로그가 닫히지 않아야 하므로 dismissOnClickOutside를 끈다
+    Dialog(
+        onDismissRequest = onCancel,
+        properties = DialogProperties(dismissOnClickOutside = false),
+    ) {
         Surface(
             modifier = Modifier.width(DIALOG_WIDTH),
             shape = RoundedCornerShape(DIALOG_CORNER),

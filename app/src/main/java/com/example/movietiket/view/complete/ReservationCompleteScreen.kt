@@ -87,7 +87,7 @@ private fun ReservationSummary(reservation: Reservation) {
         Text(
             text = stringResource(
                 R.string.screening_datetime_format,
-                reservation.displayScreeningDate(),
+                reservation.displaySelectedDate(),
                 reservation.displaySelectedTime(),
             ),
             fontSize = 20.sp,
