@@ -39,6 +39,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.movietiket.R
 import com.example.movietiket.common.repository.MovieRepository
+import com.example.movietiket.common.repository.TheaterRepository
 import com.example.movietiket.common.model.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.ui.theme.SeatDisabledButton
@@ -286,7 +287,7 @@ private fun ReservationConfirmDialogPreview() {
 @Preview(showBackground = true, name = "비활성화 (좌석 미선택)")
 @Composable
 private fun SeatSelectionScreenInactivePreview() {
-    val reservation = Reservation.of(MovieRepository.findAll().toList().first())
+    val reservation = Reservation.of(MovieRepository.findAll().toList().first(), TheaterRepository.findAll().toList().first())
     MovieTiketTheme {
         SeatSelectionScreen(
             reservation = reservation,
@@ -302,7 +303,7 @@ private fun SeatSelectionScreenInactivePreview() {
 @Preview(showBackground = true, name = "활성화 (좌석 선택 완료)")
 @Composable
 private fun SeatSelectionScreenActivePreview() {
-    val reservation = Reservation.of(MovieRepository.findAll().toList().first())
+    val reservation = Reservation.of(MovieRepository.findAll().toList().first(), TheaterRepository.findAll().toList().first())
         .increaseHeadCount()
         .selectSeat("A1")
         .selectSeat("A2")

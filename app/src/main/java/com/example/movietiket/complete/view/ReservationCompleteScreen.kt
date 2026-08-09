@@ -17,11 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movietiket.R
 import com.example.movietiket.common.repository.MovieRepository
+import com.example.movietiket.common.repository.TheaterRepository
 import com.example.movietiket.common.model.Reservation
 import com.example.movietiket.ui.theme.MovieNoticeBackground
 import com.example.movietiket.ui.theme.MovieTiketTheme
@@ -96,11 +98,17 @@ private fun ReservationSummary(reservation: Reservation) {
         Spacer(modifier = Modifier.height(80.dp))
         Text(
             text = stringResource(
-                R.string.head_count_and_seats_format,
+                R.string.head_count_seats_theater_format,
                 stringResource(R.string.head_count_result_format, reservation.displayHeadCount()),
                 reservation.displaySelectedSeats(),
+                reservation.displayTheaterName(),
             ),
             fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            // 극장 이름이 한 줄을 넘기면 뒤를 "..."으로 줄인다
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
@@ -115,7 +123,7 @@ private fun ReservationSummary(reservation: Reservation) {
 private fun ReservationCompleteScreenPreview() {
     MovieTiketTheme {
         ReservationCompleteScreen(
-            reservation = Reservation.of(MovieRepository.findAll().toList().first()),
+            reservation = Reservation.of(MovieRepository.findAll().toList().first(), TheaterRepository.findAll().toList().first()),
             onBackClick = {},
         )
     }

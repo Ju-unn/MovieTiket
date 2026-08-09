@@ -3,6 +3,7 @@ package com.example.movietiket.navigation
 import androidx.compose.runtime.MutableState
 import com.example.movietiket.common.model.Movie
 import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.Theater
 
 /**
  * 화면 전환을 담당하는 Router
@@ -16,8 +17,8 @@ class MovieNavigationController(private val screenState: MutableState<Screen>) {
         screenState.value = Screen.MovieList
     }
 
-    fun moveToReservation(movie: Movie) {
-        screenState.value = Screen.MovieReservation(movie)
+    fun moveToReservation(movie: Movie, theater: Theater) {
+        screenState.value = Screen.MovieReservation(movie, theater)
     }
 
     fun moveToSeatSelection(reservation: Reservation) {

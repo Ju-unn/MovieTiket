@@ -5,12 +5,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import com.example.movietiket.common.data.MovieTicketDatabase
+import com.example.movietiket.common.data.RoomReservationHistoryRepository
+import com.example.movietiket.common.repository.ReservationHistoryRepository
 import com.example.movietiket.navigation.MovieNavigationController
 import com.example.movietiket.navigation.Screen
 import com.example.movietiket.common.model.Movie
 import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.Theater
 import com.example.movietiket.movielist.presenter.MovieListContract
 import com.example.movietiket.movielist.presenter.MovieListPresenter
 import com.example.movietiket.reservation.presenter.ReservationContract
@@ -33,12 +39,23 @@ import com.example.movietiket.seat.view.SeatSelectionScreen
 fun MovieTicketApp() {
     val screenState = rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.MovieList) }
     val navigationController = remember { MovieNavigationController(screenState) }
+    val reservationHistoryRepository = rememberReservationHistoryRepository()
 
     when (val screen = navigationController.screen()) {
         is Screen.MovieList -> MovieListRoute(navigationController)
-        is Screen.MovieReservation -> MovieReservationRoute(screen.movie, navigationController)
-        is Screen.SeatSelection -> SeatSelectionRoute(screen.reservation, navigationController)
+        is Screen.MovieReservation -> MovieReservationRoute(screen.movie, screen.theater, navigationController)
+        is Screen.SeatSelection ->
+            SeatSelectionRoute(screen.reservation, reservationHistoryRepository, navigationController)
         is Screen.ReservationComplete -> ReservationCompleteRoute(screen.reservation, navigationController)
+    }
+}
+
+/** 앱 전역에서 하나의 Room 인스턴스를 공유한다 */
+@Composable
+private fun rememberReservationHistoryRepository(): ReservationHistoryRepository {
+    val context = LocalContext.current
+    return remember(context) {
+        RoomReservationHistoryRepository(MovieTicketDatabase.getInstance(context).reservationDao())
     }
 }
 
@@ -46,8 +63,20 @@ private class MovieListViewState : MovieListContract.View {
     var movies by mutableStateOf(emptyList<Movie>())
         private set
 
+    // null이면 극장 선택 바텀시트를 띄우지 않는다
+    var theaterSelection by mutableStateOf<List<Theater>?>(null)
+        private set
+
     override fun showMovies(movies: List<Movie>) {
         this.movies = movies
+    }
+
+    override fun showTheaterSelection(theaters: List<Theater>) {
+        theaterSelection = theaters
+    }
+
+    override fun hideTheaterSelection() {
+        theaterSelection = null
     }
 }
 
@@ -63,16 +92,20 @@ private fun MovieListRoute(navigationController: MovieNavigationController) {
 
     MovieListScreen(
         movies = view.movies,
+        theaterSelection = view.theaterSelection,
         onReserveClick = presenter::onReserveClick,
+        onTheaterClick = presenter::onTheaterSelected,
+        onTheaterSelectionDismiss = presenter::onTheaterSelectionDismissed,
     )
 }
 
 @Composable
 private fun MovieReservationRoute(
     movie: Movie,
+    theater: Theater,
     navigationController: MovieNavigationController,
 ) {
-    var reservation by rememberSaveable(stateSaver = ReservationSaver) { mutableStateOf(Reservation.of(movie)) }
+    var reservation by rememberSaveable(stateSaver = ReservationSaver) { mutableStateOf(Reservation.of(movie, theater)) }
     val view = remember {
         object : ReservationContract.View {
             override fun showReservation(newReservation: Reservation) {
@@ -105,8 +138,10 @@ private fun MovieReservationRoute(
 @Composable
 private fun SeatSelectionRoute(
     initialReservation: Reservation,
+    reservationHistoryRepository: ReservationHistoryRepository,
     navigationController: MovieNavigationController,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     var reservation by rememberSaveable(stateSaver = ReservationSaver) { mutableStateOf(initialReservation) }
     var seatLimitExceededEventCount by remember { mutableStateOf(0) }
     val view = remember {
@@ -128,6 +163,8 @@ private fun SeatSelectionRoute(
         SeatSelectionPresenter(
             initialReservation = reservation,
             view = view,
+            reservationHistoryRepository = reservationHistoryRepository,
+            coroutineScope = coroutineScope,
             onSelectionConfirmed = navigationController::moveToReservationComplete,
         )
     }

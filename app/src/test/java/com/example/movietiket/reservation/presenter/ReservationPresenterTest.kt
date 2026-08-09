@@ -1,6 +1,7 @@
 package com.example.movietiket.reservation.presenter
 
 import com.example.movietiket.common.fixture.testMovie
+import com.example.movietiket.common.fixture.testTheater
 import com.example.movietiket.common.model.Reservation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -19,7 +20,7 @@ class ReservationPresenterTest {
 
     private fun presenter(view: ReservationContract.View, onReservationConfirmed: (Reservation) -> Unit = {}) =
         ReservationPresenter(
-            initialReservation = Reservation.of(testMovie()),
+            initialReservation = Reservation.of(testMovie(), testTheater()),
             view = view,
             onReservationConfirmed = onReservationConfirmed,
         )

@@ -23,7 +23,13 @@ class MovieListScreenTest {
     fun `영화_목록의_제목_상영일_러닝타임을_표시한다`() {
         composeTestRule.setContent {
             MovieTiketTheme {
-                MovieListScreen(movies = listOf(harryPotterMovie()), onReserveClick = {})
+                MovieListScreen(
+                    movies = listOf(harryPotterMovie()),
+                    theaterSelection = null,
+                    onReserveClick = {},
+                    onTheaterClick = {},
+                    onTheaterSelectionDismiss = {},
+                )
             }
         }
 
@@ -41,7 +47,10 @@ class MovieListScreenTest {
             MovieTiketTheme {
                 MovieListScreen(
                     movies = listOf(targetMovie),
+                    theaterSelection = null,
                     onReserveClick = { clickedMovie = it },
+                    onTheaterClick = {},
+                    onTheaterSelectionDismiss = {},
                 )
             }
         }

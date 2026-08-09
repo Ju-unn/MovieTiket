@@ -14,6 +14,9 @@ val Pink40 = Color(0xFF7D5260)
 val MoviePrimary = Color(0xFF6200EE)
 val MovieNoticeBackground = Color(0xFF9160F9)
 
+// 극장 선택 바텀시트
+val TheaterItemBackground = Color(0xFFF3F3F3)
+
 // 좌석 선택 화면
 val SeatMapBackground = Color(0xFFEAEAEA)
 val SeatScreenBanner = Color(0xFF494949)

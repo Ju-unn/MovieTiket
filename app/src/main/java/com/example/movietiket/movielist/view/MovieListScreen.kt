@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.movietiket.R
 import com.example.movietiket.common.model.Movie
+import com.example.movietiket.common.model.Theater
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.movielist.view.MovieListItem
@@ -26,7 +27,10 @@ import com.example.movietiket.movielist.view.MovieListItem
 @Composable
 fun MovieListScreen(
     movies: List<Movie>,
+    theaterSelection: List<Theater>?,
     onReserveClick: (Movie) -> Unit,
+    onTheaterClick: (Theater) -> Unit,
+    onTheaterSelectionDismiss: () -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -37,6 +41,15 @@ fun MovieListScreen(
                 MovieListItem(movie = movie, onReserveClick = onReserveClick)
             }
         }
+    }
+
+    // 극장 선택 중일 때만 바텀시트를 띄운다
+    if (theaterSelection != null) {
+        TheaterSelectionBottomSheet(
+            theaters = theaterSelection,
+            onTheaterClick = onTheaterClick,
+            onDismissRequest = onTheaterSelectionDismiss,
+        )
     }
 }
 
@@ -58,7 +71,10 @@ private fun MovieListScreenPreview() {
     MovieTiketTheme {
         MovieListScreen(
             movies = MovieRepository.findAll().toList(),
+            theaterSelection = null,
             onReserveClick = {},
+            onTheaterClick = {},
+            onTheaterSelectionDismiss = {},
         )
     }
 }

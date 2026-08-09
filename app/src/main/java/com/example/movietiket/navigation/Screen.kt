@@ -2,6 +2,7 @@ package com.example.movietiket.navigation
 
 import com.example.movietiket.common.model.Movie
 import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.Theater
 
 /**
  * 앱의 화면 상태를 표현한다
@@ -12,8 +13,8 @@ sealed interface Screen {
     /** 영화 목록 화면 */
     data object MovieList : Screen
 
-    /** 영화 예매 화면 */
-    data class MovieReservation(val movie: Movie) : Screen
+    /** 영화 예매 화면 (극장은 영화 목록의 극장 선택 바텀시트에서 미리 고른다) */
+    data class MovieReservation(val movie: Movie, val theater: Theater) : Screen
 
     /** 좌석 선택 화면 */
     data class SeatSelection(val reservation: Reservation) : Screen
