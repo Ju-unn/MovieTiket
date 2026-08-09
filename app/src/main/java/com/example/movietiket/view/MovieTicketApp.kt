@@ -17,7 +17,8 @@ import com.example.movietiket.presenter.ReservationContract
 import com.example.movietiket.presenter.ReservationPresenter
 import com.example.movietiket.presenter.SeatSelectionContract
 import com.example.movietiket.presenter.SeatSelectionPresenter
-import com.example.movietiket.repository.MovieRepository
+import com.example.movietiket.state.ReservationSaver
+import com.example.movietiket.state.ScreenSaver
 import com.example.movietiket.view.complete.ReservationCompleteScreen
 import com.example.movietiket.view.movielist.MovieListScreen
 import com.example.movietiket.view.reservation.MovieReservationScreen
@@ -56,7 +57,6 @@ private fun MovieListRoute(navigationController: MovieNavigationController) {
     val presenter = remember {
         MovieListPresenter(
             view = view,
-            movies = MovieRepository.findAll(),
             onMovieReserveRequested = navigationController::moveToReservation,
         )
     }

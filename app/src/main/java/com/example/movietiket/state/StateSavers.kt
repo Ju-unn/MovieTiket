@@ -1,4 +1,4 @@
-package com.example.movietiket.view
+package com.example.movietiket.state
 
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
