@@ -1,8 +1,8 @@
 package com.example.movietiket.navigation
 
 import androidx.compose.runtime.MutableState
-import com.example.movietiket.model.Movie
-import com.example.movietiket.model.Reservation
+import com.example.movietiket.common.model.Movie
+import com.example.movietiket.common.model.Reservation
 
 /**
  * 화면 전환을 담당하는 Router

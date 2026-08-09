@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.movietiket.ui.theme.MovieTiketTheme
-import com.example.movietiket.view.MovieTicketApp
+import com.example.movietiket.MovieTicketApp
 
 /**
  * 앱 진입점 — 루트 Composable(MovieTicketApp)만 띄운다
