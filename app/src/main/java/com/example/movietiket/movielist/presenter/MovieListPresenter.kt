@@ -6,6 +6,7 @@ import com.example.movietiket.common.model.Theater
 import com.example.movietiket.common.model.Theaters
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.common.repository.TheaterRepository
+import com.example.movietiket.movielist.model.MovieListRow
 
 /**
  * 영화 목록 화면의 흐름을 제어하는 Presenter
@@ -27,7 +28,7 @@ class MovieListPresenter(
     }
 
     override fun loadMovies() {
-        view.showMovies(movies.toList())
+        view.showMovies(MovieListRow.of(movies.toList()))
     }
 
     override fun onReserveClick(movie: Movie) {

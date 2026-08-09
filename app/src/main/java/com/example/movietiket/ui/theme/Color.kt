@@ -10,12 +10,16 @@ val Pink80 = Color(0xFFEFB8C8)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-// Figma 디자인의 브랜드 색상
-val MoviePrimary = Color(0xFF6200EE)
-val MovieNoticeBackground = Color(0xFF9160F9)
+// 디자인(movie.pen)의 브랜드 색상
+val MoviePrimary = Color(0xFF7A0FF7) // $purple
+val MovieNoticeBackground = Color(0xFF8E52F8) // $purple-light
 
 // 극장 선택 바텀시트
 val TheaterItemBackground = Color(0xFFF3F3F3)
+
+// 하단 네비게이션
+val NavigationInactive = Color(0xFF3C3C3C) // $nav-inactive
+val NavigationDivider = Color(0xFFE0E0E0) // $divider
 
 // 좌석 선택 화면
 val SeatMapBackground = Color(0xFFEAEAEA)

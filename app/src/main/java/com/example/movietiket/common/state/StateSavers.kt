@@ -49,7 +49,9 @@ val ReservationSaver: Saver<Reservation, Any> = listSaver(
     restore = { reservationFromList(it) },
 )
 
-private const val TAG_MOVIE_LIST = "MovieList"
+private const val TAG_TAB_HISTORY = "TabHistory"
+private const val TAG_TAB_HOME = "TabHome"
+private const val TAG_TAB_SETTINGS = "TabSettings"
 private const val TAG_MOVIE_RESERVATION = "MovieReservation"
 private const val TAG_SEAT_SELECTION = "SeatSelection"
 private const val TAG_RESERVATION_COMPLETE = "ReservationComplete"
@@ -58,7 +60,9 @@ private const val TAG_RESERVATION_COMPLETE = "ReservationComplete"
 val ScreenSaver: Saver<Screen, Any> = listSaver(
     save = { screen ->
         when (screen) {
-            Screen.MovieList -> listOf(TAG_MOVIE_LIST)
+            Screen.Tab.History -> listOf(TAG_TAB_HISTORY)
+            Screen.Tab.Home -> listOf(TAG_TAB_HOME)
+            Screen.Tab.Settings -> listOf(TAG_TAB_SETTINGS)
             is Screen.MovieReservation -> listOf(TAG_MOVIE_RESERVATION, screen.movie.id(), screen.theater.id())
             is Screen.SeatSelection -> listOf(TAG_SEAT_SELECTION, reservationToList(screen.reservation))
             is Screen.ReservationComplete -> listOf(TAG_RESERVATION_COMPLETE, reservationToList(screen.reservation))
@@ -66,14 +70,16 @@ val ScreenSaver: Saver<Screen, Any> = listSaver(
     },
     restore = { saved ->
         when (saved[0] as String) {
-            TAG_MOVIE_LIST -> Screen.MovieList
+            TAG_TAB_HISTORY -> Screen.Tab.History
+            TAG_TAB_HOME -> Screen.Tab.Home
+            TAG_TAB_SETTINGS -> Screen.Tab.Settings
             TAG_MOVIE_RESERVATION -> Screen.MovieReservation(
                 movie = MovieRepository.findById(saved[1] as Int),
                 theater = TheaterRepository.findById(saved[2] as Int),
             )
             TAG_SEAT_SELECTION -> Screen.SeatSelection(reservationFromList(saved[1] as List<Any?>))
             TAG_RESERVATION_COMPLETE -> Screen.ReservationComplete(reservationFromList(saved[1] as List<Any?>))
-            else -> Screen.MovieList
+            else -> Screen.Tab.Home
         }
     },
 )

@@ -6,8 +6,17 @@ import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
+import com.example.movietiket.common.view.MovieBottomNavigation
+import com.example.movietiket.common.view.MovieTopBar
+import com.example.movietiket.history.view.ReservationHistoryScreen
+import com.example.movietiket.movielist.model.MovieListRow
+import com.example.movietiket.settings.view.SettingsScreen
 import com.example.movietiket.common.data.SharedPreferencesPushNotificationSettings
 import com.example.movietiket.notification.AlarmManagerScreeningAlarmScheduler
 import com.example.movietiket.notification.PushNotificationGatedAlarmScheduler
@@ -48,7 +57,7 @@ import com.example.movietiket.seat.view.SeatSelectionScreen
  */
 @Composable
 fun MovieTicketApp() {
-    val screenState = rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.MovieList) }
+    val screenState = rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Tab.Home) }
     val navigationController = remember { MovieNavigationController(screenState) }
     val reservationHistoryRepository = rememberReservationHistoryRepository()
     val screeningAlarmScheduler = rememberScreeningAlarmScheduler()
@@ -56,7 +65,7 @@ fun MovieTicketApp() {
     RequestNotificationPermissionOnce()
 
     when (val screen = navigationController.screen()) {
-        is Screen.MovieList -> MovieListRoute(navigationController)
+        is Screen.Tab -> TabRoute(screen, navigationController)
         is Screen.MovieReservation -> MovieReservationRoute(screen.movie, screen.theater, navigationController)
         is Screen.SeatSelection -> SeatSelectionRoute(
             initialReservation = screen.reservation,
@@ -65,6 +74,31 @@ fun MovieTicketApp() {
             navigationController = navigationController,
         )
         is Screen.ReservationComplete -> ReservationCompleteRoute(screen.reservation, navigationController)
+    }
+}
+
+/**
+ * 예매 내역 / 홈 / 설정 탭의 공통 골격
+ * 상단바와 하단 네비게이션은 고정하고 가운데 본문만 탭에 따라 바꾼다
+ */
+@Composable
+private fun TabRoute(tab: Screen.Tab, navigationController: MovieNavigationController) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = { MovieTopBar() },
+        bottomBar = {
+            MovieBottomNavigation(
+                currentTab = tab,
+                onTabClick = navigationController::moveToTab,
+            )
+        },
+    ) { innerPadding ->
+        val contentModifier = Modifier.padding(innerPadding)
+        when (tab) {
+            Screen.Tab.History -> ReservationHistoryScreen(modifier = contentModifier)
+            Screen.Tab.Home -> MovieListRoute(navigationController, modifier = contentModifier)
+            Screen.Tab.Settings -> SettingsScreen(modifier = contentModifier)
+        }
     }
 }
 
@@ -109,15 +143,15 @@ private fun RequestNotificationPermissionOnce() {
 }
 
 private class MovieListViewState : MovieListContract.View {
-    var movies by mutableStateOf(emptyList<Movie>())
+    var rows by mutableStateOf(emptyList<MovieListRow>())
         private set
 
     // null이면 극장 선택 바텀시트를 띄우지 않는다
     var theaterSelection by mutableStateOf<List<Theater>?>(null)
         private set
 
-    override fun showMovies(movies: List<Movie>) {
-        this.movies = movies
+    override fun showMovies(rows: List<MovieListRow>) {
+        this.rows = rows
     }
 
     override fun showTheaterSelection(theaters: List<Theater>) {
@@ -130,7 +164,10 @@ private class MovieListViewState : MovieListContract.View {
 }
 
 @Composable
-private fun MovieListRoute(navigationController: MovieNavigationController) {
+private fun MovieListRoute(
+    navigationController: MovieNavigationController,
+    modifier: Modifier = Modifier,
+) {
     val view = remember { MovieListViewState() }
     val presenter = remember {
         MovieListPresenter(
@@ -140,7 +177,8 @@ private fun MovieListRoute(navigationController: MovieNavigationController) {
     }
 
     MovieListScreen(
-        movies = view.movies,
+        modifier = modifier,
+        rows = view.rows,
         theaterSelection = view.theaterSelection,
         onReserveClick = presenter::onReserveClick,
         onTheaterClick = presenter::onTheaterSelected,

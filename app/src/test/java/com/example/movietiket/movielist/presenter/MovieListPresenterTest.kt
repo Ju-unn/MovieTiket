@@ -11,6 +11,7 @@ import com.example.movietiket.common.model.Synopsis
 import com.example.movietiket.common.model.Theater
 import com.example.movietiket.common.model.TheaterName
 import com.example.movietiket.common.model.Theaters
+import com.example.movietiket.movielist.model.MovieListRow
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -27,11 +28,15 @@ class MovieListPresenterTest {
     private fun theater(): Theater = Theater(id = 1, name = TheaterName("강남점"))
 
     private class FakeView : MovieListContract.View {
-        var shownMovies: List<Movie> = emptyList()
+        var shownRows: List<MovieListRow> = emptyList()
         var shownTheaters: List<Theater>? = null
 
-        override fun showMovies(movies: List<Movie>) {
-            shownMovies = movies
+        /** 검증 편의를 위해 광고를 뺀 영화만 뽑아 준다 */
+        val shownMovies: List<Movie>
+            get() = shownRows.filterIsInstance<MovieListRow.MovieRow>().map { it.movie }
+
+        override fun showMovies(rows: List<MovieListRow>) {
+            shownRows = rows
         }
 
         override fun showTheaterSelection(theaters: List<Theater>) {
@@ -58,6 +63,24 @@ class MovieListPresenterTest {
         presenter.loadMovies()
 
         assertThat(view.shownMovies).containsExactly(targetMovie)
+    }
+
+    @Test
+    @DisplayName("영화 3개마다 광고가 끼워진 목록을 View에 전달한다")
+    fun insertsAdRows() {
+        val view = FakeView()
+        val fourMovies = (0 until 4).map { movie() }
+        val presenter = MovieListPresenter(
+            view = view,
+            movies = Movies(fourMovies),
+            theaters = Theaters(listOf(theater())),
+            onMovieReserveRequested = { _, _ -> },
+        )
+
+        presenter.loadMovies()
+
+        assertThat(view.shownRows.map { it is MovieListRow.AdRow })
+            .containsExactly(false, false, false, true, false)
     }
 
     @Test

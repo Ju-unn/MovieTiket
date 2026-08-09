@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    // 하단 네비게이션 아이콘(list/home/settings)의 Outlined 변형을 쓰기 위해 필요하다
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)

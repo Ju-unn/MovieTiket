@@ -2,6 +2,7 @@ package com.example.movietiket.movielist.presenter
 
 import com.example.movietiket.common.model.Movie
 import com.example.movietiket.common.model.Theater
+import com.example.movietiket.movielist.model.MovieListRow
 
 /**
  * 영화 목록 화면의 View/Presenter 역할을 명시하는 Contract
@@ -9,7 +10,8 @@ import com.example.movietiket.common.model.Theater
 interface MovieListContract {
 
     interface View {
-        fun showMovies(movies: List<Movie>)
+        /** 광고가 끼워진 상태의 목록을 그대로 그린다 */
+        fun showMovies(rows: List<MovieListRow>)
 
         /** "지금 예매"를 누르면 극장을 고르는 바텀시트를 띄운다 */
         fun showTheaterSelection(theaters: List<Theater>)

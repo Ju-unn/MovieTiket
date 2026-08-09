@@ -10,8 +10,18 @@ import com.example.movietiket.common.model.Theater
  */
 sealed interface Screen {
 
-    /** 영화 목록 화면 */
-    data object MovieList : Screen
+    /** 하단 네비게이션이 함께 보이는 화면들 */
+    sealed interface Tab : Screen {
+
+        /** 예매 내역 탭 */
+        data object History : Tab
+
+        /** 홈(영화 목록) 탭 */
+        data object Home : Tab
+
+        /** 설정 탭 */
+        data object Settings : Tab
+    }
 
     /** 영화 예매 화면 (극장은 영화 목록의 극장 선택 바텀시트에서 미리 고른다) */
     data class MovieReservation(val movie: Movie, val theater: Theater) : Screen

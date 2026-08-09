@@ -13,8 +13,12 @@ class MovieNavigationController(private val screenState: MutableState<Screen>) {
 
     fun screen(): Screen = screenState.value
 
+    fun moveToTab(tab: Screen.Tab) {
+        screenState.value = tab
+    }
+
     fun moveToMovieList() {
-        screenState.value = Screen.MovieList
+        screenState.value = Screen.Tab.Home
     }
 
     fun moveToReservation(movie: Movie, theater: Theater) {
