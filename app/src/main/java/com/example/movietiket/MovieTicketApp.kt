@@ -11,6 +11,7 @@ import com.example.movietiket.navigation.MovieNavigationController
 import com.example.movietiket.navigation.Screen
 import com.example.movietiket.common.model.Movie
 import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.Theater
 import com.example.movietiket.movielist.presenter.MovieListContract
 import com.example.movietiket.movielist.presenter.MovieListPresenter
 import com.example.movietiket.reservation.presenter.ReservationContract
@@ -36,7 +37,7 @@ fun MovieTicketApp() {
 
     when (val screen = navigationController.screen()) {
         is Screen.MovieList -> MovieListRoute(navigationController)
-        is Screen.MovieReservation -> MovieReservationRoute(screen.movie, navigationController)
+        is Screen.MovieReservation -> MovieReservationRoute(screen.movie, screen.theater, navigationController)
         is Screen.SeatSelection -> SeatSelectionRoute(screen.reservation, navigationController)
         is Screen.ReservationComplete -> ReservationCompleteRoute(screen.reservation, navigationController)
     }
@@ -46,8 +47,20 @@ private class MovieListViewState : MovieListContract.View {
     var movies by mutableStateOf(emptyList<Movie>())
         private set
 
+    // null이면 극장 선택 바텀시트를 띄우지 않는다
+    var theaterSelection by mutableStateOf<List<Theater>?>(null)
+        private set
+
     override fun showMovies(movies: List<Movie>) {
         this.movies = movies
+    }
+
+    override fun showTheaterSelection(theaters: List<Theater>) {
+        theaterSelection = theaters
+    }
+
+    override fun hideTheaterSelection() {
+        theaterSelection = null
     }
 }
 
@@ -63,16 +76,20 @@ private fun MovieListRoute(navigationController: MovieNavigationController) {
 
     MovieListScreen(
         movies = view.movies,
+        theaterSelection = view.theaterSelection,
         onReserveClick = presenter::onReserveClick,
+        onTheaterClick = presenter::onTheaterSelected,
+        onTheaterSelectionDismiss = presenter::onTheaterSelectionDismissed,
     )
 }
 
 @Composable
 private fun MovieReservationRoute(
     movie: Movie,
+    theater: Theater,
     navigationController: MovieNavigationController,
 ) {
-    var reservation by rememberSaveable(stateSaver = ReservationSaver) { mutableStateOf(Reservation.of(movie)) }
+    var reservation by rememberSaveable(stateSaver = ReservationSaver) { mutableStateOf(Reservation.of(movie, theater)) }
     val view = remember {
         object : ReservationContract.View {
             override fun showReservation(newReservation: Reservation) {

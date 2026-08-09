@@ -8,6 +8,8 @@ import com.example.movietiket.common.model.RunningTime
 import com.example.movietiket.common.model.Screening
 import com.example.movietiket.common.model.ScreeningPeriod
 import com.example.movietiket.common.model.Synopsis
+import com.example.movietiket.common.model.Theater
+import com.example.movietiket.common.model.TheaterName
 import java.time.LocalDate
 
 // 2024.3.1(금요일, 평일)~2024.3.28
@@ -23,4 +25,6 @@ fun harryPotterMovie(): Movie = Movie(
     screening = Screening(ScreeningPeriod(START_DATE, END_DATE), RunningTime(152)),
 )
 
-fun harryPotterReservation(): Reservation = Reservation.of(harryPotterMovie())
+fun gangnamTheater(): Theater = Theater(id = 0, name = TheaterName("강남점"))
+
+fun harryPotterReservation(): Reservation = Reservation.of(harryPotterMovie(), gangnamTheater())

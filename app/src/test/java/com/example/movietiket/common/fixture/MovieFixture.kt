@@ -7,6 +7,8 @@ import com.example.movietiket.common.model.RunningTime
 import com.example.movietiket.common.model.Screening
 import com.example.movietiket.common.model.ScreeningPeriod
 import com.example.movietiket.common.model.Synopsis
+import com.example.movietiket.common.model.Theater
+import com.example.movietiket.common.model.TheaterName
 import java.time.LocalDate
 
 // 2024.3.1(금요일, 평일)~2024.3.28
@@ -21,3 +23,5 @@ fun testMovie(): Movie = Movie(
     description = MovieDescription(MovieTitle("해리 포터와 마법사의 돌"), Synopsis("소개")),
     screening = Screening(ScreeningPeriod(TEST_START_DATE, TEST_END_DATE), RunningTime(152)),
 )
+
+fun testTheater(): Theater = Theater(id = 0, name = TheaterName("강남점"))

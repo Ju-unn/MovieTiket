@@ -1,6 +1,7 @@
 package com.example.movietiket.seat.presenter
 
 import com.example.movietiket.common.fixture.testMovie
+import com.example.movietiket.common.fixture.testTheater
 import com.example.movietiket.common.model.Reservation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -24,7 +25,7 @@ class SeatSelectionPresenterTest {
     @Test
     @DisplayName("생성 시 초기 예매 내용을 View에 통지한다")
     fun initialShowsReservation() {
-        val reservation = Reservation.of(testMovie())
+        val reservation = Reservation.of(testMovie(), testTheater())
         val view = FakeView()
 
         SeatSelectionPresenter(initialReservation = reservation, view = view, onSelectionConfirmed = {})
@@ -37,7 +38,7 @@ class SeatSelectionPresenterTest {
     fun selectSeat() {
         val view = FakeView()
         val presenter = SeatSelectionPresenter(
-            initialReservation = Reservation.of(testMovie()),
+            initialReservation = Reservation.of(testMovie(), testTheater()),
             view = view,
             onSelectionConfirmed = {},
         )
@@ -52,7 +53,7 @@ class SeatSelectionPresenterTest {
     fun selectSeatBeyondHeadCount() {
         val view = FakeView()
         val presenter = SeatSelectionPresenter(
-            initialReservation = Reservation.of(testMovie()), // 1명
+            initialReservation = Reservation.of(testMovie(), testTheater()), // 1명
             view = view,
             onSelectionConfirmed = {},
         )
@@ -69,7 +70,7 @@ class SeatSelectionPresenterTest {
     fun deselectSeat() {
         val view = FakeView()
         val presenter = SeatSelectionPresenter(
-            initialReservation = Reservation.of(testMovie()),
+            initialReservation = Reservation.of(testMovie(), testTheater()),
             view = view,
             onSelectionConfirmed = {},
         )
@@ -85,7 +86,7 @@ class SeatSelectionPresenterTest {
     fun confirmSelection() {
         var confirmed: Reservation? = null
         val presenter = SeatSelectionPresenter(
-            initialReservation = Reservation.of(testMovie()),
+            initialReservation = Reservation.of(testMovie(), testTheater()),
             view = FakeView(),
             onSelectionConfirmed = { confirmed = it },
         )
