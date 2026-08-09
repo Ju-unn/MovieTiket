@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.movietiket.notification.ScreeningNotifier
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.MovieTicketApp
 
@@ -14,6 +15,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        ScreeningNotifier.createChannel(this)
         setContent {
             MovieTiketTheme {
                 MovieTicketApp()

@@ -2,6 +2,7 @@ package com.example.movietiket.seat.presenter
 
 import com.example.movietiket.common.model.Reservation
 import com.example.movietiket.common.repository.ReservationHistoryRepository
+import com.example.movietiket.notification.ScreeningAlarmScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -14,6 +15,7 @@ class SeatSelectionPresenter(
     initialReservation: Reservation,
     private val view: SeatSelectionContract.View,
     private val reservationHistoryRepository: ReservationHistoryRepository,
+    private val screeningAlarmScheduler: ScreeningAlarmScheduler,
     private val coroutineScope: CoroutineScope,
     private val onSelectionConfirmed: (Reservation) -> Unit,
 ) : SeatSelectionContract.Presenter {
@@ -44,7 +46,8 @@ class SeatSelectionPresenter(
     override fun confirmSelection() {
         // 저장이 끝난 뒤 화면을 넘겨야 완료 화면에서 되돌아왔을 때 내역이 이미 보인다
         coroutineScope.launch {
-            reservationHistoryRepository.save(reservation)
+            val reservationId = reservationHistoryRepository.save(reservation)
+            screeningAlarmScheduler.schedule(reservationId, reservation)
             onSelectionConfirmed(reservation)
         }
     }

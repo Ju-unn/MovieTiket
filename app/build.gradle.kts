@@ -39,6 +39,8 @@ android {
     }
     buildFeatures {
         compose = true
+        // 과거 상영분 확인용 알림을 디버그 빌드에서만 켜기 위해 BuildConfig를 사용한다
+        buildConfig = true
     }
     testOptions {
         // JUnit5(Jupiter) 기반 단위 테스트를 실행하기 위한 설정

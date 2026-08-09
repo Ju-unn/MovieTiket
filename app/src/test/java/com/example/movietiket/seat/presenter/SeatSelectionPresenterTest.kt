@@ -1,6 +1,7 @@
 package com.example.movietiket.seat.presenter
 
 import com.example.movietiket.common.fixture.FakeReservationHistoryRepository
+import com.example.movietiket.common.fixture.FakeScreeningAlarmScheduler
 import com.example.movietiket.common.fixture.testMovie
 import com.example.movietiket.common.fixture.testTheater
 import com.example.movietiket.common.model.Reservation
@@ -28,6 +29,7 @@ class SeatSelectionPresenterTest {
     }
 
     private val repository = FakeReservationHistoryRepository()
+    private val alarmScheduler = FakeScreeningAlarmScheduler()
 
     // 확정 시 실행되는 코루틴을 테스트에서 즉시 처리한다
     private val scope = CoroutineScope(UnconfinedTestDispatcher())
@@ -40,6 +42,7 @@ class SeatSelectionPresenterTest {
         initialReservation = reservation,
         view = view,
         reservationHistoryRepository = repository,
+        screeningAlarmScheduler = alarmScheduler,
         coroutineScope = scope,
         onSelectionConfirmed = onSelectionConfirmed,
     )
@@ -112,6 +115,20 @@ class SeatSelectionPresenterTest {
 
         assertThat(repository.saved).hasSize(1)
         assertThat(repository.saved.first().displaySelectedSeats()).isEqualTo("A1")
+    }
+
+    @Test
+    @DisplayName("좌석 선택 확정 시 저장된 예매 id로 상영 알림을 예약한다")
+    fun confirmSelectionSchedulesAlarm() {
+        val presenter = presenter()
+
+        presenter.selectSeat("A1")
+        presenter.confirmSelection()
+
+        assertThat(alarmScheduler.scheduled).hasSize(1)
+        val (reservationId, reserved) = alarmScheduler.scheduled.first()
+        assertThat(reservationId).isEqualTo(1L)
+        assertThat(reserved.displaySelectedSeats()).isEqualTo("A1")
     }
 
     @Test
