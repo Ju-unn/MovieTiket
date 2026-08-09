@@ -1,7 +1,7 @@
 package com.example.movietiket.navigation
 
-import com.example.movietiket.model.Movie
-import com.example.movietiket.model.Reservation
+import com.example.movietiket.common.model.Movie
+import com.example.movietiket.common.model.Reservation
 
 /**
  * 앱의 화면 상태를 표현한다

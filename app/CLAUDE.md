@@ -9,6 +9,7 @@
     ㄴview
     ㄴpresenter
  테마별 구분을하고 그 아래에 model view presenter 등이 들어가는 구조 필요시 리팩터링 진행
+6. 하나의 작업이 끝나면 검토후에 진행 (검토후 직접 git push 할 예정)
 
 https://www.figma.com/design/Du7XucL9G3mlyfAtXr9CLI/Android-%EB%B3%B5%EC%82%AC%EB%B3%B8?node-id=47-117&t=ziXVsFlYyW0FisyD-1
 피그마 url 링크를 들어가면
