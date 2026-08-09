@@ -7,6 +7,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.movietiket.common.fixture.harryPotterMovie
 import com.example.movietiket.common.model.Movie
+import com.example.movietiket.movielist.model.MovieListRow
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import org.junit.Assert.assertSame
 import org.junit.Rule
@@ -24,7 +25,7 @@ class MovieListScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieListScreen(
-                    movies = listOf(harryPotterMovie()),
+                    rows = MovieListRow.of(listOf(harryPotterMovie())),
                     theaterSelection = null,
                     onReserveClick = {},
                     onTheaterClick = {},
@@ -46,7 +47,7 @@ class MovieListScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieListScreen(
-                    movies = listOf(targetMovie),
+                    rows = MovieListRow.of(listOf(targetMovie)),
                     theaterSelection = null,
                     onReserveClick = { clickedMovie = it },
                     onTheaterClick = {},
