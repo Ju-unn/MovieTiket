@@ -15,6 +15,13 @@ class HeadCountTest {
     }
 
     @Test
+    @DisplayName("예매 인원은 20명 초과로 생성할 수 없다")
+    fun cannotCreateAboveMaximum() {
+        assertThatIllegalArgumentException()
+            .isThrownBy { HeadCount(21) }
+    }
+
+    @Test
     @DisplayName("인원을 늘리면 1명 증가한 새 HeadCount를 반환한다")
     fun increase() {
         val headCount = HeadCount(1)
@@ -22,6 +29,16 @@ class HeadCountTest {
         val increased = headCount.increase()
 
         assertThat(increased).isEqualTo(HeadCount(2))
+    }
+
+    @Test
+    @DisplayName("최대 인원(20명)에서는 더 이상 늘어나지 않는다")
+    fun increaseAtMaximumKeepsMaximum() {
+        val headCount = HeadCount(20)
+
+        val increased = headCount.increase()
+
+        assertThat(increased).isEqualTo(HeadCount(20))
     }
 
     @Test
