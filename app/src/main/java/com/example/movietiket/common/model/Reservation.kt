@@ -1,6 +1,7 @@
 package com.example.movietiket.common.model
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 /**
@@ -67,6 +68,13 @@ class Reservation(
     fun displaySelectedSeats(): String = selectedSeats.sorted().joinToString(", ")
 
     fun displayTheaterName(): String = theater.displayName()
+
+    /** 상영 알림을 예약할 기준 시각 (날짜/시간이 모두 정해졌을 때만 존재한다) */
+    fun screeningDateTime(): LocalDateTime? {
+        val date = selectedDate ?: return null
+        val time = selectedTime ?: return null
+        return LocalDateTime.of(date, time)
+    }
 
     fun runningTimeMinutes(): Int = movie.runningTimeMinutes()
 

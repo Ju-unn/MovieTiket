@@ -1,6 +1,15 @@
 package com.example.movietiket
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
+import androidx.compose.runtime.LaunchedEffect
+import androidx.core.content.ContextCompat
+import com.example.movietiket.notification.AlarmManagerScreeningAlarmScheduler
+import com.example.movietiket.notification.ScreeningAlarmScheduler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,12 +49,19 @@ fun MovieTicketApp() {
     val screenState = rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.MovieList) }
     val navigationController = remember { MovieNavigationController(screenState) }
     val reservationHistoryRepository = rememberReservationHistoryRepository()
+    val screeningAlarmScheduler = rememberScreeningAlarmScheduler()
+
+    RequestNotificationPermissionOnce()
 
     when (val screen = navigationController.screen()) {
         is Screen.MovieList -> MovieListRoute(navigationController)
         is Screen.MovieReservation -> MovieReservationRoute(screen.movie, screen.theater, navigationController)
-        is Screen.SeatSelection ->
-            SeatSelectionRoute(screen.reservation, reservationHistoryRepository, navigationController)
+        is Screen.SeatSelection -> SeatSelectionRoute(
+            initialReservation = screen.reservation,
+            reservationHistoryRepository = reservationHistoryRepository,
+            screeningAlarmScheduler = screeningAlarmScheduler,
+            navigationController = navigationController,
+        )
         is Screen.ReservationComplete -> ReservationCompleteRoute(screen.reservation, navigationController)
     }
 }
@@ -56,6 +72,31 @@ private fun rememberReservationHistoryRepository(): ReservationHistoryRepository
     val context = LocalContext.current
     return remember(context) {
         RoomReservationHistoryRepository(MovieTicketDatabase.getInstance(context).reservationDao())
+    }
+}
+
+@Composable
+private fun rememberScreeningAlarmScheduler(): ScreeningAlarmScheduler {
+    val context = LocalContext.current
+    return remember(context) { AlarmManagerScreeningAlarmScheduler(context) }
+}
+
+/**
+ * Android 13+에서는 알림을 띄우려면 런타임 권한이 필요하다
+ * 앱을 처음 띄울 때 한 번만 요청한다
+ */
+@Composable
+private fun RequestNotificationPermissionOnce() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(RequestPermission()) { }
+    LaunchedEffect(Unit) {
+        val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
+            PackageManager.PERMISSION_GRANTED
+        if (!granted) {
+            launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 }
 
@@ -139,6 +180,7 @@ private fun MovieReservationRoute(
 private fun SeatSelectionRoute(
     initialReservation: Reservation,
     reservationHistoryRepository: ReservationHistoryRepository,
+    screeningAlarmScheduler: ScreeningAlarmScheduler,
     navigationController: MovieNavigationController,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -164,6 +206,7 @@ private fun SeatSelectionRoute(
             initialReservation = reservation,
             view = view,
             reservationHistoryRepository = reservationHistoryRepository,
+            screeningAlarmScheduler = screeningAlarmScheduler,
             coroutineScope = coroutineScope,
             onSelectionConfirmed = navigationController::moveToReservationComplete,
         )
