@@ -5,8 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import com.example.movietiket.common.data.MovieTicketDatabase
+import com.example.movietiket.common.data.RoomReservationHistoryRepository
+import com.example.movietiket.common.repository.ReservationHistoryRepository
 import com.example.movietiket.navigation.MovieNavigationController
 import com.example.movietiket.navigation.Screen
 import com.example.movietiket.common.model.Movie
@@ -34,12 +39,23 @@ import com.example.movietiket.seat.view.SeatSelectionScreen
 fun MovieTicketApp() {
     val screenState = rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.MovieList) }
     val navigationController = remember { MovieNavigationController(screenState) }
+    val reservationHistoryRepository = rememberReservationHistoryRepository()
 
     when (val screen = navigationController.screen()) {
         is Screen.MovieList -> MovieListRoute(navigationController)
         is Screen.MovieReservation -> MovieReservationRoute(screen.movie, screen.theater, navigationController)
-        is Screen.SeatSelection -> SeatSelectionRoute(screen.reservation, navigationController)
+        is Screen.SeatSelection ->
+            SeatSelectionRoute(screen.reservation, reservationHistoryRepository, navigationController)
         is Screen.ReservationComplete -> ReservationCompleteRoute(screen.reservation, navigationController)
+    }
+}
+
+/** 앱 전역에서 하나의 Room 인스턴스를 공유한다 */
+@Composable
+private fun rememberReservationHistoryRepository(): ReservationHistoryRepository {
+    val context = LocalContext.current
+    return remember(context) {
+        RoomReservationHistoryRepository(MovieTicketDatabase.getInstance(context).reservationDao())
     }
 }
 
@@ -122,8 +138,10 @@ private fun MovieReservationRoute(
 @Composable
 private fun SeatSelectionRoute(
     initialReservation: Reservation,
+    reservationHistoryRepository: ReservationHistoryRepository,
     navigationController: MovieNavigationController,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     var reservation by rememberSaveable(stateSaver = ReservationSaver) { mutableStateOf(initialReservation) }
     var seatLimitExceededEventCount by remember { mutableStateOf(0) }
     val view = remember {
@@ -145,6 +163,8 @@ private fun SeatSelectionRoute(
         SeatSelectionPresenter(
             initialReservation = reservation,
             view = view,
+            reservationHistoryRepository = reservationHistoryRepository,
+            coroutineScope = coroutineScope,
             onSelectionConfirmed = navigationController::moveToReservationComplete,
         )
     }
