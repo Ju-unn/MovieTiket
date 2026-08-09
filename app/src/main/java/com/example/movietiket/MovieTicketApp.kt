@@ -8,7 +8,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.ContextCompat
+import com.example.movietiket.common.data.SharedPreferencesPushNotificationSettings
 import com.example.movietiket.notification.AlarmManagerScreeningAlarmScheduler
+import com.example.movietiket.notification.PushNotificationGatedAlarmScheduler
 import com.example.movietiket.notification.ScreeningAlarmScheduler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -75,10 +77,16 @@ private fun rememberReservationHistoryRepository(): ReservationHistoryRepository
     }
 }
 
+/** 푸시 알림이 꺼져 있으면 예약하지 않도록 감싼다 */
 @Composable
 private fun rememberScreeningAlarmScheduler(): ScreeningAlarmScheduler {
     val context = LocalContext.current
-    return remember(context) { AlarmManagerScreeningAlarmScheduler(context) }
+    return remember(context) {
+        PushNotificationGatedAlarmScheduler(
+            delegate = AlarmManagerScreeningAlarmScheduler(context),
+            pushNotificationSettings = SharedPreferencesPushNotificationSettings(context),
+        )
+    }
 }
 
 /**
