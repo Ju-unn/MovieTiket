@@ -55,6 +55,7 @@ private const val TAG_TAB_SETTINGS = "TabSettings"
 private const val TAG_MOVIE_RESERVATION = "MovieReservation"
 private const val TAG_SEAT_SELECTION = "SeatSelection"
 private const val TAG_RESERVATION_COMPLETE = "ReservationComplete"
+private const val TAG_RESERVATION_DETAIL = "ReservationDetail"
 
 @Suppress("UNCHECKED_CAST")
 val ScreenSaver: Saver<Screen, Any> = listSaver(
@@ -66,6 +67,7 @@ val ScreenSaver: Saver<Screen, Any> = listSaver(
             is Screen.MovieReservation -> listOf(TAG_MOVIE_RESERVATION, screen.movie.id(), screen.theater.id())
             is Screen.SeatSelection -> listOf(TAG_SEAT_SELECTION, reservationToList(screen.reservation))
             is Screen.ReservationComplete -> listOf(TAG_RESERVATION_COMPLETE, reservationToList(screen.reservation))
+            is Screen.ReservationDetail -> listOf(TAG_RESERVATION_DETAIL, reservationToList(screen.reservation))
         }
     },
     restore = { saved ->
@@ -79,6 +81,7 @@ val ScreenSaver: Saver<Screen, Any> = listSaver(
             )
             TAG_SEAT_SELECTION -> Screen.SeatSelection(reservationFromList(saved[1] as List<Any?>))
             TAG_RESERVATION_COMPLETE -> Screen.ReservationComplete(reservationFromList(saved[1] as List<Any?>))
+            TAG_RESERVATION_DETAIL -> Screen.ReservationDetail(reservationFromList(saved[1] as List<Any?>))
             else -> Screen.Tab.Home
         }
     },

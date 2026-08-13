@@ -16,6 +16,7 @@ class ReservationHistory(
 
     fun displayTheaterName(): String = reservation.displayTheaterName()
 
-    fun displayScreeningDateTime(): String =
-        "${reservation.displaySelectedDate()} ${reservation.displaySelectedTime()}"
+    fun displayScreeningDate(): String = reservation.displaySelectedDate()
+
+    fun displayScreeningTime(): String = reservation.displaySelectedTime()
 }

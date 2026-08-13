@@ -14,8 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.example.movietiket.common.view.MovieBottomNavigation
 import com.example.movietiket.common.view.MovieTopBar
+import com.example.movietiket.common.model.ReservationHistory
+import com.example.movietiket.history.presenter.ReservationHistoryContract
+import com.example.movietiket.history.presenter.ReservationHistoryPresenter
 import com.example.movietiket.history.view.ReservationHistoryScreen
 import com.example.movietiket.movielist.model.MovieListRow
+import com.example.movietiket.settings.presenter.SettingsContract
+import com.example.movietiket.settings.presenter.SettingsPresenter
 import com.example.movietiket.settings.view.SettingsScreen
 import com.example.movietiket.common.data.SharedPreferencesPushNotificationSettings
 import com.example.movietiket.notification.AlarmManagerScreeningAlarmScheduler
@@ -65,7 +70,7 @@ fun MovieTicketApp() {
     RequestNotificationPermissionOnce()
 
     when (val screen = navigationController.screen()) {
-        is Screen.Tab -> TabRoute(screen, navigationController)
+        is Screen.Tab -> TabRoute(screen, navigationController, reservationHistoryRepository)
         is Screen.MovieReservation -> MovieReservationRoute(screen.movie, screen.theater, navigationController)
         is Screen.SeatSelection -> SeatSelectionRoute(
             initialReservation = screen.reservation,
@@ -74,6 +79,7 @@ fun MovieTicketApp() {
             navigationController = navigationController,
         )
         is Screen.ReservationComplete -> ReservationCompleteRoute(screen.reservation, navigationController)
+        is Screen.ReservationDetail -> ReservationDetailRoute(screen.reservation, navigationController)
     }
 }
 
@@ -82,7 +88,11 @@ fun MovieTicketApp() {
  * 상단바와 하단 네비게이션은 고정하고 가운데 본문만 탭에 따라 바꾼다
  */
 @Composable
-private fun TabRoute(tab: Screen.Tab, navigationController: MovieNavigationController) {
+private fun TabRoute(
+    tab: Screen.Tab,
+    navigationController: MovieNavigationController,
+    reservationHistoryRepository: ReservationHistoryRepository,
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { MovieTopBar() },
@@ -95,11 +105,87 @@ private fun TabRoute(tab: Screen.Tab, navigationController: MovieNavigationContr
     ) { innerPadding ->
         val contentModifier = Modifier.padding(innerPadding)
         when (tab) {
-            Screen.Tab.History -> ReservationHistoryScreen(modifier = contentModifier)
+            Screen.Tab.History -> ReservationHistoryRoute(
+                reservationHistoryRepository = reservationHistoryRepository,
+                navigationController = navigationController,
+                modifier = contentModifier,
+            )
             Screen.Tab.Home -> MovieListRoute(navigationController, modifier = contentModifier)
-            Screen.Tab.Settings -> SettingsScreen(modifier = contentModifier)
+            Screen.Tab.Settings -> SettingsRoute(modifier = contentModifier)
         }
     }
+}
+
+private class ReservationHistoryViewState : ReservationHistoryContract.View {
+    var histories by mutableStateOf(emptyList<ReservationHistory>())
+        private set
+
+    override fun showHistories(histories: List<ReservationHistory>) {
+        this.histories = histories
+    }
+}
+
+@Composable
+private fun ReservationHistoryRoute(
+    reservationHistoryRepository: ReservationHistoryRepository,
+    navigationController: MovieNavigationController,
+    modifier: Modifier = Modifier,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val view = remember { ReservationHistoryViewState() }
+    val presenter = remember {
+        ReservationHistoryPresenter(
+            view = view,
+            reservationHistoryRepository = reservationHistoryRepository,
+            coroutineScope = coroutineScope,
+            onHistorySelected = { navigationController.moveToReservationDetail(it.reservation()) },
+        )
+    }
+
+    ReservationHistoryScreen(
+        histories = view.histories,
+        onHistoryClick = presenter::onHistoryClick,
+        modifier = modifier,
+    )
+}
+
+private class SettingsViewState : SettingsContract.View {
+    var pushNotificationEnabled by mutableStateOf(true)
+        private set
+
+    override fun showPushNotificationEnabled(enabled: Boolean) {
+        pushNotificationEnabled = enabled
+    }
+}
+
+@Composable
+private fun SettingsRoute(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val view = remember { SettingsViewState() }
+    val presenter = remember(context) {
+        SettingsPresenter(
+            view = view,
+            pushNotificationSettings = SharedPreferencesPushNotificationSettings(context),
+        )
+    }
+
+    SettingsScreen(
+        pushNotificationEnabled = view.pushNotificationEnabled,
+        onPushNotificationToggle = presenter::onPushNotificationToggled,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun ReservationDetailRoute(
+    reservation: Reservation,
+    navigationController: MovieNavigationController,
+) {
+    // 예매 내역에서 들어왔으므로 뒤로 가면 예매 내역 탭으로 돌아간다
+    val backToHistory = { navigationController.moveToTab(Screen.Tab.History) }
+    BackHandler { backToHistory() }
+
+    ReservationCompleteScreen(reservation = reservation, onBackClick = backToHistory)
 }
 
 /** 앱 전역에서 하나의 Room 인스턴스를 공유한다 */
