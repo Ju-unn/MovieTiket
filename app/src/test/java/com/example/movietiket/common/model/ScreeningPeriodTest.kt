@@ -43,6 +43,6 @@ class ScreeningPeriodTest {
     fun displayValue() {
         val period = ScreeningPeriod(LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 28))
 
-        assertThat(period.displayValue()).isEqualTo("2024-03-01 ~ 2024-03-28")
+        assertThat(period.displayValue()).isEqualTo("2024.3.1 ~ 2024.3.28")
     }
 }

@@ -36,7 +36,7 @@ class MovieTest {
     @Test
     @DisplayName("상영 기간을 표시용 값으로 조회한다")
     fun displayScreeningPeriod() {
-        assertThat(movie().displayScreeningPeriod()).isEqualTo("2024-03-01 ~ 2024-03-28")
+        assertThat(movie().displayScreeningPeriod()).isEqualTo("2024.3.1 ~ 2024.3.28")
     }
 
     @Test

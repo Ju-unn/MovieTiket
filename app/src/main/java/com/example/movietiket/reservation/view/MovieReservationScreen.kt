@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.example.movietiket.R
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.common.repository.TheaterRepository
+import com.example.movietiket.common.model.DisplayDateFormat
 import com.example.movietiket.common.model.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.common.view.BackNavigationTopBar
@@ -202,7 +203,7 @@ private fun ScreeningDateSelector(
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             availableDates.forEach { date ->
                 DropdownMenuItem(
-                    text = { Text(text = date.toString()) },
+                    text = { Text(text = DisplayDateFormat.format(date)) },
                     onClick = {
                         onSelectDate(date)
                         expanded = false
@@ -232,7 +233,7 @@ private fun ScreeningTimeSelector(
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             availableTimes.forEach { time ->
                 DropdownMenuItem(
-                    text = { Text(text = time.toString()) },
+                    text = { Text(text = DisplayDateFormat.format(time)) },
                     onClick = {
                         onSelectTime(time)
                         expanded = false

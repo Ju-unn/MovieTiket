@@ -17,7 +17,7 @@ class ReservationTest {
         val reservation = Reservation.of(testMovie(), testTheater())
 
         assertThat(reservation.displayHeadCount()).isEqualTo("1")
-        assertThat(reservation.displaySelectedDate()).isEqualTo("2024-03-01")
+        assertThat(reservation.displaySelectedDate()).isEqualTo("2024.3.1")
         assertThat(reservation.displaySelectedTime()).isEqualTo("10:00")
     }
 
@@ -48,7 +48,7 @@ class ReservationTest {
 
         val selected = reservation.selectDate(LocalDate.of(2024, 3, 2))
 
-        assertThat(selected.displaySelectedDate()).isEqualTo("2024-03-02")
+        assertThat(selected.displaySelectedDate()).isEqualTo("2024.3.2")
     }
 
     @Test
@@ -119,7 +119,7 @@ class ReservationTest {
     fun displayScreeningPeriod() {
         val reservation = Reservation.of(testMovie(), testTheater())
 
-        assertThat(reservation.displayScreeningPeriod()).isEqualTo("2024-03-01 ~ 2024-03-28")
+        assertThat(reservation.displayScreeningPeriod()).isEqualTo("2024.3.1 ~ 2024.3.28")
     }
 
     @Test

@@ -67,7 +67,7 @@ class ReservationPresenterTest {
 
         presenter.selectDate(LocalDate.of(2024, 3, 2))
 
-        assertThat(view.shownReservation.displaySelectedDate()).isEqualTo("2024-03-02")
+        assertThat(view.shownReservation.displaySelectedDate()).isEqualTo("2024.3.2")
     }
 
     @Test

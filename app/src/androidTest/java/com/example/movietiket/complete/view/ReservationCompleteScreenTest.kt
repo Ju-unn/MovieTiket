@@ -32,7 +32,7 @@ class ReservationCompleteScreenTest {
         }
 
         composeTestRule.onNodeWithText("해리 포터와 마법사의 돌").assertIsDisplayed()
-        composeTestRule.onNodeWithText("2024-03-01 18:00").assertIsDisplayed()
+        composeTestRule.onNodeWithText("2024.3.1 18:00").assertIsDisplayed()
         composeTestRule.onNodeWithText("일반 1명 | A1 | 강남점").assertIsDisplayed()
         composeTestRule.onNodeWithText("10,000원 (현장 결제)").assertIsDisplayed()
     }

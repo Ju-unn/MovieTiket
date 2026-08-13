@@ -39,7 +39,7 @@ class MovieReservationScreenTest {
         }
 
         composeTestRule.onNodeWithText("해리 포터와 마법사의 돌").assertIsDisplayed()
-        composeTestRule.onNodeWithText("상영일: 2024-03-01 ~ 2024-03-28").assertIsDisplayed()
+        composeTestRule.onNodeWithText("상영일: 2024.3.1 ~ 2024.3.28").assertIsDisplayed()
         composeTestRule.onNodeWithText("러닝타임: 152분").assertIsDisplayed()
         composeTestRule.onNodeWithText("소개").assertIsDisplayed()
         composeTestRule.onNodeWithText("1").assertIsDisplayed()
@@ -89,8 +89,8 @@ class MovieReservationScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText("2024-03-01").performClick() // 날짜 Chip(기본 선택값)
-        composeTestRule.onNodeWithText("2024-03-02").performClick() // 드롭다운 항목
+        composeTestRule.onNodeWithText("2024.3.1").performClick() // 날짜 Chip(기본 선택값)
+        composeTestRule.onNodeWithText("2024.3.2").performClick() // 드롭다운 항목
 
         assertEquals(LocalDate.of(2024, 3, 2), selectedDate)
     }
