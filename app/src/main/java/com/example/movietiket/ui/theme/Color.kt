@@ -21,6 +21,14 @@ val TheaterItemBackground = Color(0xFFF3F3F3)
 val NavigationInactive = Color(0xFF3C3C3C) // $nav-inactive
 val NavigationDivider = Color(0xFFE0E0E0) // $divider
 
+// 예매 내역
+val ReservationMetaText = Color(0xFF212121) // $meta-text
+val ReservationMetaSeparator = Color(0xFFBDBDBD) // $meta-sep
+val PressedBackground = Color(0xFFE0E0E0) // $pressed
+
+// 설정
+val SettingDescription = Color(0xFF6B6B6F)
+
 // 좌석 선택 화면
 val SeatMapBackground = Color(0xFFEAEAEA)
 val SeatScreenBanner = Color(0xFF494949)

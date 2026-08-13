@@ -61,9 +61,9 @@ class Reservation(
 
     fun displayScreeningPeriod(): String = movie.displayScreeningPeriod()
 
-    fun displaySelectedDate(): String = selectedDate?.toString().orEmpty()
+    fun displaySelectedDate(): String = selectedDate?.let(DisplayDateFormat::format).orEmpty()
 
-    fun displaySelectedTime(): String = selectedTime?.toString().orEmpty()
+    fun displaySelectedTime(): String = selectedTime?.let(DisplayDateFormat::format).orEmpty()
 
     fun displaySelectedSeats(): String = selectedSeats.sorted().joinToString(", ")
 

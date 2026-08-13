@@ -31,4 +31,7 @@ sealed interface Screen {
 
     /** 영화 예매 완료 화면 */
     data class ReservationComplete(val reservation: Reservation) : Screen
+
+    /** 예매 내역에서 항목을 눌러 들어온 예매 정보 화면 (완료 화면과 같은 내용을 보여준다) */
+    data class ReservationDetail(val reservation: Reservation) : Screen
 }

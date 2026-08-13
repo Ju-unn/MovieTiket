@@ -21,5 +21,6 @@ class ScreeningPeriod(
 
     fun contains(date: LocalDate): Boolean = !date.isBefore(startDate) && !date.isAfter(endDate)
 
-    fun displayValue(): String = "$startDate ~ $endDate"
+    fun displayValue(): String =
+        "${DisplayDateFormat.format(startDate)} ~ ${DisplayDateFormat.format(endDate)}"
 }

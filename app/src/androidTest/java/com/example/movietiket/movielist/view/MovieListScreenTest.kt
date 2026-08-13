@@ -35,7 +35,7 @@ class MovieListScreenTest {
         }
 
         composeTestRule.onNodeWithText("해리 포터와 마법사의 돌").assertIsDisplayed()
-        composeTestRule.onNodeWithText("상영일: 2024-03-01 ~ 2024-03-28").assertIsDisplayed()
+        composeTestRule.onNodeWithText("상영일: 2024.3.1 ~ 2024.3.28").assertIsDisplayed()
         composeTestRule.onNodeWithText("러닝타임: 152분").assertIsDisplayed()
     }
 

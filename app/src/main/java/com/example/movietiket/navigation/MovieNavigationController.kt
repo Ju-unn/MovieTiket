@@ -32,4 +32,8 @@ class MovieNavigationController(private val screenState: MutableState<Screen>) {
     fun moveToReservationComplete(reservation: Reservation) {
         screenState.value = Screen.ReservationComplete(reservation)
     }
+
+    fun moveToReservationDetail(reservation: Reservation) {
+        screenState.value = Screen.ReservationDetail(reservation)
+    }
 }
