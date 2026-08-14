@@ -18,9 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.movietiket.common.model.Reservation
 import com.example.movietiket.common.model.ReservationHistory
+import com.example.movietiket.common.repository.MovieRepository
+import com.example.movietiket.common.repository.TheaterRepository
+import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.ui.theme.NavigationDivider
 import com.example.movietiket.ui.theme.PressedBackground
 import com.example.movietiket.ui.theme.ReservationMetaSeparator
@@ -101,4 +106,19 @@ private fun MetaSeparator() {
         color = ReservationMetaSeparator,
         fontSize = 11.sp,
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReservationHistoryItemPreview() {
+    val reservation = Reservation.of(
+        MovieRepository.findAll().toList().first(),
+        TheaterRepository.findAll().toList().first(),
+    )
+    MovieTiketTheme {
+        ReservationHistoryItem(
+            history = ReservationHistory(id = 1L, reservation = reservation),
+            onClick = {},
+        )
+    }
 }
