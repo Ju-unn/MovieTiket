@@ -1,6 +1,6 @@
 package com.example.movietiket.seat.presenter
 
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.Reservation
 import com.example.movietiket.common.repository.ReservationHistoryRepository
 import com.example.movietiket.notification.ScreeningAlarmScheduler
 import kotlinx.coroutines.CoroutineScope

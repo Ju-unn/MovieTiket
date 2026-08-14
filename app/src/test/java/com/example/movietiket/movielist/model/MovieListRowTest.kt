@@ -1,12 +1,12 @@
 package com.example.movietiket.movielist.model
 
-import com.example.movietiket.common.model.Movie
-import com.example.movietiket.common.model.MovieDescription
-import com.example.movietiket.common.model.MovieTitle
-import com.example.movietiket.common.model.RunningTime
-import com.example.movietiket.common.model.Screening
-import com.example.movietiket.common.model.ScreeningPeriod
-import com.example.movietiket.common.model.Synopsis
+import com.example.movietiket.common.model.movie.Movie
+import com.example.movietiket.common.model.movie.MovieDescription
+import com.example.movietiket.common.model.movie.MovieTitle
+import com.example.movietiket.common.model.movie.RunningTime
+import com.example.movietiket.common.model.screening.Screening
+import com.example.movietiket.common.model.screening.ScreeningPeriod
+import com.example.movietiket.common.model.movie.Synopsis
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

@@ -40,7 +40,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.movietiket.R
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.common.repository.TheaterRepository
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.ui.theme.SeatDisabledButton
 import com.example.movietiket.ui.theme.SeatGradeFirst

@@ -1,6 +1,6 @@
 package com.example.movietiket.reservation.presenter
 
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.Reservation
 import java.time.LocalDate
 import java.time.LocalTime
 

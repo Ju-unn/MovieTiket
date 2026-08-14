@@ -1,6 +1,6 @@
 package com.example.movietiket.movielist.model
 
-import com.example.movietiket.common.model.Movie
+import com.example.movietiket.common.model.movie.Movie
 
 /**
  * 영화 목록에 실제로 그려지는 한 줄

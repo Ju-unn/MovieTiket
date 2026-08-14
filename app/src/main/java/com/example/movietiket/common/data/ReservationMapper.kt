@@ -1,8 +1,8 @@
 package com.example.movietiket.common.data
 
-import com.example.movietiket.common.model.HeadCount
-import com.example.movietiket.common.model.Reservation
-import com.example.movietiket.common.model.ReservationHistory
+import com.example.movietiket.common.model.reservation.HeadCount
+import com.example.movietiket.common.model.reservation.Reservation
+import com.example.movietiket.common.model.reservation.ReservationHistory
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.common.repository.TheaterRepository
 import java.time.LocalDate

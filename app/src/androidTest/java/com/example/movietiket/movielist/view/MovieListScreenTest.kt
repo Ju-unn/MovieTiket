@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.movietiket.common.fixture.harryPotterMovie
-import com.example.movietiket.common.model.Movie
+import com.example.movietiket.common.model.movie.Movie
 import com.example.movietiket.movielist.model.MovieListRow
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import org.junit.Assert.assertSame

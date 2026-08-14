@@ -2,7 +2,7 @@ package com.example.movietiket.reservation.presenter
 
 import com.example.movietiket.common.fixture.testMovie
 import com.example.movietiket.common.fixture.testTheater
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.Reservation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

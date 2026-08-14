@@ -3,8 +3,8 @@ package com.example.movietiket.history.presenter
 import com.example.movietiket.common.fixture.FakeReservationHistoryRepository
 import com.example.movietiket.common.fixture.testMovie
 import com.example.movietiket.common.fixture.testTheater
-import com.example.movietiket.common.model.Reservation
-import com.example.movietiket.common.model.ReservationHistory
+import com.example.movietiket.common.model.reservation.Reservation
+import com.example.movietiket.common.model.reservation.ReservationHistory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

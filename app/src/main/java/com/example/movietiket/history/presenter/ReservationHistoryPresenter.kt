@@ -1,6 +1,6 @@
 package com.example.movietiket.history.presenter
 
-import com.example.movietiket.common.model.ReservationHistory
+import com.example.movietiket.common.model.reservation.ReservationHistory
 import com.example.movietiket.common.repository.ReservationHistoryRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest

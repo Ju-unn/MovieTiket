@@ -1,15 +1,15 @@
 package com.example.movietiket.common.fixture
 
-import com.example.movietiket.common.model.Movie
-import com.example.movietiket.common.model.MovieDescription
-import com.example.movietiket.common.model.MovieTitle
-import com.example.movietiket.common.model.Reservation
-import com.example.movietiket.common.model.RunningTime
-import com.example.movietiket.common.model.Screening
-import com.example.movietiket.common.model.ScreeningPeriod
-import com.example.movietiket.common.model.Synopsis
-import com.example.movietiket.common.model.Theater
-import com.example.movietiket.common.model.TheaterName
+import com.example.movietiket.common.model.movie.Movie
+import com.example.movietiket.common.model.movie.MovieDescription
+import com.example.movietiket.common.model.movie.MovieTitle
+import com.example.movietiket.common.model.reservation.Reservation
+import com.example.movietiket.common.model.movie.RunningTime
+import com.example.movietiket.common.model.screening.Screening
+import com.example.movietiket.common.model.screening.ScreeningPeriod
+import com.example.movietiket.common.model.movie.Synopsis
+import com.example.movietiket.common.model.theater.Theater
+import com.example.movietiket.common.model.theater.TheaterName
 import java.time.LocalDate
 
 // 2024.3.1(금요일, 평일)~2024.3.28

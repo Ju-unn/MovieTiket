@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.movietiket.R
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.common.repository.TheaterRepository
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.Reservation
 import com.example.movietiket.ui.theme.MovieNoticeBackground
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.common.view.BackNavigationTopBar

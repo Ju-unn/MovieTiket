@@ -8,7 +8,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.content.getSystemService
 import com.example.movietiket.BuildConfig
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.Reservation
 import com.example.movietiket.notification.model.AlarmSchedule
 import com.example.movietiket.notification.model.ScreeningAlarmPolicy
 import java.time.LocalDateTime

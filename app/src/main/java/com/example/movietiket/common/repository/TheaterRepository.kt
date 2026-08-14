@@ -1,8 +1,8 @@
 package com.example.movietiket.common.repository
 
-import com.example.movietiket.common.model.Theater
-import com.example.movietiket.common.model.TheaterName
-import com.example.movietiket.common.model.Theaters
+import com.example.movietiket.common.model.theater.Theater
+import com.example.movietiket.common.model.theater.TheaterName
+import com.example.movietiket.common.model.theater.Theaters
 
 /**
  * 극장 목록 데이터를 제공하는 저장소

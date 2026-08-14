@@ -1,6 +1,6 @@
 package com.example.movietiket.common.fixture
 
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.Reservation
 import com.example.movietiket.notification.ScreeningAlarmScheduler
 
 /**

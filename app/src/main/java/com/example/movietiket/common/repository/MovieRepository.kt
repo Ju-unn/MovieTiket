@@ -1,13 +1,13 @@
 package com.example.movietiket.common.repository
 
-import com.example.movietiket.common.model.Movie
-import com.example.movietiket.common.model.MovieDescription
-import com.example.movietiket.common.model.Movies
-import com.example.movietiket.common.model.MovieTitle
-import com.example.movietiket.common.model.RunningTime
-import com.example.movietiket.common.model.Screening
-import com.example.movietiket.common.model.ScreeningPeriod
-import com.example.movietiket.common.model.Synopsis
+import com.example.movietiket.common.model.movie.Movie
+import com.example.movietiket.common.model.movie.MovieDescription
+import com.example.movietiket.common.model.movie.Movies
+import com.example.movietiket.common.model.movie.MovieTitle
+import com.example.movietiket.common.model.movie.RunningTime
+import com.example.movietiket.common.model.screening.Screening
+import com.example.movietiket.common.model.screening.ScreeningPeriod
+import com.example.movietiket.common.model.movie.Synopsis
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
