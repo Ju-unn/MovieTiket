@@ -10,10 +10,7 @@ import java.time.LocalTime
 
 private const val SEAT_DELIMITER = ","
 
-/**
- * 도메인 <-> 테이블 변환
- * 영화/극장은 고정 데이터이므로 id로 다시 조회해 도메인 객체를 재조립한다
- */
+// Reservation을 저장용 Entity로 변환한다 (영화/극장은 id만 저장)
 fun Reservation.toEntity(reservedAt: Long): ReservationEntity = ReservationEntity(
     movieId = movieId(),
     theaterId = theaterId(),
@@ -24,6 +21,7 @@ fun Reservation.toEntity(reservedAt: Long): ReservationEntity = ReservationEntit
     reservedAt = reservedAt,
 )
 
+// 저장된 Entity를 도메인 예매 내역(ReservationHistory)으로 재조립한다
 fun ReservationEntity.toReservationHistory(): ReservationHistory = ReservationHistory(
     id = id,
     reservation = Reservation(

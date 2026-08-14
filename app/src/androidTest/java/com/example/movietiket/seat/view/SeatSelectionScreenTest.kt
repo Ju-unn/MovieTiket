@@ -15,12 +15,16 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * 좌석 선택 화면(SeatSelectionScreen)의 표시, 좌석 선택/해제, 예매 확정 동작을 검증한다
+ */
 @RunWith(AndroidJUnit4::class)
 class SeatSelectionScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    // 영화 제목과 초기 가격이 화면에 표시되는지 검증한다
     @Test
     fun `영화_제목과_초기_가격을_표시한다`() {
         composeTestRule.setContent {
@@ -40,6 +44,7 @@ class SeatSelectionScreenTest {
         composeTestRule.onNodeWithText("0원").assertIsDisplayed()
     }
 
+    // 미선택 좌석 클릭 시 선택 콜백이 호출되는지 검증한다
     @Test
     fun `미선택_좌석을_클릭하면_선택_콜백이_호출된다`() {
         var selectedSeat: String? = null
@@ -62,6 +67,7 @@ class SeatSelectionScreenTest {
         assertEquals("A1", selectedSeat)
     }
 
+    // 선택된 좌석 클릭 시 해제 콜백이 호출되는지 검증한다
     @Test
     fun `선택된_좌석을_클릭하면_해제_콜백이_호출된다`() {
         var deselectedSeat: String? = null
@@ -84,6 +90,7 @@ class SeatSelectionScreenTest {
         assertEquals("A1", deselectedSeat)
     }
 
+    // 좌석 선택 완료 시 확인 다이얼로그를 거쳐 확정 콜백이 호출되는지 검증한다
     @Test
     fun `좌석_선택이_완료되면_확인_다이얼로그를_거쳐_확정_콜백이_호출된다`() {
         var confirmed = false
@@ -108,6 +115,7 @@ class SeatSelectionScreenTest {
         assertTrue(confirmed)
     }
 
+    // 좌석 미선택 상태에서는 확인 버튼을 눌러도 확정 콜백이 호출되지 않는지 검증한다
     @Test
     fun `좌석_미선택_상태에서는_확인_버튼을_눌러도_확정_콜백이_호출되지_않는다`() {
         var confirmed = false
@@ -130,6 +138,7 @@ class SeatSelectionScreenTest {
         assertFalse(confirmed)
     }
 
+    // 뒤로 가기 버튼 클릭 시 콜백이 호출되는지 검증한다
     @Test
     fun `뒤로_가기_버튼을_클릭하면_뒤로_가기_콜백이_호출된다`() {
         var backClicked = false

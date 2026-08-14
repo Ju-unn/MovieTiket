@@ -9,13 +9,18 @@ import org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+/**
+ * Reservation과 DB 엔티티(Room row) 간 매핑을 검증하는 테스트
+ */
 class ReservationMapperTest {
 
+    // 테스트용 예매(좌석 2개 선택) 생성
     private fun reservation(): Reservation = Reservation.of(
         MovieRepository.findById(0),
         TheaterRepository.findById(2),
     ).increaseHeadCount().selectSeat("B3").selectSeat("A1")
 
+    // 예매를 엔티티로 변환 시 좌석이 정렬된 문자열로 저장되는지 검증
     @Test
     @DisplayName("예매를 테이블 행으로 바꾸면 좌석은 정렬된 문자열이 된다")
     fun toEntity() {
@@ -28,6 +33,7 @@ class ReservationMapperTest {
         assertThat(entity.reservedAt).isEqualTo(1_700_000_000_000L)
     }
 
+    // 엔티티를 다시 예매 이력으로 변환하면 원본 내용이 그대로 복원되는지 검증
     @Test
     @DisplayName("테이블 행을 되돌리면 원래 예매 내용이 복원된다")
     fun toReservationHistory() {
@@ -47,6 +53,7 @@ class ReservationMapperTest {
         assertThat(restored.reservation().totalAmountWon()).isEqualTo(original.totalAmountWon())
     }
 
+    // 좌석 미선택 상태의 예매도 저장/복원이 가능한지 검증
     @Test
     @DisplayName("좌석을 고르지 않은 예매도 저장하고 되돌릴 수 있다")
     fun emptySeats() {
@@ -57,6 +64,7 @@ class ReservationMapperTest {
         assertThat(entity.toReservationHistory().reservation().displaySelectedSeats()).isEmpty()
     }
 
+    // 상영 날짜가 선택되지 않은 예매는 저장 시 예외가 발생하는지 검증
     @Test
     @DisplayName("상영 날짜가 없는 예매는 저장할 수 없다")
     fun cannotSaveWithoutScreeningDate() {

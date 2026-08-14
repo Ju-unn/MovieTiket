@@ -17,6 +17,7 @@ import java.time.LocalTime
 private const val NO_DATE = -1L
 private const val NO_TIME = -1
 
+// Reservation을 원시값 리스트로 변환한다 (상태 저장용)
 private fun reservationToList(reservation: Reservation): List<Any> = listOf(
     reservation.movieId(),
     reservation.headCountValue(),
@@ -26,6 +27,7 @@ private fun reservationToList(reservation: Reservation): List<Any> = listOf(
     reservation.selectedSeatsValue().toList(),
 )
 
+// 원시값 리스트로부터 Reservation을 복원한다 (상태 복원용)
 @Suppress("UNCHECKED_CAST")
 private fun reservationFromList(saved: List<Any?>): Reservation {
     val movie = MovieRepository.findById(saved[0] as Int)

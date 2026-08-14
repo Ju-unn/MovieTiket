@@ -69,6 +69,7 @@ fun MovieListItem(
     }
 }
 
+// 영화 포스터 썸네일 이미지를 표시
 @Composable
 private fun MoviePosterThumbnail(posterRes: Int) {
     Image(
@@ -87,6 +88,7 @@ internal fun posterResFor(movieId: Int): Int = when (movieId % 5) {
     else -> R.drawable.movieposter
 }
 
+// 영화 제목, 상영 기간, 상영 시간 정보를 표시
 @Composable
 private fun MovieSummary(movie: Movie) {
     Column {
@@ -107,6 +109,7 @@ private fun MovieSummary(movie: Movie) {
     }
 }
 
+// "지금 예매" 버튼
 @Composable
 private fun ReserveNowButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(
@@ -124,6 +127,7 @@ private fun ReserveNowButton(onClick: () -> Unit, modifier: Modifier = Modifier)
     }
 }
 
+// 영화 목록 항목 미리보기
 @Preview(showBackground = true)
 @Composable
 private fun MovieListItemPreview() {

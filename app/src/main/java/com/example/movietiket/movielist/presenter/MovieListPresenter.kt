@@ -27,15 +27,18 @@ class MovieListPresenter(
         loadMovies()
     }
 
+    // 저장소의 영화 목록을 광고가 끼워진 행 목록으로 변환해 View에 전달
     override fun loadMovies() {
         view.showMovies(MovieListRow.of(movies.toList()))
     }
 
+    // 예매할 영화를 기억해 두고 극장 선택 바텀시트를 띄운다
     override fun onReserveClick(movie: Movie) {
         movieBeingReserved = movie
         view.showTheaterSelection(theaters.toList())
     }
 
+    // 극장이 선택되면 바텀시트를 닫고 예매 흐름으로 이어준다
     override fun onTheaterSelected(theater: Theater) {
         val movie = movieBeingReserved ?: return
         movieBeingReserved = null
@@ -43,6 +46,7 @@ class MovieListPresenter(
         onMovieReserveRequested(movie, theater)
     }
 
+    // 극장 선택이 취소되면 상태를 초기화하고 바텀시트를 닫는다
     override fun onTheaterSelectionDismissed() {
         movieBeingReserved = null
         view.hideTheaterSelection()

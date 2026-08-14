@@ -9,12 +9,11 @@ import org.junit.runner.RunWith
 import org.junit.Assert.*
 
 /**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * 안드로이드 기기에서 실행되는 기본 계측 테스트 샘플.
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
+    // 앱 컨텍스트의 패키지명이 올바른지 검증한다
     @Test
     fun useAppContext() {
         // Context of the app under test.

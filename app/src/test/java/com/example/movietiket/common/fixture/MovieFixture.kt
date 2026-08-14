@@ -18,10 +18,12 @@ private val TEST_END_DATE: LocalDate = TEST_START_DATE.plusDays(27)
 /**
  * test / androidTest에서 공통으로 사용하는 테스트용 영화 픽스처
  */
+// 테스트용 영화(해리 포터와 마법사의 돌) 생성
 fun testMovie(): Movie = Movie(
     id = 0,
     description = MovieDescription(MovieTitle("해리 포터와 마법사의 돌"), Synopsis("소개")),
     screening = Screening(ScreeningPeriod(TEST_START_DATE, TEST_END_DATE), RunningTime(152)),
 )
 
+// 테스트용 극장(강남점) 생성
 fun testTheater(): Theater = Theater(id = 0, name = TheaterName("강남점"))

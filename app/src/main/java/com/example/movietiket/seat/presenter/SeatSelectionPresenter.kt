@@ -30,6 +30,7 @@ class SeatSelectionPresenter(
         view.showReservation(reservation)
     }
 
+    // 좌석을 선택하고, 인원수를 초과하면 View에 알린다
     override fun selectSeat(seat: String) {
         reservation = try {
             reservation.selectSeat(seat)
@@ -39,10 +40,12 @@ class SeatSelectionPresenter(
         }
     }
 
+    // 좌석 선택을 해제한다
     override fun deselectSeat(seat: String) {
         reservation = reservation.deselectSeat(seat)
     }
 
+    // 예매 내역을 저장하고 알림을 예약한 뒤 완료 화면으로 넘긴다
     override fun confirmSelection() {
         // 저장이 끝난 뒤 화면을 넘겨야 완료 화면에서 되돌아왔을 때 내역이 이미 보인다
         coroutineScope.launch {

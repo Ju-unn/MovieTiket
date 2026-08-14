@@ -15,6 +15,7 @@ enum class SeatGrade(private val price: Money) {
     companion object {
         private const val ROWS = "ABCDE"
 
+        // 좌석 번호(행)로부터 좌석 등급을 판별한다
         fun of(seat: String): SeatGrade = when (ROWS.indexOf(seat.first()) + 1) {
             1, 2 -> B
             3, 4 -> S

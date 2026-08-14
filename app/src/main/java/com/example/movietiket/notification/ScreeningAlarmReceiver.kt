@@ -10,6 +10,7 @@ import com.example.movietiket.common.data.SharedPreferencesPushNotificationSetti
  */
 class ScreeningAlarmReceiver : BroadcastReceiver() {
 
+    // 알람 발생 시 예약 정보를 꺼내 상영 알림을 띄운다
     override fun onReceive(context: Context, intent: Intent) {
         val reservationId = intent.getLongExtra(EXTRA_RESERVATION_ID, NO_RESERVATION_ID)
         val movieTitle = intent.getStringExtra(EXTRA_MOVIE_TITLE) ?: return

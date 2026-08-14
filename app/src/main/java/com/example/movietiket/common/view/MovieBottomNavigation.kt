@@ -69,6 +69,7 @@ fun MovieBottomNavigation(
     }
 }
 
+// 개별 하단 네비게이션 탭 한 칸을 그린다
 @Composable
 private fun NavigationTab(
     tab: NavigationTabItem,
@@ -103,6 +104,9 @@ private fun NavigationTab(
     }
 }
 
+/**
+ * 하단 네비게이션 탭 하나(화면, 아이콘, 라벨)를 담는 값 객체
+ */
 private class NavigationTabItem(
     val screen: Screen.Tab,
     val icon: ImageVector,

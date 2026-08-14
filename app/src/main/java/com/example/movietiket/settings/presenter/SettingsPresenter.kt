@@ -15,10 +15,12 @@ class SettingsPresenter(
         loadSettings()
     }
 
+    // 저장된 푸시 알림 설정을 불러와 View에 표시한다
     override fun loadSettings() {
         view.showPushNotificationEnabled(pushNotificationSettings.isEnabled())
     }
 
+    // 푸시 알림 설정을 변경하고 결과를 View에 반영한다
     override fun onPushNotificationToggled(enabled: Boolean) {
         pushNotificationSettings.setEnabled(enabled)
         view.showPushNotificationEnabled(pushNotificationSettings.isEnabled())

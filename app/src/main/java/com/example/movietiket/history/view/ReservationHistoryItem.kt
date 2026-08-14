@@ -75,6 +75,7 @@ fun ReservationHistoryItem(
     }
 }
 
+// 날짜, 시간, 극장 정보를 구분자와 함께 한 줄로 보여준다
 @Composable
 private fun ReservationMeta(history: ReservationHistory) {
     Row(
@@ -89,6 +90,7 @@ private fun ReservationMeta(history: ReservationHistory) {
     }
 }
 
+// 메타 정보(날짜/시간/극장) 텍스트를 표시
 @Composable
 private fun MetaValue(text: String) {
     Text(
@@ -99,6 +101,7 @@ private fun MetaValue(text: String) {
     )
 }
 
+// 메타 정보 사이의 구분자("|")를 표시
 @Composable
 private fun MetaSeparator() {
     Text(
@@ -108,6 +111,7 @@ private fun MetaSeparator() {
     )
 }
 
+// 예매 내역 항목 미리보기
 @Preview(showBackground = true)
 @Composable
 private fun ReservationHistoryItemPreview() {

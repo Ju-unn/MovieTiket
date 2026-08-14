@@ -14,12 +14,16 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalTime
 
+/**
+ * 예매 완료 화면(ReservationCompleteScreen)의 표시 내용과 뒤로 가기 동작을 검증한다
+ */
 @RunWith(AndroidJUnit4::class)
 class ReservationCompleteScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    // 예매 내역과 결제 금액이 화면에 표시되는지 검증한다
     @Test
     fun `예매_내역과_결제_금액을_표시한다`() {
         // A1은 B등급 좌석(10,000원)이다
@@ -37,6 +41,7 @@ class ReservationCompleteScreenTest {
         composeTestRule.onNodeWithText("10,000원 (현장 결제)").assertIsDisplayed()
     }
 
+    // 뒤로 가기 버튼 클릭 시 콜백이 호출되는지 검증한다
     @Test
     fun `뒤로_가기_버튼을_클릭하면_뒤로_가기_콜백이_호출된다`() {
         var backClicked = false

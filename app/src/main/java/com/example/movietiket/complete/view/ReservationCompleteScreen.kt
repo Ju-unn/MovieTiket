@@ -57,6 +57,7 @@ fun ReservationCompleteScreen(
     }
 }
 
+// 예매 취소 안내 문구를 보여주는 배너
 @Composable
 private fun CancellationNotice() {
     Box(
@@ -76,6 +77,7 @@ private fun CancellationNotice() {
     }
 }
 
+// 영화 제목, 상영 일시, 좌석, 결제 금액 등 예매 요약 정보를 보여준다
 @Composable
 private fun ReservationSummary(reservation: Reservation) {
     Column(
@@ -124,6 +126,7 @@ private fun ReservationSummary(reservation: Reservation) {
     }
 }
 
+// 예매 완료 화면 미리보기
 @Preview(showBackground = true)
 @Composable
 private fun ReservationCompleteScreenPreview() {

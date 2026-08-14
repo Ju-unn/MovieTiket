@@ -6,8 +6,12 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalTime
 
+/**
+ * ScreeningTimeTable의 평일/주말 상영 시간표 생성 규칙을 검증하는 테스트
+ */
 class ScreeningTimeTableTest {
 
+    // 평일 상영 시간이 10시부터 2시간 간격으로 생성되는지 검증
     @Test
     @DisplayName("평일에는 오전 10시부터 2시간 간격으로 자정 전까지 상영한다")
     fun weekdayTimes() {
@@ -19,6 +23,7 @@ class ScreeningTimeTableTest {
         )
     }
 
+    // 주말 상영 시간이 9시부터 2시간 간격으로 생성되는지 검증
     @Test
     @DisplayName("주말에는 오전 9시부터 2시간 간격으로 자정 전까지 상영한다")
     fun weekendTimes() {
@@ -30,6 +35,7 @@ class ScreeningTimeTableTest {
         )
     }
 
+    // 일요일에도 주말 시간표 정책이 적용되는지 검증
     @Test
     @DisplayName("일요일도 주말 정책이 적용된다")
     fun sundayIsWeekend() {

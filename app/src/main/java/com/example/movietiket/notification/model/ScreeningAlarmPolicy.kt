@@ -10,6 +10,7 @@ object ScreeningAlarmPolicy {
 
     const val NOTICE_MINUTES = 30L
 
+    // 상영 시각과 현재 시각을 비교해 알림을 언제 울릴지 결정한다
     fun scheduleFor(screeningAt: LocalDateTime, now: LocalDateTime): AlarmSchedule {
         val noticeAt = screeningAt.minusMinutes(NOTICE_MINUTES)
         return when {
@@ -23,6 +24,7 @@ object ScreeningAlarmPolicy {
     }
 }
 
+/** 알림 예약 결과를 나타낸다 */
 sealed interface AlarmSchedule {
 
     /** 지정한 시각에 알림을 예약한다 */

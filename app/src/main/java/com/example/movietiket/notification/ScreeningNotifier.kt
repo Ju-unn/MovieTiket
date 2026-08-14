@@ -22,6 +22,7 @@ object ScreeningNotifier {
     const val CHANNEL_ID = "screening_notice"
     const val EXTRA_RESERVATION_ID = "reservationId"
 
+    // 알림 채널을 생성한다 (Android O 미만은 무시)
     fun createChannel(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val channel = NotificationChannel(
@@ -34,6 +35,7 @@ object ScreeningNotifier {
         NotificationManagerCompat.from(context).createNotificationChannel(channel)
     }
 
+    // 상영이 임박했음을 알리는 알림을 띄운다
     fun notifyScreeningSoon(context: Context, reservationId: Long, movieTitle: String) {
         if (!hasPostPermission(context)) return
 
@@ -63,6 +65,7 @@ object ScreeningNotifier {
         )
     }
 
+    // 알림 게시 권한이 있는지 확인한다
     private fun hasPostPermission(context: Context): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return true
         return ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==

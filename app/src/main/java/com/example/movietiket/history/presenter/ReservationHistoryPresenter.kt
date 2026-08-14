@@ -21,12 +21,14 @@ class ReservationHistoryPresenter(
         loadHistories()
     }
 
+    // 저장소의 예매 내역 흐름을 구독해 View에 반영한다
     override fun loadHistories() {
         coroutineScope.launch {
             reservationHistoryRepository.findAll().collectLatest(view::showHistories)
         }
     }
 
+    // 예매 내역 항목 클릭 시 선택 콜백을 호출한다
     override fun onHistoryClick(history: ReservationHistory) {
         onHistorySelected(history)
     }

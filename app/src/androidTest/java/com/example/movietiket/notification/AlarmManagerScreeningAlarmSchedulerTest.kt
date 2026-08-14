@@ -38,6 +38,7 @@ class AlarmManagerScreeningAlarmSchedulerTest {
         return pendingIntent != null
     }
 
+    // 상영 시각이 미래이면 알람이 등록되는지 검증한다
     @Test
     fun schedulesAlarmWhenScreeningIsInFuture() {
         val reservation = harryPotterReservation()
@@ -49,6 +50,7 @@ class AlarmManagerScreeningAlarmSchedulerTest {
         assertTrue(pendingIntentExists(100L))
     }
 
+    // 상영 일시가 선택되지 않았으면 알람을 등록하지 않는지 검증한다
     @Test
     fun doesNothingWhenScreeningDateTimeIsNotSelected() {
         val reservation = Reservation(testMovie(), HeadCount.MINIMUM, testTheater())

@@ -4,8 +4,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+/**
+ * 극장 저장소가 제공하는 기본 극장 목록과 조회 기능을 검증한다.
+ */
 class TheaterRepositoryTest {
 
+    // 극장 목록 조회 시 3개의 극장이 반환되는지 검증
     @Test
     @DisplayName("극장 목록을 조회하면 3개의 극장을 반환한다")
     fun findAll() {
@@ -19,6 +23,7 @@ class TheaterRepositoryTest {
         )
     }
 
+    // id로 극장을 조회할 수 있는지 검증
     @Test
     @DisplayName("id로 극장을 조회할 수 있다")
     fun findById() {

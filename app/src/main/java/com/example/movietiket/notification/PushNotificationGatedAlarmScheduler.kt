@@ -12,6 +12,7 @@ class PushNotificationGatedAlarmScheduler(
     private val pushNotificationSettings: PushNotificationSettings,
 ) : ScreeningAlarmScheduler {
 
+    // 푸시 알림 설정이 켜져 있을 때만 위임된 스케줄러에 알람 예약을 맡긴다
     override fun schedule(reservationId: Long, reservation: Reservation) {
         if (!pushNotificationSettings.isEnabled()) return
         delegate.schedule(reservationId, reservation)

@@ -125,6 +125,7 @@ private fun TabRoute(
     }
 }
 
+/** 예매 내역 화면의 상태를 보관하는 View 구현체 */
 private class ReservationHistoryViewState : ReservationHistoryContract.View {
     var histories by mutableStateOf(emptyList<ReservationHistory>())
         private set
@@ -158,6 +159,7 @@ private fun ReservationHistoryRoute(
     )
 }
 
+/** 설정 화면의 상태를 보관하는 View 구현체 */
 private class SettingsViewState : SettingsContract.View {
     var pushNotificationEnabled by mutableStateOf(true)
         private set
@@ -185,6 +187,7 @@ private fun SettingsRoute(modifier: Modifier = Modifier) {
     )
 }
 
+// 예매 상세 정보 화면을 보여준다
 @Composable
 private fun ReservationDetailRoute(
     reservation: Reservation,
@@ -254,6 +257,7 @@ private fun OpenPendingReservationFromNotification(
     }
 }
 
+/** 영화 목록 화면의 상태를 보관하는 View 구현체 */
 private class MovieListViewState : MovieListContract.View {
     var rows by mutableStateOf(emptyList<MovieListRow>())
         private set
@@ -275,6 +279,7 @@ private class MovieListViewState : MovieListContract.View {
     }
 }
 
+// 영화 목록 화면을 보여준다
 @Composable
 private fun MovieListRoute(
     navigationController: MovieNavigationController,
@@ -298,6 +303,7 @@ private fun MovieListRoute(
     )
 }
 
+// 영화 예매(인원/날짜/시간 선택) 화면을 보여준다
 @Composable
 private fun MovieReservationRoute(
     movie: Movie,
@@ -334,6 +340,7 @@ private fun MovieReservationRoute(
     )
 }
 
+// 좌석 선택 화면을 보여준다
 @Composable
 private fun SeatSelectionRoute(
     initialReservation: Reservation,
@@ -380,6 +387,7 @@ private fun SeatSelectionRoute(
     )
 }
 
+// 예매 완료 화면을 보여준다
 @Composable
 private fun ReservationCompleteRoute(
     reservation: Reservation,

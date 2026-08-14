@@ -10,9 +10,12 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ReservationHistoryRepository {
 
+    // 예매 정보를 저장하고 생성된 id를 반환한다
     suspend fun save(reservation: Reservation): Long
 
+    // 전체 예매 내역을 Flow로 반환한다
     fun findAll(): Flow<List<ReservationHistory>>
 
+    // id에 해당하는 예매 내역을 조회한다
     suspend fun findById(id: Long): ReservationHistory?
 }

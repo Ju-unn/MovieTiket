@@ -23,6 +23,7 @@ class RoomReservationHistoryRepositoryTest {
     private lateinit var database: MovieTicketDatabase
     private lateinit var repository: RoomReservationHistoryRepository
 
+    // 인메모리 Room DB와 리포지토리를 준비한다
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -32,11 +33,13 @@ class RoomReservationHistoryRepositoryTest {
         repository = RoomReservationHistoryRepository(database.reservationDao())
     }
 
+    // 테스트가 끝나면 DB를 닫는다
     @After
     fun tearDown() {
         database.close()
     }
 
+    // 저장 후 id로 조회하면 동일한 예매 정보를 반환하는지 검증한다
     @Test
     fun saveThenFindByIdReturnsSameReservation() = runBlocking {
         val reservation = harryPotterReservation().selectSeat("A1")
@@ -49,11 +52,13 @@ class RoomReservationHistoryRepositoryTest {
         assertEquals("A1", found?.reservation()?.displaySelectedSeats())
     }
 
+    // 일치하는 데이터가 없으면 null을 반환하는지 검증한다
     @Test
     fun findByIdReturnsNullWhenNoMatch() = runBlocking {
         assertNull(repository.findById(999L))
     }
 
+    // 전체 조회 시 최근 예매 순으로 정렬되는지 검증한다
     @Test
     fun findAllOrdersByMostRecentReservationFirst() = runBlocking {
         var now = 0L
