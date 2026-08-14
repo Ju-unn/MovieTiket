@@ -6,8 +6,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.movietiket.common.model.Movie
-import com.example.movietiket.common.model.Theater
+import com.example.movietiket.common.model.movie.Movie
+import com.example.movietiket.common.model.theater.Theater
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.movielist.model.MovieListRow
 import com.example.movietiket.ui.theme.MovieTiketTheme

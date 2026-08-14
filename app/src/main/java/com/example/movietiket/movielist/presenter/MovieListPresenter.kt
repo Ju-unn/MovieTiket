@@ -1,9 +1,9 @@
 package com.example.movietiket.movielist.presenter
 
-import com.example.movietiket.common.model.Movie
-import com.example.movietiket.common.model.Movies
-import com.example.movietiket.common.model.Theater
-import com.example.movietiket.common.model.Theaters
+import com.example.movietiket.common.model.movie.Movie
+import com.example.movietiket.common.model.movie.Movies
+import com.example.movietiket.common.model.theater.Theater
+import com.example.movietiket.common.model.theater.Theaters
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.common.repository.TheaterRepository
 import com.example.movietiket.movielist.model.MovieListRow

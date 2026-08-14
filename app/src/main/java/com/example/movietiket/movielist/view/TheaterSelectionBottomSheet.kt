@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.movietiket.common.model.Theater
+import com.example.movietiket.common.model.theater.Theater
 import com.example.movietiket.ui.theme.TheaterItemBackground
 
 // Figma "극장 선택 다이얼로그"(360x207) 기준 수치

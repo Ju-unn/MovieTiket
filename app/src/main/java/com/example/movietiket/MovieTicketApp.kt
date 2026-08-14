@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.example.movietiket.common.view.MovieBottomNavigation
 import com.example.movietiket.common.view.MovieTopBar
-import com.example.movietiket.common.model.ReservationHistory
+import com.example.movietiket.common.model.reservation.ReservationHistory
 import com.example.movietiket.history.presenter.ReservationHistoryContract
 import com.example.movietiket.history.presenter.ReservationHistoryPresenter
 import com.example.movietiket.history.view.ReservationHistoryScreen
@@ -39,9 +39,9 @@ import com.example.movietiket.common.data.RoomReservationHistoryRepository
 import com.example.movietiket.common.repository.ReservationHistoryRepository
 import com.example.movietiket.navigation.MovieNavigationController
 import com.example.movietiket.navigation.Screen
-import com.example.movietiket.common.model.Movie
-import com.example.movietiket.common.model.Reservation
-import com.example.movietiket.common.model.Theater
+import com.example.movietiket.common.model.movie.Movie
+import com.example.movietiket.common.model.reservation.Reservation
+import com.example.movietiket.common.model.theater.Theater
 import com.example.movietiket.movielist.presenter.MovieListContract
 import com.example.movietiket.movielist.presenter.MovieListPresenter
 import com.example.movietiket.reservation.presenter.ReservationContract

@@ -1,16 +1,16 @@
 package com.example.movietiket.movielist.presenter
 
-import com.example.movietiket.common.model.Movie
-import com.example.movietiket.common.model.MovieDescription
-import com.example.movietiket.common.model.Movies
-import com.example.movietiket.common.model.MovieTitle
-import com.example.movietiket.common.model.RunningTime
-import com.example.movietiket.common.model.Screening
-import com.example.movietiket.common.model.ScreeningPeriod
-import com.example.movietiket.common.model.Synopsis
-import com.example.movietiket.common.model.Theater
-import com.example.movietiket.common.model.TheaterName
-import com.example.movietiket.common.model.Theaters
+import com.example.movietiket.common.model.movie.Movie
+import com.example.movietiket.common.model.movie.MovieDescription
+import com.example.movietiket.common.model.movie.Movies
+import com.example.movietiket.common.model.movie.MovieTitle
+import com.example.movietiket.common.model.movie.RunningTime
+import com.example.movietiket.common.model.screening.Screening
+import com.example.movietiket.common.model.screening.ScreeningPeriod
+import com.example.movietiket.common.model.movie.Synopsis
+import com.example.movietiket.common.model.theater.Theater
+import com.example.movietiket.common.model.theater.TheaterName
+import com.example.movietiket.common.model.theater.Theaters
 import com.example.movietiket.movielist.model.MovieListRow
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName

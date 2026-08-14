@@ -1,6 +1,6 @@
 package com.example.movietiket.notification
 
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.Reservation
 import com.example.movietiket.common.repository.PushNotificationSettings
 
 /**

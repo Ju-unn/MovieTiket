@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.movietiket.common.model.ReservationHistory
+import com.example.movietiket.common.model.reservation.ReservationHistory
 
 /**
  * 예매 내역 탭 (내가 예매한 내역을 최근 순으로 보여준다)

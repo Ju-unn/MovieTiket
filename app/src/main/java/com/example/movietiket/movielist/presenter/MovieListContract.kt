@@ -1,7 +1,7 @@
 package com.example.movietiket.movielist.presenter
 
-import com.example.movietiket.common.model.Movie
-import com.example.movietiket.common.model.Theater
+import com.example.movietiket.common.model.movie.Movie
+import com.example.movietiket.common.model.theater.Theater
 import com.example.movietiket.movielist.model.MovieListRow
 
 /**

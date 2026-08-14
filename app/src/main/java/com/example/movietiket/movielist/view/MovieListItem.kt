@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movietiket.R
-import com.example.movietiket.common.model.Movie
+import com.example.movietiket.common.model.movie.Movie
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.ui.theme.MovieTiketTheme
 

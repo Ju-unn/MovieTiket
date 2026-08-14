@@ -2,8 +2,8 @@ package com.example.movietiket.common.state
 
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
-import com.example.movietiket.common.model.HeadCount
-import com.example.movietiket.common.model.Reservation
+import com.example.movietiket.common.model.reservation.HeadCount
+import com.example.movietiket.common.model.reservation.Reservation
 import com.example.movietiket.navigation.Screen
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.common.repository.TheaterRepository

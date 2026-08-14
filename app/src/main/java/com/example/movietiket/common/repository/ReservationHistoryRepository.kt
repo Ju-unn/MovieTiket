@@ -1,7 +1,7 @@
 package com.example.movietiket.common.repository
 
-import com.example.movietiket.common.model.Reservation
-import com.example.movietiket.common.model.ReservationHistory
+import com.example.movietiket.common.model.reservation.Reservation
+import com.example.movietiket.common.model.reservation.ReservationHistory
 import kotlinx.coroutines.flow.Flow
 
 /**
