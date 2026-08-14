@@ -61,13 +61,22 @@ import com.example.movietiket.seat.view.SeatSelectionScreen
  * 화면 상태는 rememberSaveable로 저장해 회전 등 구성 변경에도 유지한다
  */
 @Composable
-fun MovieTicketApp() {
+fun MovieTicketApp(
+    pendingReservationId: Long? = null,
+    onPendingReservationConsumed: () -> Unit = {},
+) {
     val screenState = rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Tab.Home) }
     val navigationController = remember { MovieNavigationController(screenState) }
     val reservationHistoryRepository = rememberReservationHistoryRepository()
     val screeningAlarmScheduler = rememberScreeningAlarmScheduler()
 
     RequestNotificationPermissionOnce()
+    OpenPendingReservationFromNotification(
+        pendingReservationId = pendingReservationId,
+        reservationHistoryRepository = reservationHistoryRepository,
+        navigationController = navigationController,
+        onConsumed = onPendingReservationConsumed,
+    )
 
     when (val screen = navigationController.screen()) {
         is Screen.Tab -> TabRoute(screen, navigationController, reservationHistoryRepository)
@@ -225,6 +234,23 @@ private fun RequestNotificationPermissionOnce() {
         if (!granted) {
             launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+    }
+}
+
+/** 알림을 눌러 들어왔으면 해당 예매 정보 화면으로 이동한다 */
+@Composable
+private fun OpenPendingReservationFromNotification(
+    pendingReservationId: Long?,
+    reservationHistoryRepository: ReservationHistoryRepository,
+    navigationController: MovieNavigationController,
+    onConsumed: () -> Unit,
+) {
+    LaunchedEffect(pendingReservationId) {
+        val id = pendingReservationId ?: return@LaunchedEffect
+        reservationHistoryRepository.findById(id)?.let { history ->
+            navigationController.moveToReservationDetail(history.reservation())
+        }
+        onConsumed()
     }
 }
 
