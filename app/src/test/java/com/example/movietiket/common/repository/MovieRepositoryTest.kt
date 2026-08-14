@@ -11,7 +11,7 @@ class MovieRepositoryTest {
     fun findAll() {
         val movies = MovieRepository.findAll()
 
-        assertThat(movies.toList()).hasSize(5)
+        assertThat(movies.toList()).hasSize(10)
     }
 
     @Test
