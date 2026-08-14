@@ -48,6 +48,7 @@ import com.example.movietiket.common.model.DisplayDateFormat
 import com.example.movietiket.common.model.Reservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.common.view.BackNavigationTopBar
+import com.example.movietiket.movielist.view.posterResFor
 import com.example.movietiket.reservation.view.HeadCountSelector
 import java.time.LocalDate
 import java.time.LocalTime
@@ -94,7 +95,7 @@ fun MovieReservationScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
         ) {
-            ReservationPoster()
+            ReservationPoster(posterRes = posterResFor(reservation.movieId()))
             ReservationMovieInformation(
                 reservation = reservation,
                 modifier = Modifier.padding(horizontal = CONTENT_HORIZONTAL_PADDING),
@@ -104,9 +105,9 @@ fun MovieReservationScreen(
 }
 
 @Composable
-private fun ReservationPoster() {
+private fun ReservationPoster(posterRes: Int) {
     Image(
-        painter = painterResource(R.drawable.movieposter),
+        painter = painterResource(posterRes),
         contentDescription = stringResource(R.string.movie_poster_description),
         modifier = Modifier
             .fillMaxWidth()

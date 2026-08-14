@@ -80,7 +80,7 @@ private fun MoviePosterThumbnail(posterRes: Int) {
 }
 
 // id5~9는 3편(비밀의 방/아즈카반의 죄수/불의 잔)이 광고 배너 테스트를 위해 반복된 것이라 id % 5로 매핑한다
-private fun posterResFor(movieId: Int): Int = when (movieId % 5) {
+internal fun posterResFor(movieId: Int): Int = when (movieId % 5) {
     1 -> R.drawable.poster_1
     2 -> R.drawable.poster_2
     3 -> R.drawable.poster_3
