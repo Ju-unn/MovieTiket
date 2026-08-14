@@ -12,11 +12,15 @@ class ReservationHistory(
 
     fun reservation(): Reservation = reservation
 
+    // 화면 표시용 영화 제목을 반환한다
     fun displayMovieTitle(): String = reservation.displayMovieTitle()
 
+    // 화면 표시용 극장 이름을 반환한다
     fun displayTheaterName(): String = reservation.displayTheaterName()
 
+    // 화면 표시용 상영 날짜를 반환한다
     fun displayScreeningDate(): String = reservation.displaySelectedDate()
 
+    // 화면 표시용 상영 시간을 반환한다
     fun displayScreeningTime(): String = reservation.displaySelectedTime()
 }

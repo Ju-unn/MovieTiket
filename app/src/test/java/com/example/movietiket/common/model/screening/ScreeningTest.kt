@@ -7,23 +7,30 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
+/**
+ * Screening의 상영 기간/날짜 유효성/러닝타임 조회를 검증하는 테스트
+ */
 class ScreeningTest {
 
+    // 테스트용 상영 정보 생성
     private fun screening(): Screening =
         Screening(ScreeningPeriod(LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 28)), RunningTime(152))
 
+    // 상영 기간이 표시용 값으로 정상 조회되는지 검증
     @Test
     @DisplayName("상영 기간을 표시용 값으로 조회한다")
     fun displayPeriod() {
         assertThat(screening().displayPeriod()).isEqualTo("2024.3.1 ~ 2024.3.28")
     }
 
+    // 기본 날짜가 상영 기간의 시작일인지 검증
     @Test
     @DisplayName("기본 날짜는 상영 기간의 시작일이다")
     fun defaultDate() {
         assertThat(screening().defaultDate()).isEqualTo(LocalDate.of(2024, 3, 1))
     }
 
+    // 상영 기간 내 날짜 여부가 정확히 판별되는지 검증
     @Test
     @DisplayName("상영 기간 내의 날짜인지 확인할 수 있다")
     fun isDateAvailable() {
@@ -31,6 +38,7 @@ class ScreeningTest {
         assertThat(screening().isDateAvailable(LocalDate.of(2024, 4, 1))).isFalse()
     }
 
+    // 상영 기간 밖 날짜의 시간 조회 시 예외가 발생하는지 검증
     @Test
     @DisplayName("상영 기간이 아닌 날짜의 시간을 조회하면 예외가 발생한다")
     fun cannotGetTimesForUnavailableDate() {
@@ -38,6 +46,7 @@ class ScreeningTest {
             .isThrownBy { screening().availableTimesFor(LocalDate.of(2024, 4, 1)) }
     }
 
+    // 러닝타임이 분 단위로 정상 조회되는지 검증
     @Test
     @DisplayName("러닝타임을 분 단위로 조회한다")
     fun runningTimeMinutes() {

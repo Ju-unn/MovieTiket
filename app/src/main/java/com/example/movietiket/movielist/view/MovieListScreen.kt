@@ -45,6 +45,7 @@ fun MovieListScreen(
     }
 }
 
+// 영화 목록 화면 미리보기
 @Preview(showBackground = true, widthDp = 360, heightDp = 720)
 @Composable
 private fun MovieListScreenPreview() {

@@ -52,6 +52,7 @@ private val SWITCH_PADDING = 2.dp
 /**
  * 설정 탭 (푸시 알림 수신 토글)
  */
+// 설정 탭 화면을 구성한다
 @Composable
 fun SettingsScreen(
     pushNotificationEnabled: Boolean,
@@ -66,6 +67,7 @@ fun SettingsScreen(
     }
 }
 
+// 푸시 알림 제목/설명과 토글 스위치가 있는 행
 @Composable
 private fun PushSettingRow(enabled: Boolean, onToggle: (Boolean) -> Unit) {
     Row(
@@ -107,10 +109,7 @@ private fun PushSettingRow(enabled: Boolean, onToggle: (Boolean) -> Unit) {
     }
 }
 
-/**
- * Material3 기본 Switch는 52x32로 디자인(36x20)보다 커서 직접 그린다
- * 행 전체가 클릭을 받으므로 스위치 자체는 상태만 표시한다
- */
+// 디자인 크기(36x20)에 맞춰 직접 그린 스위치, 상태만 표시한다
 @Composable
 private fun PushSwitch(enabled: Boolean, modifier: Modifier = Modifier) {
     val knobOffset by animateDpAsState(
@@ -137,6 +136,7 @@ private fun PushSwitch(enabled: Boolean, modifier: Modifier = Modifier) {
     }
 }
 
+// 미리보기용 컴포저블
 @Preview(showBackground = true, widthDp = 360)
 @Composable
 private fun SettingsScreenPreview() {

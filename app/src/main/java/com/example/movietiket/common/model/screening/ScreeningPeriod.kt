@@ -16,12 +16,15 @@ class ScreeningPeriod(
 
     fun startDate(): LocalDate = startDate
 
+    // 상영 기간에 포함된 모든 날짜 목록을 생성한다
     fun dates(): List<LocalDate> = generateSequence(startDate) { it.plusDays(1) }
         .takeWhile { !it.isAfter(endDate) }
         .toList()
 
+    // 해당 날짜가 상영 기간에 포함되는지 확인한다
     fun contains(date: LocalDate): Boolean = !date.isBefore(startDate) && !date.isAfter(endDate)
 
+    // 화면 표시용 상영 기간 문자열을 반환한다
     fun displayValue(): String =
         "${DisplayDateFormat.format(startDate)} ~ ${DisplayDateFormat.format(endDate)}"
 }

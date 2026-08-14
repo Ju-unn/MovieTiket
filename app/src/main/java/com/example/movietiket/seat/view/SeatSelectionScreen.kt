@@ -68,6 +68,7 @@ private val DIALOG_PADDING = 24.dp
 private val SEAT_ROWS = listOf('A', 'B', 'C', 'D', 'E')
 private const val SEATS_PER_ROW = 4
 
+// 좌석 열에 따라 등급 색상을 결정한다
 private fun seatGradeColor(row: Char): Color = when (row) {
     'A', 'B' -> SeatGradeFirst
     'C', 'D' -> SeatGradeSecond
@@ -77,6 +78,7 @@ private fun seatGradeColor(row: Char): Color = when (row) {
 /**
  * 좌석 선택 화면 (인원수만큼 선택해야 확인 버튼이 활성화된다)
  */
+// 좌석 선택 화면 전체를 구성한다
 @Composable
 fun SeatSelectionScreen(
     reservation: Reservation,
@@ -138,6 +140,7 @@ fun SeatSelectionScreen(
     }
 }
 
+// 스크린 위치를 나타내는 배너
 @Composable
 private fun ScreenBanner() {
     Box(
@@ -156,6 +159,7 @@ private fun ScreenBanner() {
     }
 }
 
+// 전체 좌석을 행렬 형태로 표시한다
 @Composable
 private fun SeatGrid(isSeatSelected: (String) -> Boolean, onSeatClick: (String) -> Unit) {
     Column {
@@ -175,6 +179,7 @@ private fun SeatGrid(isSeatSelected: (String) -> Boolean, onSeatClick: (String) 
     }
 }
 
+// 개별 좌석 셀을 표시한다
 @Composable
 private fun SeatCell(seat: String, gradeColor: Color, selected: Boolean, onClick: () -> Unit) {
     Box(
@@ -190,6 +195,7 @@ private fun SeatCell(seat: String, gradeColor: Color, selected: Boolean, onClick
     }
 }
 
+// 영화 제목/총 금액과 예매 확정 버튼을 담은 하단 바
 @Composable
 private fun SeatSelectionBottomBar(
     movieTitle: String,
@@ -231,6 +237,7 @@ private fun SeatSelectionBottomBar(
     }
 }
 
+// 예매 확정 여부를 묻는 다이얼로그
 @Composable
 private fun ReservationConfirmDialog(onCancel: () -> Unit, onConfirm: () -> Unit) {
     // 배경 터치로는 다이얼로그가 닫히지 않아야 하므로 dismissOnClickOutside를 끈다
@@ -276,6 +283,7 @@ private fun ReservationConfirmDialog(onCancel: () -> Unit, onConfirm: () -> Unit
     }
 }
 
+// 미리보기용 컴포저블
 @Preview(showBackground = true, name = "예매 확정 안내")
 @Composable
 private fun ReservationConfirmDialogPreview() {
@@ -284,6 +292,7 @@ private fun ReservationConfirmDialogPreview() {
     }
 }
 
+// 미리보기용 컴포저블
 @Preview(showBackground = true, name = "비활성화 (좌석 미선택)")
 @Composable
 private fun SeatSelectionScreenInactivePreview() {
@@ -300,6 +309,7 @@ private fun SeatSelectionScreenInactivePreview() {
     }
 }
 
+// 미리보기용 컴포저블
 @Preview(showBackground = true, name = "활성화 (좌석 선택 완료)")
 @Composable
 private fun SeatSelectionScreenActivePreview() {

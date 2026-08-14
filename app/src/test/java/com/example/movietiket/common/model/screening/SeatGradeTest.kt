@@ -5,8 +5,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+/**
+ * 좌석 행 번호에 따른 좌석 등급 분류 및 등급별 가격을 검증한다.
+ */
 class SeatGradeTest {
 
+    // 1,2행이 B등급(10,000원)으로 분류되는지 검증
     @Test
     @DisplayName("1,2행은 B등급(10,000원)이다")
     fun bGrade() {
@@ -15,6 +19,7 @@ class SeatGradeTest {
         assertThat(SeatGrade.B.price()).isEqualTo(Money(10_000))
     }
 
+    // 3,4행이 S등급(15,000원)으로 분류되는지 검증
     @Test
     @DisplayName("3,4행은 S등급(15,000원)이다")
     fun sGrade() {
@@ -23,6 +28,7 @@ class SeatGradeTest {
         assertThat(SeatGrade.S.price()).isEqualTo(Money(15_000))
     }
 
+    // 5행이 A등급(12,000원)으로 분류되는지 검증
     @Test
     @DisplayName("5행은 A등급(12,000원)이다")
     fun aGrade() {

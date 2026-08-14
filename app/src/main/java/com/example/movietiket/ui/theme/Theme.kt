@@ -32,6 +32,7 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+// 다크/라이트 및 다이나믹 컬러에 맞는 컬러 스킴을 적용한 앱 테마
 @Composable
 fun MovieTiketTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

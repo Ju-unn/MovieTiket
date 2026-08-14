@@ -10,6 +10,7 @@ class FakeScreeningAlarmScheduler : ScreeningAlarmScheduler {
 
     val scheduled = mutableListOf<Pair<Long, Reservation>>()
 
+    // 알람 예약 요청을 실제 스케줄링 없이 목록에 기록
     override fun schedule(reservationId: Long, reservation: Reservation) {
         scheduled += reservationId to reservation
     }

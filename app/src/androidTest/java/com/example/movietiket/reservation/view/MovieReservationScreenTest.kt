@@ -16,12 +16,16 @@ import org.junit.runner.RunWith
 import java.time.LocalDate
 import java.time.LocalTime
 
+/**
+ * 예매 화면(MovieReservationScreen)의 정보 표시와 인원/날짜/시간 선택, 좌석 선택 진입 동작을 검증한다
+ */
 @RunWith(AndroidJUnit4::class)
 class MovieReservationScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    // 영화 정보와 인원 수가 화면에 표시되는지 검증한다
     @Test
     fun `영화_정보와_인원_수를_표시한다`() {
         composeTestRule.setContent {
@@ -45,6 +49,7 @@ class MovieReservationScreenTest {
         composeTestRule.onNodeWithText("1").assertIsDisplayed()
     }
 
+    // 인원 증가/감소 버튼 클릭 시 각각의 콜백이 호출되는지 검증한다
     @Test
     fun `인원_증가_감소_버튼을_클릭하면_각각의_콜백이_호출된다`() {
         var increased = false
@@ -71,6 +76,7 @@ class MovieReservationScreenTest {
         assertTrue(decreased)
     }
 
+    // 날짜 드롭다운에서 다른 날짜 선택 시 콜백이 호출되는지 검증한다
     @Test
     fun `날짜_드롭다운에서_다른_날짜를_선택하면_콜백이_호출된다`() {
         var selectedDate: LocalDate? = null
@@ -95,6 +101,7 @@ class MovieReservationScreenTest {
         assertEquals(LocalDate.of(2024, 3, 2), selectedDate)
     }
 
+    // 시간 드롭다운에서 다른 시간 선택 시 콜백이 호출되는지 검증한다
     @Test
     fun `시간_드롭다운에서_다른_시간을_선택하면_콜백이_호출된다`() {
         var selectedTime: LocalTime? = null
@@ -119,6 +126,7 @@ class MovieReservationScreenTest {
         assertEquals(LocalTime.of(14, 0), selectedTime)
     }
 
+    // 좌석 선택 버튼 클릭 시 확정 콜백이 호출되는지 검증한다
     @Test
     fun `좌석_선택_버튼을_클릭하면_확정_콜백이_호출된다`() {
         var confirmed = false
@@ -142,6 +150,7 @@ class MovieReservationScreenTest {
         assertTrue(confirmed)
     }
 
+    // 뒤로 가기 버튼 클릭 시 콜백이 호출되는지 검증한다
     @Test
     fun `뒤로_가기_버튼을_클릭하면_뒤로_가기_콜백이_호출된다`() {
         var backClicked = false

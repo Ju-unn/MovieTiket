@@ -4,8 +4,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+/**
+ * 극장 엔티티의 표시용 이름 조회를 검증한다.
+ */
 class TheaterTest {
 
+    // 극장의 표시용 이름 조회 검증
     @Test
     @DisplayName("극장 이름을 표시용 값으로 조회할 수 있다")
     fun displayName() {

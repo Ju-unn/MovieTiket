@@ -6,7 +6,9 @@ package com.example.movietiket.common.repository
  */
 interface PushNotificationSettings {
 
+    // 알림 수신 여부를 반환한다
     fun isEnabled(): Boolean
 
+    // 알림 수신 여부를 설정한다
     fun setEnabled(enabled: Boolean)
 }

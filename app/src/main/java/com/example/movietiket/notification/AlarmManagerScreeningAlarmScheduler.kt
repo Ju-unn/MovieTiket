@@ -24,6 +24,7 @@ class AlarmManagerScreeningAlarmScheduler(
 
     private val alarmManager: AlarmManager? = context.getSystemService()
 
+    // 정책에 따라 알람을 예약하거나, 즉시 알리거나, 건너뛴다
     override fun schedule(reservationId: Long, reservation: Reservation) {
         val screeningAt = reservation.screeningDateTime() ?: return
         val movieTitle = reservation.displayMovieTitle()
@@ -36,6 +37,7 @@ class AlarmManagerScreeningAlarmScheduler(
         }
     }
 
+    // 지정한 시각에 울릴 알람을 설정한다
     private fun setAlarm(reservationId: Long, movieTitle: String, triggerAt: LocalDateTime) {
         setAlarmAt(reservationId, movieTitle, triggerAt.toEpochMilli())
     }
@@ -54,6 +56,7 @@ class AlarmManagerScreeningAlarmScheduler(
         )
     }
 
+    // 정확 알람 권한 여부에 따라 AlarmManager에 알람을 등록한다
     private fun setAlarmAt(reservationId: Long, movieTitle: String, triggerAtMillis: Long) {
         val alarmManager = alarmManager ?: return
         val pendingIntent = alarmIntent(reservationId, movieTitle)
@@ -66,9 +69,11 @@ class AlarmManagerScreeningAlarmScheduler(
         }
     }
 
+    // 정확 알람을 예약할 수 있는 상태인지 확인한다
     private fun canScheduleExactAlarms(alarmManager: AlarmManager): Boolean =
         Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarmManager.canScheduleExactAlarms()
 
+    // 알람 수신자를 향한 PendingIntent를 생성한다
     private fun alarmIntent(reservationId: Long, movieTitle: String): PendingIntent {
         val intent = Intent(context, ScreeningAlarmReceiver::class.java).apply {
             putExtra(ScreeningAlarmReceiver.EXTRA_RESERVATION_ID, reservationId)
@@ -82,6 +87,7 @@ class AlarmManagerScreeningAlarmScheduler(
         )
     }
 
+    // LocalDateTime을 epoch 밀리초로 변환한다
     private fun LocalDateTime.toEpochMilli(): Long =
         atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 

@@ -57,6 +57,7 @@ fun HeadCountSelector(
     }
 }
 
+// 인원 증가/감소 버튼
 @Composable
 private fun CounterButton(text: String, onClick: () -> Unit) {
     Button(
@@ -72,6 +73,7 @@ private fun CounterButton(text: String, onClick: () -> Unit) {
     }
 }
 
+// 미리보기용 컴포저블
 @Preview(showBackground = true)
 @Composable
 private fun HeadCountSelectorPreview() {

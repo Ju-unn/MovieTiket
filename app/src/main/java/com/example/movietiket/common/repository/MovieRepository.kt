@@ -17,8 +17,10 @@ import java.time.format.DateTimeFormatter
  */
 object MovieRepository {
 
+    // 전체 영화 목록을 반환한다
     fun findAll(): Movies = HARRY_POTTER_SERIES
 
+    // id에 해당하는 영화를 조회한다
     fun findById(id: Int): Movie = findAll().toList().first { it.id() == id }
 
     private const val SCREENING_PERIOD_DAYS = 28L
@@ -100,6 +102,7 @@ object MovieRepository {
         ),
     ))
 
+    // 상영 시작일 문자열로부터 상영 기간을 계산해 Movie 객체를 생성한다
     private fun movieOf(id: Int, title: String, synopsis: String, date: String, minutes: Int): Movie {
         val startDate = LocalDate.parse(date, START_DATE_FORMATTER)
         val period = ScreeningPeriod(startDate, startDate.plusDays(SCREENING_PERIOD_DAYS - 1))

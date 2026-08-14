@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
         pendingReservationId.value = reservationIdOf(intent)
     }
 
+    // 인텐트에서 알림용 예매 id를 추출한다
     private fun reservationIdOf(intent: Intent): Long? {
         val id = intent.getLongExtra(ScreeningNotifier.EXTRA_RESERVATION_ID, -1L)
         return id.takeIf { it != -1L }

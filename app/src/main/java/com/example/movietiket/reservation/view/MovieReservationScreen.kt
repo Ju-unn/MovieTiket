@@ -61,6 +61,7 @@ private val CONFIRM_BUTTON_CORNER = 6.dp
 /**
  * 영화 예매 화면 (포스터 / 영화 정보 / 날짜·시간·인원 선택 / 예매 완료 버튼)
  */
+// 영화 예매 화면 전체를 구성한다
 @Composable
 fun MovieReservationScreen(
     reservation: Reservation,
@@ -104,6 +105,7 @@ fun MovieReservationScreen(
     }
 }
 
+// 영화 포스터 이미지를 표시한다
 @Composable
 private fun ReservationPoster(posterRes: Int) {
     Image(
@@ -116,6 +118,7 @@ private fun ReservationPoster(posterRes: Int) {
     )
 }
 
+// 영화 제목/상영 기간/러닝타임/줄거리를 표시한다
 @Composable
 private fun ReservationMovieInformation(reservation: Reservation, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(top = 16.dp)) {
@@ -141,6 +144,7 @@ private fun ReservationMovieInformation(reservation: Reservation, modifier: Modi
     }
 }
 
+// 날짜/시간/인원 선택과 예매 확정 버튼을 담은 하단 바
 @Composable
 private fun ReservationBottomBar(
     availableDates: List<LocalDate>,
@@ -185,6 +189,7 @@ private fun ReservationBottomBar(
     }
 }
 
+// 상영 날짜를 드롭다운으로 선택한다
 @Composable
 private fun ScreeningDateSelector(
     availableDates: List<LocalDate>,
@@ -215,6 +220,7 @@ private fun ScreeningDateSelector(
     }
 }
 
+// 상영 시간을 드롭다운으로 선택한다
 @Composable
 private fun ScreeningTimeSelector(
     availableTimes: List<LocalTime>,
@@ -245,6 +251,7 @@ private fun ScreeningTimeSelector(
     }
 }
 
+// 드롭다운 트리거로 쓰이는 라벨 + 화살표 아이콘 칩
 @Composable
 private fun DropdownChip(label: String, modifier: Modifier = Modifier) {
     Row(
@@ -260,6 +267,7 @@ private fun DropdownChip(label: String, modifier: Modifier = Modifier) {
     }
 }
 
+// 좌석 선택 화면으로 이동하는 버튼
 @Composable
 private fun SeatSelectionButton(onClick: () -> Unit) {
     Button(
@@ -279,6 +287,7 @@ private fun SeatSelectionButton(onClick: () -> Unit) {
     }
 }
 
+// 미리보기용 컴포저블
 @Preview(showBackground = true)
 @Composable
 private fun MovieReservationScreenPreview() {

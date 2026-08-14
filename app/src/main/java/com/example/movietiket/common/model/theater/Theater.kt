@@ -9,5 +9,6 @@ class Theater(
 ) {
     fun id(): Int = id
 
+    // 화면 표시용 극장 이름을 반환한다
     fun displayName(): String = name.toDisplayValue()
 }

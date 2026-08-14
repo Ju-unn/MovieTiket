@@ -5,8 +5,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+/**
+ * 설정 프레젠터가 저장된 푸시 알림 설정을 불러오고 토글 변경을 저장/반영하는지 검증한다.
+ */
 class SettingsPresenterTest {
 
+    // 테스트용 View 구현체: 통지받은 푸시 알림 활성화 여부를 저장해 검증에 사용
     private class FakeView : SettingsContract.View {
         var pushNotificationEnabled: Boolean? = null
 
@@ -15,6 +19,7 @@ class SettingsPresenterTest {
         }
     }
 
+    // 생성 시 저장된 푸시 알림 설정이 View에 통지되는지 검증
     @Test
     @DisplayName("생성 시 저장된 푸시 알림 설정을 View에 통지한다")
     fun loadsSavedSetting() {
@@ -25,6 +30,7 @@ class SettingsPresenterTest {
         assertThat(view.pushNotificationEnabled).isFalse()
     }
 
+    // 토글을 끄면 설정이 저장되고 View에 반영되는지 검증
     @Test
     @DisplayName("토글을 끄면 설정에 저장하고 View에 반영한다")
     fun turnsOff() {
@@ -38,6 +44,7 @@ class SettingsPresenterTest {
         assertThat(view.pushNotificationEnabled).isFalse()
     }
 
+    // 토글을 켜면 설정이 저장되고 View에 반영되는지 검증
     @Test
     @DisplayName("토글을 켜면 설정에 저장하고 View에 반영한다")
     fun turnsOn() {

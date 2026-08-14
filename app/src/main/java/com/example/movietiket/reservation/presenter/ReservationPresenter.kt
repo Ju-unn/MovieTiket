@@ -24,22 +24,27 @@ class ReservationPresenter(
         view.showReservation(reservation)
     }
 
+    // 인원 수를 늘리고 변경된 예매 정보를 반영한다
     override fun increaseHeadCount() {
         reservation = reservation.increaseHeadCount()
     }
 
+    // 인원 수를 줄이고 변경된 예매 정보를 반영한다
     override fun decreaseHeadCount() {
         reservation = reservation.decreaseHeadCount()
     }
 
+    // 상영 날짜를 선택하고 변경된 예매 정보를 반영한다
     override fun selectDate(date: LocalDate) {
         reservation = reservation.selectDate(date)
     }
 
+    // 상영 시간을 선택하고 변경된 예매 정보를 반영한다
     override fun selectTime(time: LocalTime) {
         reservation = reservation.selectTime(time)
     }
 
+    // 예매를 확정하고 결과를 콜백으로 전달한다
     override fun confirmReservation() {
         onReservationConfirmed(reservation)
     }

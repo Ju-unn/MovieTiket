@@ -16,6 +16,7 @@ sealed interface MovieListRow {
         /** 영화 3개마다 광고를 한 번 넣는다 */
         private const val AD_INTERVAL = 3
 
+        // 영화 목록에 광고 행을 끼워 넣어 화면에 그릴 목록을 만든다
         fun of(movies: List<Movie>): List<MovieListRow> = buildList {
             movies.forEachIndexed { index, movie ->
                 add(MovieRow(movie))

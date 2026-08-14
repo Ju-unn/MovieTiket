@@ -14,11 +14,13 @@ object ScreeningTimeTable {
     private const val INTERVAL_HOURS = 2
     private const val END_HOUR_EXCLUSIVE = 24
 
+    // 날짜(평일/주말)에 따른 상영 시간 목록을 계산한다
     fun timesFor(date: LocalDate): List<LocalTime> {
         val startHour = if (isWeekend(date)) WEEKEND_START_HOUR else WEEKDAY_START_HOUR
         return (startHour until END_HOUR_EXCLUSIVE step INTERVAL_HOURS).map { LocalTime.of(it, 0) }
     }
 
+    // 해당 날짜가 주말(토/일)인지 확인한다
     private fun isWeekend(date: LocalDate): Boolean =
         date.dayOfWeek == DayOfWeek.SATURDAY || date.dayOfWeek == DayOfWeek.SUNDAY
 }

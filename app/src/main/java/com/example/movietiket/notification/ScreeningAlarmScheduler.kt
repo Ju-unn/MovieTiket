@@ -8,5 +8,6 @@ import com.example.movietiket.common.model.reservation.Reservation
  */
 interface ScreeningAlarmScheduler {
 
+    // 예매 건에 대해 상영 알림을 예약한다
     fun schedule(reservationId: Long, reservation: Reservation)
 }

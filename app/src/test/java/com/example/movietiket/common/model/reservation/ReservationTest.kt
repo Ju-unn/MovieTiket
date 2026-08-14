@@ -9,8 +9,12 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalTime
 
+/**
+ * Reservation의 생성 기본값, 인원/날짜/시간/좌석 변경 규칙을 검증하는 테스트
+ */
 class ReservationTest {
 
+    // 생성 직후 최소 인원, 상영 시작일/첫 시간이 기본값인지 검증
     @Test
     @DisplayName("예매는 최소 인원 1명, 상영 기간의 첫 날짜와 첫 시간으로 시작한다")
     fun startsWithDefaults() {
@@ -21,6 +25,7 @@ class ReservationTest {
         assertThat(reservation.displaySelectedTime()).isEqualTo("10:00")
     }
 
+    // increaseHeadCount 호출 시 인원이 증가한 새 예매를 반환하는지 검증
     @Test
     @DisplayName("인원을 늘리면 인원이 증가한 새 예매를 반환한다")
     fun increaseHeadCount() {
@@ -31,6 +36,7 @@ class ReservationTest {
         assertThat(increased.displayHeadCount()).isEqualTo("2")
     }
 
+    // 최소 인원 상태에서 decreaseHeadCount 호출 시 값이 유지되는지 검증
     @Test
     @DisplayName("인원 1명일 때 줄여도 1명이 유지된다")
     fun decreaseKeepsMinimum() {
@@ -41,6 +47,7 @@ class ReservationTest {
         assertThat(decreased.displayHeadCount()).isEqualTo("1")
     }
 
+    // 상영 기간 내의 날짜가 정상 선택되는지 검증
     @Test
     @DisplayName("상영 기간 내의 날짜를 선택할 수 있다")
     fun selectDate() {
@@ -51,6 +58,7 @@ class ReservationTest {
         assertThat(selected.displaySelectedDate()).isEqualTo("2024.3.2")
     }
 
+    // 같은 유형(평일/주말) 날짜로 변경 시 기존 선택 시간이 유지되는지 검증
     @Test
     @DisplayName("같은 유형(평일/주말)의 날짜로 바꾸면 기존에 선택한 시간을 유지한다")
     fun selectDateKeepsValidTime() {
@@ -61,6 +69,7 @@ class ReservationTest {
         assertThat(selected.displaySelectedTime()).isEqualTo("20:00")
     }
 
+    // 유형이 바뀌어 기존 시간이 유효하지 않으면 첫 시간으로 초기화되는지 검증
     @Test
     @DisplayName("평일에서 주말로 날짜를 바꿔 기존 시간이 유효하지 않으면 그 날짜의 첫 시간으로 초기화된다")
     fun selectDateResetsInvalidTime() {
@@ -71,6 +80,7 @@ class ReservationTest {
         assertThat(selected.displaySelectedTime()).isEqualTo("09:00")
     }
 
+    // 상영 기간 밖의 날짜 선택 시 예외가 발생하는지 검증
     @Test
     @DisplayName("상영 기간 밖의 날짜는 선택할 수 없다")
     fun cannotSelectDateOutsidePeriod() {
@@ -80,6 +90,7 @@ class ReservationTest {
             .isThrownBy { reservation.selectDate(LocalDate.of(2024, 4, 1)) }
     }
 
+    // 선택한 날짜에 상영하지 않는 시간 선택 시 예외가 발생하는지 검증
     @Test
     @DisplayName("선택한 날짜에 상영하지 않는 시간은 선택할 수 없다")
     fun cannotSelectUnavailableTime() {
@@ -89,6 +100,7 @@ class ReservationTest {
             .isThrownBy { reservation.selectTime(LocalTime.of(9, 0)) }
     }
 
+    // 날짜 미선택 상태에서 시간 선택 시 예외가 발생하는지 검증
     @Test
     @DisplayName("날짜를 선택하지 않은 상태에서 시간을 선택하면 예외가 발생한다")
     fun cannotSelectTimeWithoutDate() {
@@ -98,6 +110,7 @@ class ReservationTest {
             .isThrownBy { reservation.selectTime(LocalTime.of(10, 0)) }
     }
 
+    // 예매에서 영화 제목이 표시용 값으로 정상 조회되는지 검증
     @Test
     @DisplayName("예매에서 영화 제목을 표시용 값으로 조회할 수 있다")
     fun displayMovieTitle() {
@@ -106,6 +119,7 @@ class ReservationTest {
         assertThat(reservation.displayMovieTitle()).isEqualTo("해리 포터와 마법사의 돌")
     }
 
+    // 예매에서 영화 소개가 표시용 값으로 정상 조회되는지 검증
     @Test
     @DisplayName("예매에서 영화 소개를 표시용 값으로 조회할 수 있다")
     fun displaySynopsis() {
@@ -114,6 +128,7 @@ class ReservationTest {
         assertThat(reservation.displaySynopsis()).isEqualTo("소개")
     }
 
+    // 예매에서 상영 기간이 표시용 값으로 정상 조회되는지 검증
     @Test
     @DisplayName("예매에서 상영 기간을 표시용 값으로 조회할 수 있다")
     fun displayScreeningPeriod() {
@@ -122,6 +137,7 @@ class ReservationTest {
         assertThat(reservation.displayScreeningPeriod()).isEqualTo("2024.3.1 ~ 2024.3.28")
     }
 
+    // 예매에서 러닝타임이 분 단위로 정상 조회되는지 검증
     @Test
     @DisplayName("예매에서 러닝타임을 분 단위로 조회할 수 있다")
     fun runningTimeMinutes() {
@@ -130,6 +146,7 @@ class ReservationTest {
         assertThat(reservation.runningTimeMinutes()).isEqualTo(152)
     }
 
+    // 인원수만큼 좌석 선택 시 좌석 선택 완료 상태가 되는지 검증
     @Test
     @DisplayName("인원수만큼 좌석을 선택하면 좌석 선택이 완료된다")
     fun selectSeatsUpToHeadCount() {
@@ -142,6 +159,7 @@ class ReservationTest {
         assertThat(reservation.isSeatSelectionComplete()).isTrue()
     }
 
+    // 인원수 초과 좌석 선택 시 예외가 발생하는지 검증
     @Test
     @DisplayName("인원수보다 많은 좌석은 선택할 수 없다")
     fun cannotSelectMoreSeatsThanHeadCount() {
@@ -151,6 +169,7 @@ class ReservationTest {
             .isThrownBy { reservation.selectSeat("A2") }
     }
 
+    // 좌석 선택 취소가 정상 반영되는지 검증
     @Test
     @DisplayName("좌석 선택을 취소할 수 있다")
     fun deselectSeat() {
@@ -160,6 +179,7 @@ class ReservationTest {
         assertThat(reservation.isSeatSelectionComplete()).isFalse()
     }
 
+    // 특정 좌석의 선택 여부가 정확히 조회되는지 검증
     @Test
     @DisplayName("좌석 선택 여부를 조회할 수 있다")
     fun isSeatSelected() {
@@ -169,6 +189,7 @@ class ReservationTest {
         assertThat(reservation.isSeatSelected("A2")).isFalse()
     }
 
+    // 선택한 극장 이름이 정상 조회되는지 검증
     @Test
     @DisplayName("예매에서 선택한 극장 이름을 조회할 수 있다")
     fun displayTheaterName() {
@@ -177,6 +198,7 @@ class ReservationTest {
         assertThat(reservation.displayTheaterName()).isEqualTo("강남점")
     }
 
+    // 인원/날짜/시간/좌석이 바뀌어도 선택한 극장이 유지되는지 검증
     @Test
     @DisplayName("인원/날짜/시간/좌석을 바꿔도 선택한 극장은 유지된다")
     fun keepsTheaterAcrossChanges() {
@@ -188,6 +210,7 @@ class ReservationTest {
         assertThat(reservation.displayTheaterName()).isEqualTo("강남점")
     }
 
+    // 선택한 좌석들의 등급별 가격 합계가 정확히 계산되는지 검증
     @Test
     @DisplayName("선택한 좌석의 등급별 가격 합계를 계산한다")
     fun selectedSeatsAmountWon() {

@@ -63,6 +63,7 @@ fun TheaterSelectionBottomSheet(
     }
 }
 
+// 극장 선택 바텀시트의 한 항목
 @Composable
 private fun TheaterItem(theater: Theater, onClick: () -> Unit) {
     Surface(
