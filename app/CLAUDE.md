@@ -31,7 +31,7 @@ https://www.figma.com/design/Du7XucL9G3mlyfAtXr9CLI/Android-%EB%B3%B5%EC%82%AC%E
 - `MoviePrimary`를 `#6200EE` → `#7A0FF7`로 바꿨다(디자인 `$purple` 기준). 앱 전체 색이 바뀌므로 확정 또는 롤백 필요.
 - 알림 제목 문자열 `notification_title` = "상영 알림"은 디자인에 없어서 임의로 정했다.
 
-## 3. 검증되지 않은 것 (에뮬레이터가 없어 컴파일만 확인함)
-- Room DAO 실제 조회/저장 → 인메모리 DB로 androidTest 작성하면 좋다
+## 3. 검증되지 않은 것
+- ~~Room DAO 실제 조회/저장~~ → `RoomReservationHistoryRepositoryTest`(androidTest, 인메모리 DB)로 검증 완료 (2026-08-14)
 - AlarmManager 발화 및 알림 표시
 - 모든 Compose 화면 렌더링, androidTest 실행
