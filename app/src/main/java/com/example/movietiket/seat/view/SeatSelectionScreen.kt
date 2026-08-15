@@ -41,6 +41,7 @@ import com.example.movietiket.R
 import com.example.movietiket.common.repository.MovieRepository
 import com.example.movietiket.common.repository.TheaterRepository
 import com.example.movietiket.common.model.reservation.Reservation
+import com.example.movietiket.common.model.screening.SeatGrade
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import com.example.movietiket.ui.theme.SeatDisabledButton
 import com.example.movietiket.ui.theme.SeatGradeFirst
@@ -68,11 +69,11 @@ private val DIALOG_PADDING = 24.dp
 private val SEAT_ROWS = listOf('A', 'B', 'C', 'D', 'E')
 private const val SEATS_PER_ROW = 4
 
-// 좌석 열에 따라 등급 색상을 결정한다
-private fun seatGradeColor(row: Char): Color = when (row) {
-    'A', 'B' -> SeatGradeFirst
-    'C', 'D' -> SeatGradeSecond
-    else -> SeatGradeThird
+// 좌석 등급에 대응하는 색상을 결정한다 (어느 행이 어느 등급인지는 SeatGrade가 판단한다)
+private fun seatGradeColor(grade: SeatGrade): Color = when (grade) {
+    SeatGrade.B -> SeatGradeFirst
+    SeatGrade.S -> SeatGradeSecond
+    SeatGrade.A -> SeatGradeThird
 }
 
 /**
@@ -169,7 +170,7 @@ private fun SeatGrid(isSeatSelected: (String) -> Boolean, onSeatClick: (String) 
                     val seat = "$row$column"
                     SeatCell(
                         seat = seat,
-                        gradeColor = seatGradeColor(row),
+                        gradeColor = seatGradeColor(SeatGrade.of(seat)),
                         selected = isSeatSelected(seat),
                         onClick = { onSeatClick(seat) },
                     )
