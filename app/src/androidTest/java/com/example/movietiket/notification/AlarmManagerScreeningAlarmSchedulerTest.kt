@@ -5,8 +5,8 @@ import android.app.PendingIntent
 import android.content.Intent
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.movietiket.common.fixture.harryPotterReservation
 import com.example.movietiket.common.fixture.testMovie
+import com.example.movietiket.common.fixture.testReservation
 import com.example.movietiket.common.fixture.testTheater
 import com.example.movietiket.common.model.reservation.HeadCount
 import com.example.movietiket.common.model.reservation.Reservation
@@ -41,7 +41,7 @@ class AlarmManagerScreeningAlarmSchedulerTest {
     // 상영 시각이 미래이면 알람이 등록되는지 검증한다
     @Test
     fun schedulesAlarmWhenScreeningIsInFuture() {
-        val reservation = harryPotterReservation()
+        val reservation = testReservation()
         val screeningAt = requireNotNull(reservation.screeningDateTime())
         val scheduler = AlarmManagerScreeningAlarmScheduler(context, now = { screeningAt.minusHours(3) })
 
