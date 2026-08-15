@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.movietiket.common.data.SharedPreferencesPushNotificationSettings
+import com.example.movietiket.common.data.preferences.SharedPreferencesPushNotificationSettings
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Test

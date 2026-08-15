@@ -22,7 +22,7 @@ import com.example.movietiket.movielist.model.MovieListRow
 import com.example.movietiket.settings.presenter.SettingsContract
 import com.example.movietiket.settings.presenter.SettingsPresenter
 import com.example.movietiket.settings.view.SettingsScreen
-import com.example.movietiket.common.data.SharedPreferencesPushNotificationSettings
+import com.example.movietiket.common.data.preferences.SharedPreferencesPushNotificationSettings
 import com.example.movietiket.notification.AlarmManagerScreeningAlarmScheduler
 import com.example.movietiket.notification.PushNotificationGatedAlarmScheduler
 import com.example.movietiket.notification.ScreeningAlarmScheduler
@@ -34,8 +34,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import com.example.movietiket.common.data.MovieTicketDatabase
-import com.example.movietiket.common.data.RoomReservationHistoryRepository
+import com.example.movietiket.common.data.room.MovieTicketDatabase
+import com.example.movietiket.common.data.room.RoomReservationHistoryRepository
 import com.example.movietiket.common.repository.ReservationHistoryRepository
 import com.example.movietiket.navigation.MovieNavigationController
 import com.example.movietiket.navigation.Screen

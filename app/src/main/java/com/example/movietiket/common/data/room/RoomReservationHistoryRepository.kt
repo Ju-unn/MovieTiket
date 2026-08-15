@@ -1,4 +1,4 @@
-package com.example.movietiket.common.data
+package com.example.movietiket.common.data.room
 
 import com.example.movietiket.common.model.reservation.Reservation
 import com.example.movietiket.common.model.reservation.ReservationHistory

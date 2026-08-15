@@ -3,7 +3,7 @@ package com.example.movietiket.notification
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.movietiket.common.data.SharedPreferencesPushNotificationSettings
+import com.example.movietiket.common.data.preferences.SharedPreferencesPushNotificationSettings
 
 /**
  * 예약된 시각에 깨어나 상영 알림을 띄운다

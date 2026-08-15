@@ -1,4 +1,4 @@
-package com.example.movietiket.common.data
+package com.example.movietiket.common.data.room
 
 import android.content.Context
 import androidx.room.Database
