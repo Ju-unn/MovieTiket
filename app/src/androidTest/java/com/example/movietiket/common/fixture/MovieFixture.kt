@@ -13,8 +13,11 @@ import com.example.movietiket.common.model.theater.TheaterName
 import java.time.LocalDate
 
 /**
- * test / androidTest가 함께 사용하는 테스트 픽스처
- * (src/sharedTest 는 build.gradle.kts에서 두 소스셋에 모두 등록되어 있다)
+ * 테스트용 영화/극장/예매 픽스처
+ *
+ * app은 application 모듈이라 다른 모듈이 의존할 수 없고, 한 디렉터리를 test/androidTest
+ * 두 소스셋에 등록하면 Android Studio가 참조를 풀지 못한다.
+ * 그래서 이 파일은 test/ 와 androidTest/ 에 같은 내용으로 하나씩 둔다. 한쪽을 고치면 다른 쪽도 같이 고칠 것.
  */
 
 // 2024.3.1(금요일, 평일)~2024.3.28

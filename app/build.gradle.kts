@@ -48,11 +48,6 @@ android {
             test.useJUnitPlatform()
         }
     }
-    sourceSets {
-        // 테스트 픽스처를 단위 테스트와 계측 테스트가 함께 쓰도록 두 소스셋에 모두 등록한다
-        getByName("test").java.srcDir("src/sharedTest/java")
-        getByName("androidTest").java.srcDir("src/sharedTest/java")
-    }
 }
 
 dependencies {
