@@ -71,6 +71,9 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // 계측 테스트에서 인메모리 Room DB를 직접 만들기 때문에 Room을 명시적으로 의존한다
+    androidTestImplementation(libs.androidx.room.runtime)
+    androidTestImplementation(libs.androidx.room.ktx)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)

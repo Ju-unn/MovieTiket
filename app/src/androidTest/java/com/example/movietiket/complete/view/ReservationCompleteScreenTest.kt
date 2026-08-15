@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.movietiket.common.fixture.harryPotterReservation
+import com.example.movietiket.common.fixture.testReservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -27,7 +27,7 @@ class ReservationCompleteScreenTest {
     @Test
     fun `예매_내역과_결제_금액을_표시한다`() {
         // A1은 B등급 좌석(10,000원)이다
-        val reservation = harryPotterReservation().selectTime(LocalTime.of(18, 0)).selectSeat("A1")
+        val reservation = testReservation().selectTime(LocalTime.of(18, 0)).selectSeat("A1")
 
         composeTestRule.setContent {
             MovieTiketTheme {
@@ -49,7 +49,7 @@ class ReservationCompleteScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 ReservationCompleteScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     onBackClick = { backClicked = true },
                 )
             }

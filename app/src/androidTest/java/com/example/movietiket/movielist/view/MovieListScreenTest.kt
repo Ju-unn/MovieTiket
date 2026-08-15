@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.movietiket.common.fixture.harryPotterMovie
+import com.example.movietiket.common.fixture.testMovie
 import com.example.movietiket.common.model.movie.Movie
 import com.example.movietiket.movielist.model.MovieListRow
 import com.example.movietiket.ui.theme.MovieTiketTheme
@@ -29,7 +29,7 @@ class MovieListScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieListScreen(
-                    rows = MovieListRow.of(listOf(harryPotterMovie())),
+                    rows = MovieListRow.of(listOf(testMovie())),
                     theaterSelection = null,
                     onReserveClick = {},
                     onTheaterClick = {},
@@ -46,7 +46,7 @@ class MovieListScreenTest {
     // 지금 예매 버튼 클릭 시 해당 영화로 콜백이 호출되는지 검증한다
     @Test
     fun `지금_예매_버튼을_클릭하면_해당_영화로_콜백이_호출된다`() {
-        val targetMovie = harryPotterMovie()
+        val targetMovie = testMovie()
         var clickedMovie: Movie? = null
 
         composeTestRule.setContent {

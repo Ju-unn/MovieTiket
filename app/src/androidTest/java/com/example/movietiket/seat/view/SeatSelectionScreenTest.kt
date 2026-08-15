@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.movietiket.common.fixture.harryPotterReservation
+import com.example.movietiket.common.fixture.testReservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -30,7 +30,7 @@ class SeatSelectionScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 SeatSelectionScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     seatLimitExceededEvent = 0,
                     onSelectSeat = {},
                     onDeselectSeat = {},
@@ -52,7 +52,7 @@ class SeatSelectionScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 SeatSelectionScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     seatLimitExceededEvent = 0,
                     onSelectSeat = { selectedSeat = it },
                     onDeselectSeat = {},
@@ -75,7 +75,7 @@ class SeatSelectionScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 SeatSelectionScreen(
-                    reservation = harryPotterReservation().selectSeat("A1"),
+                    reservation = testReservation().selectSeat("A1"),
                     seatLimitExceededEvent = 0,
                     onSelectSeat = {},
                     onDeselectSeat = { deselectedSeat = it },
@@ -98,7 +98,7 @@ class SeatSelectionScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 SeatSelectionScreen(
-                    reservation = harryPotterReservation().selectSeat("A1"), // 인원 1명, 1석 선택 완료
+                    reservation = testReservation().selectSeat("A1"), // 인원 1명, 1석 선택 완료
                     seatLimitExceededEvent = 0,
                     onSelectSeat = {},
                     onDeselectSeat = {},
@@ -123,7 +123,7 @@ class SeatSelectionScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 SeatSelectionScreen(
-                    reservation = harryPotterReservation(), // 좌석 미선택
+                    reservation = testReservation(), // 좌석 미선택
                     seatLimitExceededEvent = 0,
                     onSelectSeat = {},
                     onDeselectSeat = {},
@@ -146,7 +146,7 @@ class SeatSelectionScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 SeatSelectionScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     seatLimitExceededEvent = 0,
                     onSelectSeat = {},
                     onDeselectSeat = {},

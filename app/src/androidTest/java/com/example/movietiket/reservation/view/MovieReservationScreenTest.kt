@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.movietiket.common.fixture.harryPotterReservation
+import com.example.movietiket.common.fixture.testReservation
 import com.example.movietiket.ui.theme.MovieTiketTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -31,7 +31,7 @@ class MovieReservationScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieReservationScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
                     onSelectDate = {},
@@ -58,7 +58,7 @@ class MovieReservationScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieReservationScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     onIncreaseHeadCount = { increased = true },
                     onDecreaseHeadCount = { decreased = true },
                     onSelectDate = {},
@@ -84,7 +84,7 @@ class MovieReservationScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieReservationScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
                     onSelectDate = { selectedDate = it },
@@ -109,7 +109,7 @@ class MovieReservationScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieReservationScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
                     onSelectDate = {},
@@ -134,7 +134,7 @@ class MovieReservationScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieReservationScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
                     onSelectDate = {},
@@ -158,7 +158,7 @@ class MovieReservationScreenTest {
         composeTestRule.setContent {
             MovieTiketTheme {
                 MovieReservationScreen(
-                    reservation = harryPotterReservation(),
+                    reservation = testReservation(),
                     onIncreaseHeadCount = {},
                     onDecreaseHeadCount = {},
                     onSelectDate = {},

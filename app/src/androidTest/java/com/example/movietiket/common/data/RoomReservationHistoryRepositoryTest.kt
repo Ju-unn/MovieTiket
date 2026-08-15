@@ -3,7 +3,7 @@ package com.example.movietiket.common.data
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.movietiket.common.fixture.harryPotterReservation
+import com.example.movietiket.common.fixture.testReservation
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -42,7 +42,7 @@ class RoomReservationHistoryRepositoryTest {
     // 저장 후 id로 조회하면 동일한 예매 정보를 반환하는지 검증한다
     @Test
     fun saveThenFindByIdReturnsSameReservation() = runBlocking {
-        val reservation = harryPotterReservation().selectSeat("A1")
+        val reservation = testReservation().selectSeat("A1")
 
         val id = repository.save(reservation)
         val found = repository.findById(id)
@@ -64,9 +64,9 @@ class RoomReservationHistoryRepositoryTest {
         var now = 0L
         val orderedRepository = RoomReservationHistoryRepository(database.reservationDao(), now = { now })
 
-        val olderId = orderedRepository.save(harryPotterReservation())
+        val olderId = orderedRepository.save(testReservation())
         now = 1_000L
-        val newerId = orderedRepository.save(harryPotterReservation())
+        val newerId = orderedRepository.save(testReservation())
 
         val ids = orderedRepository.findAll().first().map { it.id() }
 
